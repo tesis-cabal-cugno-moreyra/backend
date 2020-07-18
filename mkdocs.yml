@@ -1,0 +1,12 @@
+site_name: sicoin
+site_description: Backend for sicoin
+repo_url: https://github.com/tesis-cabal-cugno-moreyra/backend
+site_dir: site
+copyright: Copyright &copy; 2020, <a href="https://github.com/tesis-cabal-cugno-moreyra">tesis-cabal-cugno-moreyra</a>.
+dev_addr: 0.0.0.0:8001
+
+nav:
+  - Home: 'index.md'
+  - API:
+    - Authentication: 'api/authentication.md'
+    - Users: 'api/users.md'
