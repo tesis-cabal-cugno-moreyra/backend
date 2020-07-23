@@ -1,6 +1,7 @@
 import os
 from os.path import join
 from distutils.util import strtobool
+from datetime import timedelta
 import dj_database_url
 from configurations import Configuration
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -24,12 +25,14 @@ class Common(Configuration):
 
         # Your apps
         'sicoin.users',
+        'drf_yasg',
 
     )
 
     # https://docs.djangoproject.com/en/2.0/topics/http/middleware/
     MIDDLEWARE = (
         'django.middleware.security.SecurityMiddleware',
+        'whitenoise.middleware.WhiteNoiseMiddleware',
         'django.contrib.sessions.middleware.SessionMiddleware',
         'django.middleware.common.CommonMiddleware',
         'django.middleware.csrf.CsrfViewMiddleware',
@@ -37,6 +40,8 @@ class Common(Configuration):
         'django.contrib.messages.middleware.MessageMiddleware',
         'django.middleware.clickjacking.XFrameOptionsMiddleware',
     )
+
+    STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
     ALLOWED_HOSTS = ["*"]
     ROOT_URLCONF = 'sicoin.urls'
@@ -53,7 +58,7 @@ class Common(Configuration):
     # Postgres
     DATABASES = {
         'default': dj_database_url.config(
-            default='postgres://postgres:@postgres:5432/postgres',
+            default=os.getenv('POSTGRES_CONN', 'postgresql://root:password@postgres:5432/db_dev'),
             conn_max_age=int(os.getenv('POSTGRES_CONN_MAX_AGE', 600))
         )
     }
@@ -198,4 +203,48 @@ class Common(Configuration):
             'rest_framework.authentication.SessionAuthentication',
             'rest_framework.authentication.TokenAuthentication',
         )
+    }
+
+    REST_USE_JWT = True
+    JWT_AUTH_COOKIE = 'jwt-auth'
+
+    SWAGGER_SETTINGS = {
+        'SECURITY_DEFINITIONS': {
+            'Basic': {
+                'type': 'basic'
+            },
+            'Bearer': {
+                'type': 'apiKey',
+                'name': 'Authorization',
+                'in': 'header',
+                'schemeName': 'Bearer'
+            }
+        },
+        'DEFAULT_API_URL': os.getenv('DEFAULT_API_URL', None)
+    }
+
+    SIMPLE_JWT = {
+        'ACCESS_TOKEN_LIFETIME': timedelta(minutes=550),
+        'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
+        'ROTATE_REFRESH_TOKENS': False,
+        'BLACKLIST_AFTER_ROTATION': True,
+
+        'ALGORITHM': 'HS256',
+        'SIGNING_KEY': os.getenv('DJANGO_SECRET_KEY'),
+        'VERIFYING_KEY': None,
+        'AUDIENCE': None,
+        'ISSUER': None,
+
+        'AUTH_HEADER_TYPES': 'Bearer',
+        'USER_ID_FIELD': 'id',
+        'USER_ID_CLAIM': 'user_id',
+
+        'AUTH_TOKEN_CLASSES': ('rest_framework_simplejwt.tokens.AccessToken',),
+        'TOKEN_TYPE_CLAIM': 'token_type',
+
+        'JTI_CLAIM': 'jti',
+
+        'SLIDING_TOKEN_REFRESH_EXP_CLAIM': 'refresh_exp',
+        'SLIDING_TOKEN_LIFETIME': timedelta(minutes=5),
+        'SLIDING_TOKEN_REFRESH_LIFETIME': timedelta(days=1),
     }

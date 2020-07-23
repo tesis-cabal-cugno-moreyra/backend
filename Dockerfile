@@ -1,10 +1,25 @@
-FROM python:3.8
+FROM python:3.8-alpine
 ENV PYTHONUNBUFFERED 1
 
 # Allows docker to cache installed dependencies between builds
 COPY ./requirements.txt requirements.txt
-RUN pip install -r requirements.txt
-
+RUN apk add --no-cache --virtual .build-deps \
+    ca-certificates gcc postgresql-dev linux-headers musl-dev \
+    libffi-dev jpeg-dev zlib-dev \
+    && pip install -r requirements.txt \
+    && find /usr/local \
+        \( -type d -a -name test -o -name tests \) \
+        -o \( -type f -a -name '*.pyc' -o -name '*.pyo' \) \
+        -exec rm -rf '{}' + \
+    && runDeps="$( \
+        scanelf --needed --nobanner --recursive /usr/local \
+                | awk '{ gsub(/,/, "\nso:", $2); print "so:" $2 }' \
+                | sort -u \
+                | xargs -r apk info --installed \
+                | sort -u \
+    )" \
+    && apk add --virtual .rundeps $runDeps \
+    && apk del .build-deps
 # Adds our application code to the image
 COPY . code
 WORKDIR code
@@ -12,4 +27,4 @@ WORKDIR code
 EXPOSE 8000
 
 # Run the production server
-CMD newrelic-admin run-program gunicorn --bind 0.0.0.0:$PORT --access-logfile - sicoin.wsgi:application
+CMD ./manage.py collectstatic && newrelic-admin run-program gunicorn --bind 0.0.0.0:$PORT --access-logfile - sicoin.wsgi:application
