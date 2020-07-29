@@ -3,14 +3,15 @@ from django.contrib.auth.base_user import BaseUserManager
 from django.contrib.auth.hashers import make_password
 from django.http import HttpResponse
 from rest_framework import viewsets, mixins
-from rest_framework.permissions import AllowAny, IsAuthenticated
+from rest_framework.permissions import AllowAny
 from rest_framework.utils import json
 from rest_framework.views import APIView
 from rest_framework_simplejwt.tokens import RefreshToken
 
 from .models import User
-from .permissions import IsUserOrReadOnly, IsResourceRole
+from .permissions import IsUserOrReadOnly
 from .serializers import CreateUserSerializer, UserSerializer
+from django.core.cache import cache
 
 
 class UserViewSet(mixins.RetrieveModelMixin,
@@ -35,8 +36,10 @@ class UserCreateViewSet(mixins.CreateModelMixin,
 
 
 class HelloView(APIView):
+    permission_classes = (AllowAny,)
     def get(self, request):
-        content = {'message': 'Hello, World!'}
+        cache.set("key", "valueASD", timeout=None)
+        content = {'message': cache.get("key")}
         return HttpResponse(json.dumps(content))
 
 

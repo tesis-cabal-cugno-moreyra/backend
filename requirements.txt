@@ -8,6 +8,7 @@ whitenoise
 drf-yasg
 dj-rest-auth
 djangorestframework-simplejwt
+django-redis==4.5.0
 
 # For the persistence stores
 psycopg2-binary==2.8.5

@@ -6,8 +6,7 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.views.generic.base import RedirectView
 from rest_framework.routers import DefaultRouter
-from rest_framework.authtoken import views
-from .users.views import UserViewSet, UserCreateViewSet
+from .users.views import UserViewSet, UserCreateViewSet, HelloView
 from rest_framework import permissions
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
@@ -35,6 +34,7 @@ urlpatterns = [
     path('api/v1/', include(router.urls)),
     re_path(r'^rest-auth/', include('dj_rest_auth.urls')),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
+    path('hello/', HelloView.as_view()),
 
     # the 'api-root' from django rest-frameworks default router
     # http://www.django-rest-framework.org/api-guide/routers/#defaultrouter

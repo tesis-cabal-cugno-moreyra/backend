@@ -248,3 +248,14 @@ class Common(Configuration):
         'SLIDING_TOKEN_LIFETIME': timedelta(minutes=5),
         'SLIDING_TOKEN_REFRESH_LIFETIME': timedelta(days=1),
     }
+
+    CACHES = {
+        "default": {
+            "BACKEND": "django_redis.cache.RedisCache",
+            "LOCATION": os.getenv('REDIS_URL'),
+            "OPTIONS": {
+                "CLIENT_CLASS": "django_redis.client.DefaultClient",
+                "PASSWORD": os.getenv('REDIS_PASSWD')
+            }
+        }
+    }

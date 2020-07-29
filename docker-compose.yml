@@ -1,4 +1,4 @@
-version: '2'
+version: '3.7'
 
 services:
   postgres:
@@ -12,14 +12,18 @@ services:
       POSTGRES_HOST_AUTH_METHOD: trust
     ports:
       - 15432:5432
+    networks:
+      SicoinNetwork:
+        ipv4_address: 172.3.0.2
   web:
-    restart: always
     environment:
       - DJANGO_SECRET_KEY=local
       - POSTGRES_USER=root
       - POSTGRES_PASSWORD=password
       - POSTGRES_DB=db_dev
       - POSTGRES_CONN=postgresql://root:password@postgres:5432/db_dev
+      - REDIS_URL=redis://redis:6379/1
+      - REDIS_PASSWD=sOmE_sEcUrE_pAsS
     image: web
     build: ./
     command: >
@@ -32,9 +36,35 @@ services:
       - "8000:8000"
     depends_on:
       - postgres
+      - redis
+    networks:
+      SicoinNetwork:
+        ipv4_address: 172.3.0.3
   adminer:
     image: adminer
     ports:
       - 8080:8080
+    networks:
+      SicoinNetwork:
+        ipv4_address: 172.3.0.4
+  redis:
+    image: redis:6.0.6-alpine
+    command: redis-server --requirepass sOmE_sEcUrE_pAsS
+    ports:
+      - "6379:6379"
+    volumes:
+      - ./redis/redis-data:/var/lib/redis
+      - ./redis/redis.conf:/usr/local/etc/redis/redis.conf
+    environment:
+      - REDIS_REPLICATION_MODE=master
+    networks:
+      SicoinNetwork:
+        ipv4_address: 172.3.0.5
 volumes:
   data-db:
+networks:
+  SicoinNetwork:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.3.0.0/16
