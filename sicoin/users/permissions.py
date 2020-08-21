@@ -1,4 +1,5 @@
 from rest_framework import permissions
+from sicoin.users.enums import ValidRoles
 
 
 class CheckRole:

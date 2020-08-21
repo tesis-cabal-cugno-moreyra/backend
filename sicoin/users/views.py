@@ -37,6 +37,7 @@ class UserCreateViewSet(mixins.CreateModelMixin,
 
 class HelloView(APIView):
     permission_classes = (AllowAny,)
+
     def get(self, request):
         cache.set("key", "valueASD", timeout=None)
         content = {'message': cache.get("key")}
@@ -47,7 +48,8 @@ class GoogleView(APIView):
     permission_classes = (AllowAny,)
 
     def post(self, request):
-        r = requests.get('https://oauth2.googleapis.com/tokeninfo?id_token={}'.format(request.data.get("token")))
+        r = requests.get('https://oauth2.googleapis.com/tokeninfo?id_token={}'
+                         .format(request.data.get("token")))
         data = json.loads(r.text)
 
         if 'error' in data:
@@ -65,5 +67,6 @@ class GoogleView(APIView):
             user.save()
 
         token = RefreshToken.for_user(user)  # generate token without username & password
-        response = {'username': user.username, 'access_token': str(token.access_token), 'refresh_token': str(token)}
+        response = {'username': user.username, 'access_token': str(token.access_token),
+                    'refresh_token': str(token)}
         return HttpResponse(json.dumps(response))
