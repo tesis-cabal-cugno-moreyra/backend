@@ -11,13 +11,32 @@ Backend for sicoin. Check out the project's [documentation](http://tesis-cabal-c
 
 # Local Development
 
+Configure local git hooks (for tests and lint on pre-commits):
+```bash
+make git-hooks-setup
+```
+
 Start the dev server for local development:
 ```bash
-docker-compose up
+make docker-compose-up-d
 ```
 
 Run a command inside the docker container:
 
 ```bash
 docker-compose run --rm web [command]
+```
+or, if you want a TTY
+```bash
+make container-ssh
+```
+
+Create new migrations:
+```bash
+make django-makemigrations
+```
+
+Run migrations:
+```bash
+make django-migrate
 ```

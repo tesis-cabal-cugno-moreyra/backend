@@ -14,7 +14,7 @@ build-and-deploy:
 	heroku container:release web -a $(HEROKU_APP)
 
 container-ssh:
-	docker-compose run --rm web sh
+	docker-compose exec web sh
 
 docker-compose-up-d:
 	docker-compose --env-file /dev/null -f docker-compose.yml up -d
@@ -25,11 +25,17 @@ heroku-ssh:
 heroku-logs:
 	heroku logs --tail -a $(HEROKU_APP)
 
+django-makemigrations:
+	docker-compose exec web python manage.py makemigrations
+
+django-migrate:
+	docker-compose exec web python manage.py migrate
+
 django-test:
-	docker exec -it backend_web_1 python manage.py test
+	docker-compose exec -T web python manage.py test
 
 python-lint:
-	docker exec -it backend_web_1 flake8
+	docker-compose exec -T web flake8
 
 git-pre-commit:
 	make python-lint
