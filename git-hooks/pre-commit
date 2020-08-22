@@ -11,4 +11,3 @@ make git-pre-commit
 echo ""
 echo "pre-commit hook OK"
 echo "--------------------------------------------------------------------------------"
-EOF
