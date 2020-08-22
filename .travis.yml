@@ -7,7 +7,9 @@ python:
 before_script:
   - docker-compose build
 script:
-  - make ci-run-tests
+  - docker-compose run --rm web bash -c "flake8 . &&
+    python wait_for_postgres.py &&
+    ./manage.py test"
 
 notifications:
   email: false
