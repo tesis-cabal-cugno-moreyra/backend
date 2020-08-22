@@ -40,3 +40,8 @@ python-lint:
 git-pre-commit:
 	make python-lint
 	make django-test
+
+ci-run-tests:
+	docker-compose exec -T web flake8 .
+	docker-compose exec -T web python wait_for_postgres.py
+	docker-compose exec -T web ./manage.py test
