@@ -25,7 +25,7 @@ deploy:
     branch: master
 
 notifications:
-  email: false
+  slack: tesis2020caba-ij78408:CBcouKtzlBEQaU8XxUmVgj0T
 
 cache:
   pip: true
