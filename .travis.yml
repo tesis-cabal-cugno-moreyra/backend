@@ -4,15 +4,28 @@ services:
   - docker
 python:
   - "3.8"
+before_install:
+  # install heroku CLI
+  - wget -qO- https://toolbelt.heroku.com/install.sh | sh
+  - echo "$HEROKU_PASSWORD" | docker login -u "$HEROKU_USERNAME" --password-stdin registry.heroku.com
 before_script:
   - docker-compose build
 script:
   - docker-compose run --rm web sh -c "flake8 . &&
     python wait_for_postgres.py &&
     ./manage.py test"
+deploy:
+  provider: script
+  script:
+    docker-compose --env-file /dev/null -f docker-compose.yml build
+    docker tag web registry.heroku.com/$(HEROKU_APP)/web
+    docker push registry.heroku.com/$(HEROKU_APP)/web
+    heroku container:release web -a $(HEROKU_APP)
+  on:
+    branch: master
 
 notifications:
-  email: false
+  slack: tesis2020caba-ij78408:CBcouKtzlBEQaU8XxUmVgj0T
 
 cache:
   pip: true
