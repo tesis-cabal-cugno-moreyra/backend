@@ -26,7 +26,7 @@ Run a command inside the docker container:
 ```bash
 docker-compose run --rm web [command]
 ```
-or, if you want a TTY
+or, if you want a Console inside the web container (using sh)
 ```bash
 make container-ssh
 ```
