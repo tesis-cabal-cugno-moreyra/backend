@@ -22,7 +22,7 @@ services:
       - POSTGRES_PASSWORD=password
       - POSTGRES_DB=db_dev
       - POSTGRES_CONN=postgresql://root:password@postgres:5432/db_dev
-      - REDIS_URL=redis://redis:6379/1
+      - REDIS_URL=redis://:sOmE_sEcUrE_pAsS@redis:6379/1
       - REDIS_PASSWD=sOmE_sEcUrE_pAsS
     image: web
     build: ./

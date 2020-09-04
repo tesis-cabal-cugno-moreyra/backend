@@ -54,7 +54,7 @@ class Common(Configuration):
         'default': {
             'BACKEND': 'channels_redis.core.RedisChannelLayer',
             'CONFIG': {
-                "hosts": ['redis://:sOmE_sEcUrE_pAsS@172.3.0.5:6379/1'],
+                "hosts": [os.getenv('REDIS_URL')],
             },
         },
     }
