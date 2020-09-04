@@ -30,6 +30,7 @@ schema_view = get_schema_view(
 )
 
 urlpatterns = [
+    path('chat/', include('chat.urls')),
     path('admin/', admin.site.urls),
     path('api/v1/', include(router.urls)),
     re_path(r'^rest-auth/', include('dj_rest_auth.urls')),

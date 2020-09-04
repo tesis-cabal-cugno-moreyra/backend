@@ -22,9 +22,11 @@ class Common(Configuration):
         'rest_framework',            # utilities for rest apis
         'rest_framework.authtoken',  # token authentication
         'django_filters',            # for filtering rest endpoints
+        'channels',
 
         # Your apps
         'sicoin.users',
+        'chat',
         'drf_yasg',
 
     )
@@ -47,6 +49,15 @@ class Common(Configuration):
     ROOT_URLCONF = 'sicoin.urls'
     SECRET_KEY = os.getenv('DJANGO_SECRET_KEY')
     WSGI_APPLICATION = 'sicoin.wsgi.application'
+    ASGI_APPLICATION = "sicoin.routing.application"
+    CHANNEL_LAYERS = {
+        'default': {
+            'BACKEND': 'channels_redis.core.RedisChannelLayer',
+            'CONFIG': {
+                "hosts": ['redis://:sOmE_sEcUrE_pAsS@172.3.0.5:6379/1'],
+            },
+        },
+    }
 
     # Email
     EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
@@ -247,15 +258,4 @@ class Common(Configuration):
         'SLIDING_TOKEN_REFRESH_EXP_CLAIM': 'refresh_exp',
         'SLIDING_TOKEN_LIFETIME': timedelta(minutes=5),
         'SLIDING_TOKEN_REFRESH_LIFETIME': timedelta(days=1),
-    }
-
-    CACHES = {
-        "default": {
-            "BACKEND": "django_redis.cache.RedisCache",
-            "LOCATION": os.getenv('REDIS_URL'),
-            "OPTIONS": {
-                "CLIENT_CLASS": "django_redis.client.DefaultClient",
-                "PASSWORD": os.getenv('REDIS_PASSWD')
-            }
-        }
     }
