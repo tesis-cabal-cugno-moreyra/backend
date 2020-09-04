@@ -27,4 +27,4 @@ WORKDIR code
 EXPOSE 8000
 
 # Run the production server
-CMD ./manage.py collectstatic && daphne -b 0.0.0.0:$PORT - sicoin.asgi:application
+CMD ./manage.py collectstatic && daphne sicoin.asgi:application --port $PORT --bind 0.0.0.0
