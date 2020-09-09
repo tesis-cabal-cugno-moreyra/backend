@@ -9,6 +9,7 @@ channels_redis
 whitenoise
 drf-yasg
 dj-rest-auth
+django-cors-headers
 djangorestframework-simplejwt
 django-redis==4.5.0
 

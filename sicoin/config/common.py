@@ -19,6 +19,7 @@ class Common(Configuration):
 
 
         # Third party apps
+        'corsheaders',
         'channels',
         'rest_framework',            # utilities for rest apis
         'rest_framework.authtoken',  # token authentication
@@ -33,6 +34,8 @@ class Common(Configuration):
 
     # https://docs.djangoproject.com/en/2.0/topics/http/middleware/
     MIDDLEWARE = (
+        'corsheaders.middleware.CorsMiddleware',
+        'django.middleware.common.CommonMiddleware',
         'django.middleware.security.SecurityMiddleware',
         'whitenoise.middleware.WhiteNoiseMiddleware',
         'django.contrib.sessions.middleware.SessionMiddleware',
@@ -45,7 +48,16 @@ class Common(Configuration):
 
     STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-    ALLOWED_HOSTS = ["*"]
+    ALLOWED_HOSTS = ["127.0.0.1", "localhost", ".herokuapp.com"]
+    CORS_ORIGIN_ALLOW_ALL = False
+    CORS_ALLOWED_ORIGINS = [
+        "http://localhost:8080",
+        "http://localhost:8081",
+        "https://tesis-cabal-cugno-moreyra.onrender.com",
+    ]
+    CORS_ALLOWED_ORIGIN_REGEXES = [
+        r"^https://tesis-cabal-cugno-moreyra-pr-\d+\.onrender\.com$",
+    ]
     ROOT_URLCONF = 'sicoin.urls'
     SECRET_KEY = os.getenv('DJANGO_SECRET_KEY')
     WSGI_APPLICATION = 'sicoin.wsgi.application'
