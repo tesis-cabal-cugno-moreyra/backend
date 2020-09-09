@@ -48,6 +48,7 @@ class Common(Configuration):
 
     STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
+    # TODO: localhost must not be present on production builds
     ALLOWED_HOSTS = ["127.0.0.1", "localhost", ".herokuapp.com"]
     CORS_ORIGIN_ALLOW_ALL = False
     CORS_ALLOWED_ORIGINS = [
