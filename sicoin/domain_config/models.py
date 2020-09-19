@@ -18,7 +18,8 @@ class SupervisorAlias(BaseModel):
 
     class Meta:
         constraints = [
-            models.UniqueConstraint(fields=['domain_config', 'alias'], name='unique supervisor alias for a domain')
+            models.UniqueConstraint(fields=['domain_config', 'alias'],
+                                    name='unique supervisor alias for a domain')
         ]
 
 
@@ -31,7 +32,8 @@ class ResourceType(BaseModel):
 
     class Meta:
         constraints = [
-            models.UniqueConstraint(fields=['domain_config', 'name'], name='unique resource name for a domain')
+            models.UniqueConstraint(fields=['domain_config', 'name'],
+                                    name='unique resource name for a domain')
         ]
 
 
@@ -70,8 +72,8 @@ class IncidentAbstraction(BaseModel):
 
     class Meta:
         constraints = [
-            models.UniqueConstraint(fields=['domain_config', 'alias'], name='unique incident abstraction alias for '
-                                                                            'domain_config')
+            models.UniqueConstraint(fields=['domain_config', 'alias'],
+                                    name='unique incident abstraction alias for domain_config')
         ]
 
 
