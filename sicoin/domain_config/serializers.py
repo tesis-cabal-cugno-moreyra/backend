@@ -75,7 +75,8 @@ class DomainSerializer(serializers.Serializer):
     def create(self, validated_data):
         domain_data = {
             'domain_name': validated_data.get('name'),
-            'admin_alias': validated_data.get('adminAlias')
+            'admin_alias': validated_data.get('adminAlias'),
+            'parsed_json': validated_data
         }
         domain = models.DomainConfig.objects.create(**domain_data)
 

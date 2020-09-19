@@ -1,3 +1,4 @@
+from django.contrib.postgres.fields import JSONField
 from django.db import models
 
 
@@ -80,6 +81,7 @@ class IncidentAbstraction(BaseModel):
 class DomainConfig(BaseModel):
     domain_name = models.CharField(max_length=255, unique=True)
     admin_alias = models.CharField(max_length=255)
+    parsed_json = JSONField()
 
     def __str__(self):
         return f"DomainConfig ({self.id}): name: {self.domain_name}"
