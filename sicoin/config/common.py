@@ -25,6 +25,7 @@ class Common(Configuration):
 
         # Your apps
         'sicoin.users',
+        'sicoin.domain_config',
         'drf_yasg',
 
     )
