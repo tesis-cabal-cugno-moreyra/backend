@@ -64,5 +64,4 @@ class TestCreateDomainSerializer(TestCase):
         self.assertIsNotNone(domain.domain_code)
         self.assertEqual(domain.parsed_json['domain_code'], domain.domain_code)
 
-
     # TODO: Test w/request and related to user

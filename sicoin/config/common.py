@@ -13,7 +13,10 @@ env = environ.Env(
 )
 base = environ.Path(__file__) - 3  # Two folders back -> root of project
 # reading .env file
-environ.Env.read_env(env_file=base('.env'))
+try:
+    environ.Env.read_env(env_file=base('.env'))
+except FileNotFoundError:
+    pass  # Log here!
 
 
 class Common(Configuration):

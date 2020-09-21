@@ -4,7 +4,11 @@ import psycopg2
 import environ
 
 env = environ.Env()
-environ.Env.read_env()
+
+try:
+    environ.Env.read_env()
+except FileNotFoundError:
+    pass  # Log here!
 check_timeout = env("POSTGRES_CHECK_TIMEOUT", default=30)
 check_interval = env("POSTGRES_CHECK_INTERVAL", default=1)
 interval_unit = "second" if check_interval == 1 else "seconds"
