@@ -74,7 +74,6 @@ class DomainSerializer(serializers.Serializer):
 
     def create(self, validated_data):
         domain_code = get_random_alphanumeric_string(10)
-        validated_data['domain_code'] = domain_code
 
         domain_data = {
             'domain_name': validated_data.get('name'),
