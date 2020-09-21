@@ -1,5 +1,6 @@
 from django.contrib.postgres.fields import JSONField
 from django.db import models
+from encrypted_fields import fields
 
 
 class BaseModel(models.Model):
@@ -81,6 +82,7 @@ class IncidentAbstraction(BaseModel):
 class DomainConfig(BaseModel):
     domain_name = models.CharField(max_length=255, unique=True)
     admin_alias = models.CharField(max_length=255)
+    domain_code = fields.EncryptedCharField(help_text="Code used for domain-related tasks", max_length=255)
     parsed_json = JSONField()
 
     def __str__(self):

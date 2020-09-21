@@ -17,7 +17,7 @@ class TestCreateDomainSerializer(TestCase):
                 },
                 {
                     "name": "Suboficial"
-                },
+                }
             ],
             "adminAlias": "Administrador",
             "incidentAbstractions": [
@@ -60,5 +60,9 @@ class TestCreateDomainSerializer(TestCase):
         ok_(serializer.is_valid())
         domain = serializer.save()
         eq_(domain.domain_name, 'DominioPersonalizado')
+        self.assertIsNotNone(domain.parsed_json['domain_code'])
+        self.assertIsNotNone(domain.domain_code)
+        self.assertEqual(domain.parsed_json['domain_code'], domain.domain_code)
+
 
     # TODO: Test w/request and related to user

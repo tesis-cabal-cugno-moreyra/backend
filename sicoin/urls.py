@@ -7,7 +7,7 @@ from django.contrib import admin
 from django.views.generic.base import RedirectView
 from rest_framework.routers import DefaultRouter
 from .users.views import UserViewSet, UserCreateViewSet, HelloView
-from .domain_config.views import DomainConfigAPIView
+from .domain_config.views import DomainConfigAPIView, GenerateNewDomainCodeAPIView
 from rest_framework import permissions
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
@@ -37,6 +37,7 @@ urlpatterns = [
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     path('hello/', HelloView.as_view()),
     path('api/v1/domain-config/', DomainConfigAPIView.as_view()),
+    path('api/v1/domain-config/renew-code/', GenerateNewDomainCodeAPIView.as_view()),
     # ^^ FIXME: Separate urls along all apps
 
     # the 'api-root' from django rest-frameworks default router

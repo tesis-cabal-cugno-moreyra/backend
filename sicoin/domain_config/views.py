@@ -9,6 +9,7 @@ from rest_framework.views import APIView
 
 from sicoin.domain_config import models
 from sicoin.domain_config.serializers import DomainSerializer
+from sicoin.domain_config.utils import get_random_alphanumeric_string
 
 
 class DomainConfigAPIView(APIView):
@@ -38,3 +39,18 @@ class DomainConfigAPIView(APIView):
             # ENABLE THIS when frontend trials are finished
             return HttpResponse(json.dumps({'message': 'Domain successfully created'}))
 
+
+class GenerateNewDomainCodeAPIView(APIView):
+    permission_classes = (AllowAny,)
+
+    @swagger_auto_schema(responses={200: DomainSerializer(), 404: 'not found'})
+    def get(self, request):
+        if len(models.DomainConfig.objects.all()):
+            domain_config = models.DomainConfig.objects.all()[0]
+            new_domain_code = get_random_alphanumeric_string(10)
+            domain_config.domain_code = new_domain_code
+            domain_config.parsed_json['domain_code'] = new_domain_code
+            domain_config.save()
+            return HttpResponse(json.dumps(domain_config.parsed_json))
+        return HttpResponse(json.dumps({'message': 'No Domain exists'}), status=status.HTTP_404_NOT_FOUND)
+        # ^^ We currently support a single domain.

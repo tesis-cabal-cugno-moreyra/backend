@@ -1,6 +1,6 @@
 from rest_framework import serializers
-
 from sicoin.domain_config import models
+from sicoin.domain_config.utils import get_random_alphanumeric_string
 
 
 class DomainSerializer(serializers.Serializer):
@@ -73,10 +73,14 @@ class DomainSerializer(serializers.Serializer):
     resourceTypes = ResourceTypeSerializer(many=True)
 
     def create(self, validated_data):
+        domain_code = get_random_alphanumeric_string(10)
+        validated_data['domain_code'] = domain_code
+
         domain_data = {
             'domain_name': validated_data.get('name'),
             'admin_alias': validated_data.get('adminAlias'),
-            'parsed_json': validated_data
+            'parsed_json': validated_data,
+            'domain_code': domain_code
         }
         domain = models.DomainConfig.objects.create(**domain_data)
 
