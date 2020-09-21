@@ -6,7 +6,7 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.views.generic.base import RedirectView
 from rest_framework.routers import DefaultRouter
-from .users.views import UserViewSet, UserCreateViewSet, HelloView
+from .users.views import UserViewSet, UserCreateViewSet, HelloView, GoogleView
 from .domain_config.views import DomainConfigAPIView, GenerateNewDomainCodeAPIView
 from rest_framework import permissions
 from drf_yasg.views import get_schema_view
@@ -31,6 +31,7 @@ schema_view = get_schema_view(
 )
 
 urlpatterns = [
+    path('chat/', include('chat.urls')),
     path('admin/', admin.site.urls),
     path('api/v1/', include(router.urls)),
     re_path(r'^rest-auth/', include('dj_rest_auth.urls')),
@@ -39,6 +40,7 @@ urlpatterns = [
     path('api/v1/domain-config/', DomainConfigAPIView.as_view()),
     path('api/v1/domain-config/renew-code/', GenerateNewDomainCodeAPIView.as_view()),
     # ^^ FIXME: Separate urls along all apps
+    path('api-auth/google-login/', GoogleView.as_view()),
 
     # the 'api-root' from django rest-frameworks default router
     # http://www.django-rest-framework.org/api-guide/routers/#defaultrouter

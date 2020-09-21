@@ -31,6 +31,8 @@ class Common(Configuration):
 
 
         # Third party apps
+        'corsheaders',
+        'channels',
         'rest_framework',            # utilities for rest apis
         'rest_framework.authtoken',  # token authentication
         'django_filters',            # for filtering rest endpoints
@@ -39,12 +41,15 @@ class Common(Configuration):
         # Your apps
         'sicoin.users',
         'sicoin.domain_config',
+        'chat',
         'drf_yasg',
 
     )
 
     # https://docs.djangoproject.com/en/2.0/topics/http/middleware/
     MIDDLEWARE = (
+        'corsheaders.middleware.CorsMiddleware',
+        'django.middleware.common.CommonMiddleware',
         'django.middleware.security.SecurityMiddleware',
         'whitenoise.middleware.WhiteNoiseMiddleware',
         'django.contrib.sessions.middleware.SessionMiddleware',
@@ -57,11 +62,30 @@ class Common(Configuration):
 
     STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-    ALLOWED_HOSTS = ["*"]
+    # TODO: localhost must not be present on production builds
+    ALLOWED_HOSTS = ["127.0.0.1", "localhost", ".herokuapp.com"]
+    CORS_ORIGIN_ALLOW_ALL = False
+    CORS_ALLOWED_ORIGINS = [
+        "http://localhost:8080",
+        "http://localhost:8081",
+        "https://tesis-cabal-cugno-moreyra.onrender.com",
+    ]
+    CORS_ALLOWED_ORIGIN_REGEXES = [
+        r"^https://tesis-cabal-cugno-moreyra-pr-\d+\.onrender\.com$",
+    ]
     ROOT_URLCONF = 'sicoin.urls'
     SECRET_KEY = env('DJANGO_SECRET_KEY')
     FIELD_ENCRYPTION_KEYS = [env('FIELD_ENCRYPTION_KEY')]
     WSGI_APPLICATION = 'sicoin.wsgi.application'
+    ASGI_APPLICATION = "sicoin.routing.application"
+    CHANNEL_LAYERS = {
+        'default': {
+            'BACKEND': 'channels_redis.core.RedisChannelLayer',
+            'CONFIG': {
+                "hosts": [env('REDIS_URL')],
+            },
+        },
+    }
 
     # Email
     EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
