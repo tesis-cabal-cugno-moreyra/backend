@@ -3,10 +3,13 @@ pytz==2020.1
 Django==3.0.8
 django-configurations==2.2
 gunicorn==20.0.4
-newrelic==5.14.1.144
+daphne
+channels
+channels_redis
 whitenoise
 drf-yasg
 dj-rest-auth
+django-cors-headers
 djangorestframework-simplejwt
 django-redis==4.5.0
 
