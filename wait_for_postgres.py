@@ -1,15 +1,18 @@
-import os
 import logging
 from time import time, sleep
 import psycopg2
-check_timeout = os.getenv("POSTGRES_CHECK_TIMEOUT", 30)
-check_interval = os.getenv("POSTGRES_CHECK_INTERVAL", 1)
+import environ
+
+env = environ.Env()
+environ.Env.read_env()
+check_timeout = env("POSTGRES_CHECK_TIMEOUT", default=30)
+check_interval = env("POSTGRES_CHECK_INTERVAL", default=1)
 interval_unit = "second" if check_interval == 1 else "seconds"
 config = {
-    "dbname": os.getenv("POSTGRES_DB", "postgres"),
-    "user": os.getenv("POSTGRES_USER", "postgres"),
-    "password": os.getenv("POSTGRES_PASSWORD", ""),
-    "host": os.getenv("DATABASE_URL", "postgres")
+    "dbname": env("POSTGRES_DB", default="postgres"),
+    "user": env("POSTGRES_USER", default="postgres"),
+    "password": env("POSTGRES_PASSWORD", default=""),
+    "host": env("DATABASE_URL", default="postgres")
 }
 
 start_time = time()

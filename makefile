@@ -19,6 +19,18 @@ container-ssh:
 docker-compose-up-d:
 	docker-compose --env-file /dev/null -f docker-compose.yml up -d
 
+docker-compose-build:
+	docker-compose --env-file /dev/null -f docker-compose.yml build
+
+docker-compose-get-web-output:
+	docker-compose logs -f web
+
+docker-compose-get-all-containers-output:
+	docker-compose logs -f web postgres
+
+docker-compose-web-change-files-ownership:
+	docker-compose exec web chown 1000:1000 -R .
+
 heroku-ssh:
 	heroku run sh -a $(HEROKU_APP)
 
@@ -27,12 +39,16 @@ heroku-logs:
 
 django-makemigrations:
 	docker-compose exec web python manage.py makemigrations
+	make docker-compose-web-change-files-ownership
 
 django-migrate:
 	docker-compose exec web python manage.py migrate
 
 django-test:
 	docker-compose exec -T web python manage.py test
+
+django-flush:
+	docker-compose exec -T web python manage.py flush
 
 python-lint:
 	docker-compose exec -T web flake8

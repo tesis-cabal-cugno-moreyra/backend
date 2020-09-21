@@ -7,8 +7,11 @@ newrelic==5.14.1.144
 whitenoise
 drf-yasg
 dj-rest-auth
+pycryptodome==3.9.8
+django-searchable-encrypted-fields==0.1.6
 djangorestframework-simplejwt
 django-redis==4.5.0
+django-environ==0.4.5
 
 # For the persistence stores
 psycopg2-binary==2.8.5
