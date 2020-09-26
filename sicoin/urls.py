@@ -6,7 +6,9 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.views.generic.base import RedirectView
 from rest_framework.routers import DefaultRouter
-from .users.views import UserViewSet, UserCreateViewSet, HelloView, GoogleView
+from .users.views import UserViewSet, UserCreateViewSet, HelloView, GoogleView, AdminProfileViewSet, \
+    AdminProfileCreateViewSet, SupervisorProfileCreateViewSet, SupervisorProfileViewSet, \
+    ResourceProfileCreateViewSet, ResourceProfileViewSet
 from .domain_config.views import DomainConfigAPIView, GenerateNewDomainCodeAPIView,\
     GetCurrentDomainCodeAPIView
 from rest_framework import permissions
@@ -16,6 +18,12 @@ from drf_yasg import openapi
 router = DefaultRouter()
 router.register(r'users', UserViewSet)
 router.register(r'users', UserCreateViewSet)
+router.register(r'admins', AdminProfileViewSet)
+router.register(r'admins', AdminProfileCreateViewSet)
+router.register(r'supervisors', SupervisorProfileCreateViewSet)
+router.register(r'supervisors', SupervisorProfileViewSet)
+router.register(r'resources', ResourceProfileCreateViewSet)
+router.register(r'resources', ResourceProfileViewSet)
 
 schema_view = get_schema_view(
     openapi.Info(

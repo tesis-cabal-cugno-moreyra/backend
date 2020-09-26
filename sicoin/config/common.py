@@ -2,7 +2,6 @@ import os
 from os.path import join
 import environ
 from distutils.util import strtobool
-from datetime import timedelta
 import dj_database_url
 from configurations import Configuration
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -245,6 +244,11 @@ class Common(Configuration):
     }
 
     REST_USE_JWT = True
+
+    REST_AUTH_SERIALIZERS = {
+        'JWT_TOKEN_CLAIMS_SERIALIZER': 'sicoin.users.serializers.CustomTokenObtainPairSerializer',
+    }
+
     JWT_AUTH_COOKIE = 'jwt-auth'
 
     SWAGGER_SETTINGS = {
@@ -260,32 +264,6 @@ class Common(Configuration):
             }
         },
         'DEFAULT_API_URL': env('DEFAULT_API_URL', default=None)
-    }
-
-    SIMPLE_JWT = {
-        'ACCESS_TOKEN_LIFETIME': timedelta(minutes=550),
-        'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
-        'ROTATE_REFRESH_TOKENS': False,
-        'BLACKLIST_AFTER_ROTATION': True,
-
-        'ALGORITHM': 'HS256',
-        'SIGNING_KEY': env('DJANGO_SECRET_KEY'),
-        'VERIFYING_KEY': None,
-        'AUDIENCE': None,
-        'ISSUER': None,
-
-        'AUTH_HEADER_TYPES': 'Bearer',
-        'USER_ID_FIELD': 'id',
-        'USER_ID_CLAIM': 'user_id',
-
-        'AUTH_TOKEN_CLASSES': ('rest_framework_simplejwt.tokens.AccessToken',),
-        'TOKEN_TYPE_CLAIM': 'token_type',
-
-        'JTI_CLAIM': 'jti',
-
-        'SLIDING_TOKEN_REFRESH_EXP_CLAIM': 'refresh_exp',
-        'SLIDING_TOKEN_LIFETIME': timedelta(minutes=5),
-        'SLIDING_TOKEN_REFRESH_LIFETIME': timedelta(days=1),
     }
 
     CACHES = {
