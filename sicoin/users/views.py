@@ -8,9 +8,10 @@ from rest_framework.utils import json
 from rest_framework.views import APIView
 from rest_framework_simplejwt.tokens import RefreshToken
 
-from .models import User
+from .models import User, AdminProfile, ResourceProfile, SupervisorProfile
 from .permissions import IsUserOrReadOnly
-from .serializers import CreateUserSerializer, UserSerializer
+from .serializers import CreateUserSerializer, UserSerializer, AdminProfileSerializer, ResourceProfileSerializer, \
+    SupervisorProfileSerializer, CreateAdminProfileSerializer
 from django.core.cache import cache
 
 
@@ -26,6 +27,7 @@ class UserViewSet(mixins.RetrieveModelMixin,
 
 
 class UserCreateViewSet(mixins.CreateModelMixin,
+                        mixins.ListModelMixin,
                         viewsets.GenericViewSet):
     """
     Creates user accounts
@@ -35,11 +37,80 @@ class UserCreateViewSet(mixins.CreateModelMixin,
     permission_classes = (AllowAny,)
 
 
+class AdminProfileViewSet(mixins.RetrieveModelMixin,
+                          mixins.UpdateModelMixin,
+                          mixins.DestroyModelMixin,
+                          viewsets.GenericViewSet):
+    """
+    Updates and retrieves user accounts
+    """
+    queryset = AdminProfile.objects.all()
+    serializer_class = AdminProfileSerializer
+    permission_classes = (AllowAny,)
+
+
+class AdminProfileCreateViewSet(mixins.CreateModelMixin,
+                                mixins.ListModelMixin,
+                                viewsets.GenericViewSet):
+    """
+    Creates user accounts
+    """
+    queryset = AdminProfile.objects.all()
+    serializer_class = CreateAdminProfileSerializer
+    permission_classes = (AllowAny,)
+
+
+class SupervisorProfileViewSet(mixins.RetrieveModelMixin,
+                               mixins.UpdateModelMixin,
+                               mixins.DestroyModelMixin,
+                               viewsets.GenericViewSet):
+    """
+    Updates and retrieves user accounts
+    """
+    queryset = SupervisorProfile.objects.all()
+    serializer_class = SupervisorProfileSerializer
+    permission_classes = (AllowAny,)
+
+
+class SupervisorProfileCreateViewSet(mixins.CreateModelMixin,
+                                     mixins.ListModelMixin,
+                                     viewsets.GenericViewSet):
+    """
+    Creates user accounts
+    """
+    queryset = SupervisorProfile.objects.all()
+    serializer_class = SupervisorProfileSerializer
+    permission_classes = (AllowAny,)
+
+
+class ResourceProfileViewSet(mixins.RetrieveModelMixin,
+                             mixins.UpdateModelMixin,
+                             mixins.DestroyModelMixin,
+                             viewsets.GenericViewSet):
+    """
+    Updates and retrieves user accounts
+    """
+    queryset = ResourceProfile.objects.all()
+    serializer_class = ResourceProfileSerializer
+    permission_classes = (AllowAny,)
+
+
+class ResourceProfileCreateViewSet(mixins.CreateModelMixin,
+                                   mixins.ListModelMixin,
+                                   viewsets.GenericViewSet):
+    """
+    Creates user accounts
+    """
+    queryset = ResourceProfile.objects.all()
+    serializer_class = ResourceProfileSerializer
+    permission_classes = (AllowAny,)
+
+
 class HelloView(APIView):
     permission_classes = (AllowAny,)
 
     def get(self, request):
-        cache.set("key", "valueASD", timeout=None)
+        cache.set("key", "Hello from redis cache!", timeout=None)
         content = {'message': cache.get("key")}
         return HttpResponse(json.dumps(content))
 
