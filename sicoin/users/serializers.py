@@ -1,6 +1,5 @@
 from django.core.exceptions import ObjectDoesNotExist
 from rest_framework import serializers
-from rest_framework.fields import UUIDField
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
 from .models import User, AdminProfile, SupervisorProfile, ResourceProfile
@@ -104,4 +103,3 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
         token['roles'] = roles
 
         return token
-

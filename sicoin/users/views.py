@@ -10,8 +10,8 @@ from rest_framework_simplejwt.tokens import RefreshToken
 
 from .models import User, AdminProfile, ResourceProfile, SupervisorProfile
 from .permissions import IsUserOrReadOnly
-from .serializers import CreateUserSerializer, UserSerializer, AdminProfileSerializer, ResourceProfileSerializer, \
-    SupervisorProfileSerializer, CreateAdminProfileSerializer
+from .serializers import CreateUserSerializer, UserSerializer, AdminProfileSerializer, \
+    ResourceProfileSerializer, SupervisorProfileSerializer, CreateAdminProfileSerializer
 from django.core.cache import cache
 
 
