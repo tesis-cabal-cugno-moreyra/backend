@@ -3,15 +3,18 @@ pytz==2020.1
 Django==3.0.8
 django-configurations==2.2
 gunicorn==20.0.4
-daphne
-channels
-channels_redis
-whitenoise
-drf-yasg
-dj-rest-auth
-django-cors-headers
-djangorestframework-simplejwt
+daphne==2.5.0
+channels==2.4.0
+channels_redis==3.1.0
+whitenoise==5.2.0
+drf-yasg==1.17.1
+dj-rest-auth==1.1.0
+django-cors-headers==3.5.0
+pycryptodome==3.9.8
+django-searchable-encrypted-fields==0.1.6
+djangorestframework-simplejwt==4.4.0
 django-redis==4.5.0
+django-environ==0.4.5
 
 # For the persistence stores
 psycopg2-binary==2.8.5

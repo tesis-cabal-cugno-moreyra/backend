@@ -16,14 +16,6 @@ services:
       SicoinNetwork:
         ipv4_address: 172.3.0.2
   web:
-    environment:
-      - DJANGO_SECRET_KEY=local
-      - POSTGRES_USER=root
-      - POSTGRES_PASSWORD=password
-      - POSTGRES_DB=db_dev
-      - POSTGRES_CONN=postgresql://root:password@postgres:5432/db_dev
-      - REDIS_URL=redis://:sOmE_sEcUrE_pAsS@redis:6379/1
-      - REDIS_PASSWD=sOmE_sEcUrE_pAsS
     image: web
     build: ./
     command: >

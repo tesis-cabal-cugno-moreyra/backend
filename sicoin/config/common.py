@@ -1,10 +1,22 @@
 import os
 from os.path import join
+import environ
 from distutils.util import strtobool
 from datetime import timedelta
 import dj_database_url
 from configurations import Configuration
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+env = environ.Env(
+    # set casting, default value
+    DEBUG=(bool, False)
+)
+base = environ.Path(__file__) - 3  # Two folders back -> root of project
+# reading .env file
+try:
+    environ.Env.read_env(env_file=base('.env'))
+except FileNotFoundError:
+    pass  # Log here!
 
 
 class Common(Configuration):
@@ -24,9 +36,11 @@ class Common(Configuration):
         'rest_framework',            # utilities for rest apis
         'rest_framework.authtoken',  # token authentication
         'django_filters',            # for filtering rest endpoints
+        'encrypted_fields',
 
         # Your apps
         'sicoin.users',
+        'sicoin.domain_config',
         'chat',
         'drf_yasg',
 
@@ -60,14 +74,15 @@ class Common(Configuration):
         r"^https://tesis-cabal-cugno-moreyra-pr-\d+\.onrender\.com$",
     ]
     ROOT_URLCONF = 'sicoin.urls'
-    SECRET_KEY = os.getenv('DJANGO_SECRET_KEY')
+    SECRET_KEY = env('DJANGO_SECRET_KEY')
+    FIELD_ENCRYPTION_KEYS = [env('FIELD_ENCRYPTION_KEY')]
     WSGI_APPLICATION = 'sicoin.wsgi.application'
     ASGI_APPLICATION = "sicoin.routing.application"
     CHANNEL_LAYERS = {
         'default': {
             'BACKEND': 'channels_redis.core.RedisChannelLayer',
             'CONFIG': {
-                "hosts": [os.getenv('REDIS_URL')],
+                "hosts": [env('REDIS_URL')],
             },
         },
     }
@@ -82,8 +97,8 @@ class Common(Configuration):
     # Postgres
     DATABASES = {
         'default': dj_database_url.config(
-            default=os.getenv('POSTGRES_CONN', 'postgresql://root:password@postgres:5432/db_dev'),
-            conn_max_age=int(os.getenv('POSTGRES_CONN_MAX_AGE', 600))
+            default=env('POSTGRES_CONN', default='postgresql://root:password@postgres:5432/db_dev'),
+            conn_max_age=int(env('POSTGRES_CONN_MAX_AGE', default=600))
         )
     }
 
@@ -130,7 +145,7 @@ class Common(Configuration):
 
     # Set DEBUG to False as a default for safety
     # https://docs.djangoproject.com/en/dev/ref/settings/#debug
-    DEBUG = strtobool(os.getenv('DJANGO_DEBUG', 'no'))
+    DEBUG = strtobool(env('DJANGO_DEBUG', default='no'))
 
     # Password Validation
     # https://docs.djangoproject.com/en/2.0/topics/auth/passwords/#module-django.contrib.auth.password_validation
@@ -214,7 +229,7 @@ class Common(Configuration):
     # Django Rest Framework
     REST_FRAMEWORK = {
         'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
-        'PAGE_SIZE': int(os.getenv('DJANGO_PAGINATION_LIMIT', 10)),
+        'PAGE_SIZE': int(env('DJANGO_PAGINATION_LIMIT', default=10)),
         'DATETIME_FORMAT': '%Y-%m-%dT%H:%M:%S%z',
         'DEFAULT_RENDERER_CLASSES': (
             'rest_framework.renderers.JSONRenderer',
@@ -244,7 +259,7 @@ class Common(Configuration):
                 'schemeName': 'Bearer'
             }
         },
-        'DEFAULT_API_URL': os.getenv('DEFAULT_API_URL', None)
+        'DEFAULT_API_URL': env('DEFAULT_API_URL', default=None)
     }
 
     SIMPLE_JWT = {
@@ -254,7 +269,7 @@ class Common(Configuration):
         'BLACKLIST_AFTER_ROTATION': True,
 
         'ALGORITHM': 'HS256',
-        'SIGNING_KEY': os.getenv('DJANGO_SECRET_KEY'),
+        'SIGNING_KEY': env('DJANGO_SECRET_KEY'),
         'VERIFYING_KEY': None,
         'AUDIENCE': None,
         'ISSUER': None,
@@ -276,10 +291,10 @@ class Common(Configuration):
     CACHES = {
         "default": {
             "BACKEND": "django_redis.cache.RedisCache",
-            "LOCATION": os.getenv('REDIS_URL'),
+            "LOCATION": env('REDIS_URL'),
             "OPTIONS": {
                 "CLIENT_CLASS": "django_redis.client.DefaultClient",
-                "PASSWORD": os.getenv('REDIS_PASSWD')
+                "PASSWORD": env('REDIS_PASSWD')
             }
         }
     }
