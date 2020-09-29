@@ -6,7 +6,11 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.views.generic.base import RedirectView
 from rest_framework.routers import DefaultRouter
-from .users.views import UserViewSet, UserCreateViewSet, HelloView
+from .users.views import UserViewSet, UserCreateViewSet, HelloView, GoogleView, AdminProfileViewSet, \
+    AdminProfileCreateViewSet, SupervisorProfileCreateViewSet, SupervisorProfileViewSet, \
+    ResourceProfileCreateViewSet, ResourceProfileViewSet
+from .domain_config.views import DomainConfigAPIView, GenerateNewDomainCodeAPIView,\
+    GetCurrentDomainCodeAPIView
 from rest_framework import permissions
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
@@ -14,6 +18,12 @@ from drf_yasg import openapi
 router = DefaultRouter()
 router.register(r'users', UserViewSet)
 router.register(r'users', UserCreateViewSet)
+router.register(r'admins', AdminProfileViewSet)
+router.register(r'admins', AdminProfileCreateViewSet)
+router.register(r'supervisors', SupervisorProfileCreateViewSet)
+router.register(r'supervisors', SupervisorProfileViewSet)
+router.register(r'resources', ResourceProfileCreateViewSet)
+router.register(r'resources', ResourceProfileViewSet)
 
 schema_view = get_schema_view(
     openapi.Info(
@@ -30,11 +40,19 @@ schema_view = get_schema_view(
 )
 
 urlpatterns = [
+    path('chat/', include('chat.urls')),
     path('admin/', admin.site.urls),
     path('api/v1/', include(router.urls)),
+    path('api/v1/domain-config/', DomainConfigAPIView.as_view()),
+    path('api/v1/domain-config/renew-domain-code/', GenerateNewDomainCodeAPIView.as_view()),
+    path('api/v1/domain-config/domain-code/', GetCurrentDomainCodeAPIView.as_view()),
+
     re_path(r'^rest-auth/', include('dj_rest_auth.urls')),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     path('hello/', HelloView.as_view()),
+
+    # ^^ FIXME: Separate urls along all apps
+    path('api-auth/google-login/', GoogleView.as_view()),
 
     # the 'api-root' from django rest-frameworks default router
     # http://www.django-rest-framework.org/api-guide/routers/#defaultrouter

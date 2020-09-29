@@ -27,4 +27,4 @@ WORKDIR code
 EXPOSE 8000
 
 # Run the production server
-CMD ./manage.py collectstatic && newrelic-admin run-program gunicorn --bind 0.0.0.0:$PORT --access-logfile - sicoin.wsgi:application
+CMD ./manage.py collectstatic --noinput && daphne sicoin.asgi:application --port $PORT --bind 0.0.0.0

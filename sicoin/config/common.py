@@ -1,10 +1,21 @@
 import os
 from os.path import join
+import environ
 from distutils.util import strtobool
-from datetime import timedelta
 import dj_database_url
 from configurations import Configuration
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+env = environ.Env(
+    # set casting, default value
+    DEBUG=(bool, False)
+)
+base = environ.Path(__file__) - 3  # Two folders back -> root of project
+# reading .env file
+try:
+    environ.Env.read_env(env_file=base('.env'))
+except FileNotFoundError:
+    pass  # Log here!
 
 
 class Common(Configuration):
@@ -19,18 +30,25 @@ class Common(Configuration):
 
 
         # Third party apps
+        'corsheaders',
+        'channels',
         'rest_framework',            # utilities for rest apis
         'rest_framework.authtoken',  # token authentication
         'django_filters',            # for filtering rest endpoints
+        'encrypted_fields',
 
         # Your apps
         'sicoin.users',
+        'sicoin.domain_config',
+        'chat',
         'drf_yasg',
 
     )
 
     # https://docs.djangoproject.com/en/2.0/topics/http/middleware/
     MIDDLEWARE = (
+        'corsheaders.middleware.CorsMiddleware',
+        'django.middleware.common.CommonMiddleware',
         'django.middleware.security.SecurityMiddleware',
         'whitenoise.middleware.WhiteNoiseMiddleware',
         'django.contrib.sessions.middleware.SessionMiddleware',
@@ -43,10 +61,30 @@ class Common(Configuration):
 
     STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-    ALLOWED_HOSTS = ["*"]
+    # TODO: localhost must not be present on production builds
+    ALLOWED_HOSTS = ["127.0.0.1", "localhost", ".herokuapp.com"]
+    CORS_ORIGIN_ALLOW_ALL = False
+    CORS_ALLOWED_ORIGINS = [
+        "http://localhost:8080",
+        "http://localhost:8081",
+        "https://tesis-cabal-cugno-moreyra.onrender.com",
+    ]
+    CORS_ALLOWED_ORIGIN_REGEXES = [
+        r"^https://tesis-cabal-cugno-moreyra-pr-\d+\.onrender\.com$",
+    ]
     ROOT_URLCONF = 'sicoin.urls'
-    SECRET_KEY = os.getenv('DJANGO_SECRET_KEY')
+    SECRET_KEY = env('DJANGO_SECRET_KEY')
+    FIELD_ENCRYPTION_KEYS = [env('FIELD_ENCRYPTION_KEY')]
     WSGI_APPLICATION = 'sicoin.wsgi.application'
+    ASGI_APPLICATION = "sicoin.routing.application"
+    CHANNEL_LAYERS = {
+        'default': {
+            'BACKEND': 'channels_redis.core.RedisChannelLayer',
+            'CONFIG': {
+                "hosts": [env('REDIS_URL')],
+            },
+        },
+    }
 
     # Email
     EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
@@ -58,8 +96,8 @@ class Common(Configuration):
     # Postgres
     DATABASES = {
         'default': dj_database_url.config(
-            default=os.getenv('POSTGRES_CONN', 'postgresql://root:password@postgres:5432/db_dev'),
-            conn_max_age=int(os.getenv('POSTGRES_CONN_MAX_AGE', 600))
+            default=env('POSTGRES_CONN', default='postgresql://root:password@postgres:5432/db_dev'),
+            conn_max_age=int(env('POSTGRES_CONN_MAX_AGE', default=600))
         )
     }
 
@@ -106,7 +144,7 @@ class Common(Configuration):
 
     # Set DEBUG to False as a default for safety
     # https://docs.djangoproject.com/en/dev/ref/settings/#debug
-    DEBUG = strtobool(os.getenv('DJANGO_DEBUG', 'no'))
+    DEBUG = strtobool(env('DJANGO_DEBUG', default='no'))
 
     # Password Validation
     # https://docs.djangoproject.com/en/2.0/topics/auth/passwords/#module-django.contrib.auth.password_validation
@@ -190,7 +228,7 @@ class Common(Configuration):
     # Django Rest Framework
     REST_FRAMEWORK = {
         'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
-        'PAGE_SIZE': int(os.getenv('DJANGO_PAGINATION_LIMIT', 10)),
+        'PAGE_SIZE': int(env('DJANGO_PAGINATION_LIMIT', default=10)),
         'DATETIME_FORMAT': '%Y-%m-%dT%H:%M:%S%z',
         'DEFAULT_RENDERER_CLASSES': (
             'rest_framework.renderers.JSONRenderer',
@@ -206,6 +244,11 @@ class Common(Configuration):
     }
 
     REST_USE_JWT = True
+
+    REST_AUTH_SERIALIZERS = {
+        'JWT_TOKEN_CLAIMS_SERIALIZER': 'sicoin.users.serializers.CustomTokenObtainPairSerializer',
+    }
+
     JWT_AUTH_COOKIE = 'jwt-auth'
 
     SWAGGER_SETTINGS = {
@@ -220,42 +263,16 @@ class Common(Configuration):
                 'schemeName': 'Bearer'
             }
         },
-        'DEFAULT_API_URL': os.getenv('DEFAULT_API_URL', None)
-    }
-
-    SIMPLE_JWT = {
-        'ACCESS_TOKEN_LIFETIME': timedelta(minutes=550),
-        'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
-        'ROTATE_REFRESH_TOKENS': False,
-        'BLACKLIST_AFTER_ROTATION': True,
-
-        'ALGORITHM': 'HS256',
-        'SIGNING_KEY': os.getenv('DJANGO_SECRET_KEY'),
-        'VERIFYING_KEY': None,
-        'AUDIENCE': None,
-        'ISSUER': None,
-
-        'AUTH_HEADER_TYPES': 'Bearer',
-        'USER_ID_FIELD': 'id',
-        'USER_ID_CLAIM': 'user_id',
-
-        'AUTH_TOKEN_CLASSES': ('rest_framework_simplejwt.tokens.AccessToken',),
-        'TOKEN_TYPE_CLAIM': 'token_type',
-
-        'JTI_CLAIM': 'jti',
-
-        'SLIDING_TOKEN_REFRESH_EXP_CLAIM': 'refresh_exp',
-        'SLIDING_TOKEN_LIFETIME': timedelta(minutes=5),
-        'SLIDING_TOKEN_REFRESH_LIFETIME': timedelta(days=1),
+        'DEFAULT_API_URL': env('DEFAULT_API_URL', default=None)
     }
 
     CACHES = {
         "default": {
             "BACKEND": "django_redis.cache.RedisCache",
-            "LOCATION": os.getenv('REDIS_URL'),
+            "LOCATION": env('REDIS_URL'),
             "OPTIONS": {
                 "CLIENT_CLASS": "django_redis.client.DefaultClient",
-                "PASSWORD": os.getenv('REDIS_PASSWD')
+                "PASSWORD": env('REDIS_PASSWD')
             }
         }
     }
