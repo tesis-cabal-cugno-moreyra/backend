@@ -2,7 +2,8 @@ import requests
 from django.contrib.auth.base_user import BaseUserManager
 from django.contrib.auth.hashers import make_password
 from django.http import HttpResponse
-from rest_framework import viewsets, mixins
+from drf_yasg.utils import swagger_auto_schema
+from rest_framework import viewsets, mixins, status
 from rest_framework.permissions import AllowAny
 from rest_framework.utils import json
 from rest_framework.views import APIView
@@ -113,6 +114,34 @@ class HelloView(APIView):
         cache.set("key", "Hello from redis cache!", timeout=None)
         content = {'message': cache.get("key")}
         return HttpResponse(json.dumps(content))
+
+
+@swagger_auto_schema(operation_description="Enable user, Only Admin user",
+                     request_body={'user_id': 'USER_ID'},
+                     responses={200: 'Domain successfully created',
+                                400: 'Domain already created'})
+class EnableUserView(APIView):
+    permission_classes = (AllowAny,)
+
+    def post(self, request):
+        user_id = request.data.get('user_id')
+
+        if not user_id:
+            return HttpResponse(json.dumps({'message': 'User id invalid or empty'}),
+                                status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            user = User.objects.get(id=user_id)
+        except User.DoesNotExist:
+            return HttpResponse(json.dumps({'message': 'Error changing user status'}),
+                                status=status.HTTP_400_BAD_REQUEST)
+
+        if user.is_active:
+            return HttpResponse(json.dumps({'message': 'Error changing user status'}),
+                                status=status.HTTP_400_BAD_REQUEST)
+
+        user.is_active = True
+        return HttpResponse(json.dumps({'message': 'User activated successfully'}))
 
 
 class GoogleView(APIView):

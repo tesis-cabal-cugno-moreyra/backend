@@ -20,12 +20,13 @@ class CreateUserSerializer(serializers.ModelSerializer):
         # call create_user on user object. Without this
         # the password will be stored in plain text.
         user = User.objects.create_user(**validated_data)
+        user.is_active = False
         return user
 
     class Meta:
         model = User
-        fields = ('id', 'username', 'password', 'first_name', 'last_name', 'email', 'auth_token',)
-        read_only_fields = ('auth_token',)
+        fields = ('id', 'username', 'password', 'first_name', 'last_name', 'email', 'auth_token', 'is_active')
+        read_only_fields = ('auth_token', 'is_active')
         extra_kwargs = {'password': {'write_only': True}}
 
 
