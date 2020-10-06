@@ -5,6 +5,7 @@ from django.http import HttpResponse
 from drf_yasg.utils import swagger_auto_schema
 from rest_framework import viewsets, mixins, status
 from rest_framework.permissions import AllowAny
+from rest_framework.response import Response
 from rest_framework.utils import json
 from rest_framework.views import APIView
 from rest_framework_simplejwt.tokens import RefreshToken
@@ -12,39 +13,42 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from .models import User, AdminProfile, ResourceProfile, SupervisorProfile
 from .permissions import IsUserOrReadOnly
 from .serializers import CreateUserSerializer, UserSerializer, AdminProfileSerializer, \
-    ResourceProfileSerializer, SupervisorProfileSerializer, CreateAdminProfileSerializer
+    ResourceProfileSerializer, CreateUpdateSupervisorProfileSerializer, CreateAdminProfileSerializer, \
+    ListRetrieveSupervisorProfileSerializer
 from django.core.cache import cache
 
 
-class UserViewSet(mixins.RetrieveModelMixin,
-                  mixins.UpdateModelMixin,
-                  viewsets.GenericViewSet):
-    """
-    Updates and retrieves user accounts
-    """
+class UserRetrieveUpdateViewSet(mixins.RetrieveModelMixin,
+                                mixins.UpdateModelMixin,
+                                viewsets.GenericViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
     permission_classes = (IsUserOrReadOnly,)
 
 
-class UserCreateViewSet(mixins.CreateModelMixin,
-                        mixins.ListModelMixin,
-                        viewsets.GenericViewSet):
-    """
-    Creates user accounts
-    """
+class UserCreateListViewSet(mixins.CreateModelMixin,
+                            mixins.ListModelMixin,
+                            viewsets.GenericViewSet):
     queryset = User.objects.all()
     serializer_class = CreateUserSerializer
     permission_classes = (AllowAny,)
+
+    def list(self, request, *args, **kwargs):
+        queryset = self.filter_queryset(self.get_queryset())
+
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = UserSerializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+
+        serializer = UserSerializer(queryset, many=True)
+        return Response(serializer.data)
 
 
 class AdminProfileViewSet(mixins.RetrieveModelMixin,
                           mixins.UpdateModelMixin,
                           mixins.DestroyModelMixin,
                           viewsets.GenericViewSet):
-    """
-    Updates and retrieves user accounts
-    """
     queryset = AdminProfile.objects.all()
     serializer_class = AdminProfileSerializer
     permission_classes = (AllowAny,)
@@ -53,58 +57,74 @@ class AdminProfileViewSet(mixins.RetrieveModelMixin,
 class AdminProfileCreateViewSet(mixins.CreateModelMixin,
                                 mixins.ListModelMixin,
                                 viewsets.GenericViewSet):
-    """
-    Creates user accounts
-    """
     queryset = AdminProfile.objects.all()
     serializer_class = CreateAdminProfileSerializer
     permission_classes = (AllowAny,)
+
+    # def list(self, request, *args, **kwargs):
+    #     queryset = self.filter_queryset(self.get_queryset())
+    #
+    #     page = self.paginate_queryset(queryset)
+    #     if page is not None:
+    #         serializer = ListRetrieveAdminProfileSerializer(page, many=True)
+    #         return self.get_paginated_response(serializer.data)
+    #
+    #     serializer = ListRetrieveAdminProfileSerializer(queryset, many=True)
+    #     return Response(serializer.data)
 
 
 class SupervisorProfileViewSet(mixins.RetrieveModelMixin,
                                mixins.UpdateModelMixin,
                                mixins.DestroyModelMixin,
                                viewsets.GenericViewSet):
-    """
-    Updates and retrieves user accounts
-    """
     queryset = SupervisorProfile.objects.all()
-    serializer_class = SupervisorProfileSerializer
+    serializer_class = ListRetrieveSupervisorProfileSerializer
     permission_classes = (AllowAny,)
 
 
-class SupervisorProfileCreateViewSet(mixins.CreateModelMixin,
-                                     mixins.ListModelMixin,
-                                     viewsets.GenericViewSet):
-    """
-    Creates user accounts
-    """
+class SupervisorProfileCreateUpdateListViewSet(mixins.CreateModelMixin,
+                                               viewsets.GenericViewSet):
     queryset = SupervisorProfile.objects.all()
-    serializer_class = SupervisorProfileSerializer
+    serializer_class = CreateUpdateSupervisorProfileSerializer
     permission_classes = (AllowAny,)
 
+    def list(self, request, *args, **kwargs):
+        queryset = self.filter_queryset(self.get_queryset())
 
-class ResourceProfileViewSet(mixins.RetrieveModelMixin,
-                             mixins.UpdateModelMixin,
-                             mixins.DestroyModelMixin,
-                             viewsets.GenericViewSet):
-    """
-    Updates and retrieves user accounts
-    """
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = ListRetrieveSupervisorProfileSerializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+
+        serializer = ListRetrieveSupervisorProfileSerializer(queryset, many=True)
+        return Response(serializer.data)
+
+
+class ResourceProfileRetrieveDestroyViewSet(mixins.RetrieveModelMixin,
+                                            mixins.DestroyModelMixin,
+                                            viewsets.GenericViewSet):
     queryset = ResourceProfile.objects.all()
     serializer_class = ResourceProfileSerializer
     permission_classes = (AllowAny,)
 
 
-class ResourceProfileCreateViewSet(mixins.CreateModelMixin,
-                                   mixins.ListModelMixin,
-                                   viewsets.GenericViewSet):
-    """
-    Creates user accounts
-    """
+class ResourceProfileCreateUpdateViewSet(mixins.CreateModelMixin,
+                                         mixins.UpdateModelMixin,
+                                         viewsets.GenericViewSet):
     queryset = ResourceProfile.objects.all()
     serializer_class = ResourceProfileSerializer
     permission_classes = (AllowAny,)
+
+    def list(self, request, *args, **kwargs):
+        queryset = self.filter_queryset(self.get_queryset())
+
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = ListRetrieveSupervisorProfileSerializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+
+        serializer = ListRetrieveSupervisorProfileSerializer(queryset, many=True)
+        return Response(serializer.data)
 
 
 class HelloView(APIView):
