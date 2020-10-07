@@ -46,8 +46,8 @@ class CreateUserSerializer(serializers.ModelSerializer):
         extra_kwargs = {'password': {'write_only': True}}
 
 
-class AdminProfileSerializer(serializers.ModelSerializer):
-    user = UserSerializer()
+class ListRetrieveAdminProfileSerializer(serializers.ModelSerializer):
+    user = CreateUserSerializer()
 
     class Meta:
         model = AdminProfile
@@ -91,6 +91,12 @@ class CreateUpdateAdminProfileSerializer(serializers.Serializer):
         )
         admin_profile.save()
         return admin_profile
+
+    def update(self, instance, validated_data):
+        instance.user_id = validated_data.get('user')
+        instance.domain = DomainConfig.objects.get(domain_name=validated_data.get('domain_name'))
+        instance.save()
+        return instance
 
     def to_representation(self, instance: AdminProfile):
         return {
@@ -150,6 +156,14 @@ class CreateUpdateSupervisorProfileSerializer(serializers.Serializer):
         supervisor_profile.save()
         return supervisor_profile
 
+    def update(self, instance, validated_data):
+        instance.user_id = validated_data.get('user')
+        instance.domain = DomainConfig.objects.get(domain_name=validated_data.get('domain_name'))
+        instance.alias = SupervisorAlias.objects.get(alias__iexact=validated_data['alias'],
+                                                     domain_config__domain_name=validated_data['domain_name'])
+        instance.save()
+        return instance
+
     def to_representation(self, instance: SupervisorProfile):
         return {
             'id': instance.id,
@@ -169,27 +183,74 @@ class ListRetrieveSupervisorProfileSerializer(serializers.ModelSerializer):
         depth = 1
 
 
-class CreateResourceProfileSerializer(serializers.ModelSerializer):
-    domain = serializers.PrimaryKeyRelatedField(queryset=DomainConfig.objects.all(), read_only=False)
+class CreateUpdateResourceProfileSerializer(serializers.Serializer):
+    domain_code = serializers.CharField(max_length=255)
+    user = serializers.UUIDField(read_only=False)
+    domain_name = serializers.CharField(max_length=255)
     type = serializers.CharField(max_length=255)
 
+    def validate(self, data):
+        try:
+            user = User.objects.get(id=data.get('user'))
+        except User.DoesNotExist:
+            raise serializers.ValidationError(f"User with id {data.get('user')} does not exist")
+
+        try:
+            already_created_profile = ResourceProfile.objects.get(user=user)
+        except ResourceProfile.DoesNotExist:
+            already_created_profile = None
+        if already_created_profile:
+            raise serializers.ValidationError(f"ResourceProfile for user with id "
+                                              f"{data.get('user')} already exists")
+
+        try:
+            domain = DomainConfig.objects.get(domain_name=data.get('domain_name'))
+        except DomainConfig.DoesNotExist:
+            raise serializers.ValidationError(f"Domain {data.get('domain_name')} does not exists")
+
+        if domain.domain_code != data.get('domain_code'):
+            raise serializers.ValidationError("Invalid code")
+
+        try:
+            ResourceType.objects.get(name__iexact=data.get('type'),
+                                     domain_config__domain_name=data.get('domain_name'))
+        except ResourceType.DoesNotExist:
+            raise serializers.ValidationError(f"ResourceType {data.get('type')} for domain "
+                                              f"{data.get('domain_name')} does not exist")
+
+        return data
+
     def create(self, validated_data):
-        # This should receive domain resource type as name!
-        supervisor_profile = ResourceProfile(
-            user=validated_data['user'],
-            domain=validated_data['domain']
+        resource_profile = ResourceProfile(
+            user_id=validated_data.get('user'),
+            domain=DomainConfig.objects.get(domain_name=validated_data.get('domain_name')),
+            type=ResourceType.objects.get(name__iexact=validated_data['type'],
+                                          domain_config__domain_name=validated_data['domain_name'])
         )
-        supervisor_profile.alias = SupervisorAlias.objects.get(alias__iexact=validated_data['alias'],
-                                                               domain=validated_data['domain'])
-        supervisor_profile.save()
-        return supervisor_profile
+        resource_profile.save()
+        return resource_profile
+
+    def update(self, instance, validated_data):
+        instance.user_id = validated_data.get('user')
+        instance.domain = DomainConfig.objects.get(domain_name=validated_data.get('domain_name'))
+        instance.type = ResourceType.objects.get(name__iexact=validated_data['type'],
+                                                 domain_config__domain_name=validated_data['domain_name'])
+        instance.save()
+        return instance
+
+    def to_representation(self, instance: ResourceProfile):
+        return {
+            'id': instance.id,
+            'user': instance.user.id,
+            'domain': instance.domain.domain_name,
+            'type': instance.type.name
+        }
 
     class Meta:
-        model = ResourceProfile
-        fields = ('id', 'user', 'domain', 'type')
+        fields = ('id', 'user', 'domain_name', 'type', 'domain_code')
 
 
-class ResourceProfileSerializer(serializers.ModelSerializer):
+class ListRetrieveResourceProfileSerializer(serializers.ModelSerializer):
     domain = serializers.PrimaryKeyRelatedField(queryset=DomainConfig.objects.all(), read_only=False)
     type = serializers.PrimaryKeyRelatedField(queryset=ResourceType.objects.all(), read_only=False)
 
