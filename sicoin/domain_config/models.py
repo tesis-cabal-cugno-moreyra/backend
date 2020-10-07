@@ -13,7 +13,7 @@ class BaseModel(models.Model):
 
 class SupervisorAlias(BaseModel):
     alias = models.CharField(max_length=255)
-    domain_config = models.ForeignKey('DomainConfig', on_delete=models.CASCADE)
+    domain_config = models.ForeignKey('DomainConfig', on_delete=models.PROTECT)
 
     def __str__(self):
         return f"SupervisorAlias ({self.id}): alias: {self.alias}, domain: {self.domain_config.domain_name}"
@@ -27,7 +27,7 @@ class SupervisorAlias(BaseModel):
 
 class ResourceType(BaseModel):
     name = models.CharField(max_length=255)
-    domain_config = models.ForeignKey('DomainConfig', on_delete=models.CASCADE)
+    domain_config = models.ForeignKey('DomainConfig', on_delete=models.PROTECT)
 
     def __str__(self):
         return f"ResourceType ({self.id}): name: {self.name}, domain: {self.domain_config.domain_name}"
@@ -41,15 +41,24 @@ class ResourceType(BaseModel):
 
 class MapPointDescriptions(BaseModel):
     text = models.TextField()
-    incident_type = models.ForeignKey('IncidentType', on_delete=models.CASCADE)
+    incident_type = models.ForeignKey('IncidentType', on_delete=models.PROTECT)
+
+    @property
+    def domain_config(self):
+        return self.incident_type.domain_config
 
     def __str__(self):
         return f"MapPointDescriptions ({self.id}): incident type: {self.incident_type.name}"
 
 
 class IncidentTypeResources(BaseModel):
-    incident_type = models.ForeignKey('IncidentType', on_delete=models.CASCADE)
-    resource_type = models.ForeignKey('ResourceType', on_delete=models.CASCADE)
+    incident_type = models.ForeignKey('IncidentType', on_delete=models.PROTECT)
+    resource_type = models.ForeignKey('ResourceType', on_delete=models.PROTECT)
+
+    @property
+    def domain_config(self):
+        # FIXME: This is not necessarily true, as same domain_config should be validated
+        return self.resource_type.domain_config
 
     def __str__(self):
         return f"IncidentTypeResources ({self.id}): incident type: {self.incident_type.name}, " \
@@ -58,7 +67,11 @@ class IncidentTypeResources(BaseModel):
 
 class IncidentType(BaseModel):
     name = models.CharField(max_length=255)
-    abstraction = models.ForeignKey('IncidentAbstraction', on_delete=models.CASCADE)
+    abstraction = models.ForeignKey('IncidentAbstraction', on_delete=models.PROTECT)
+
+    @property
+    def domain_config(self):
+        return self.abstraction.domain_config
 
     def __str__(self):
         return f"IncidentType ({self.id}): name: {self.name}, abstraction: {self.abstraction.alias}"
@@ -66,7 +79,7 @@ class IncidentType(BaseModel):
 
 class IncidentAbstraction(BaseModel):
     alias = models.CharField(max_length=255)
-    domain_config = models.ForeignKey('DomainConfig', on_delete=models.CASCADE)
+    domain_config = models.ForeignKey('DomainConfig', on_delete=models.PROTECT)
 
     def __str__(self):
         return f"IncidentAbstraction ({self.id}): alias: {self.alias}, " \
@@ -84,6 +97,10 @@ class DomainConfig(BaseModel):
     admin_alias = models.CharField(max_length=255)
     domain_code = fields.EncryptedCharField(help_text="Code used for domain-related tasks", max_length=255)
     parsed_json = JSONField()
+
+    @property
+    def domain_config(self):
+        return self
 
     def __str__(self):
         return f"DomainConfig ({self.id}): name: {self.domain_name}"
