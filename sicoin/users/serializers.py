@@ -55,12 +55,52 @@ class AdminProfileSerializer(serializers.ModelSerializer):
         depth = 1
 
 
-class CreateAdminProfileSerializer(serializers.ModelSerializer):
-    domain = serializers.PrimaryKeyRelatedField(queryset=DomainConfig.objects.all(), required=False)
+class CreateUpdateAdminProfileSerializer(serializers.Serializer):
+    domain_code = serializers.CharField(max_length=255)
+    user = serializers.UUIDField(read_only=False)
+    domain_name = serializers.CharField(max_length=255)
+
+    def validate(self, data):
+        try:
+            user = User.objects.get(id=data.get('user'))
+        except User.DoesNotExist:
+            raise serializers.ValidationError(f"User with id {data.get('user')} does not exist")
+
+        try:
+            domain = DomainConfig.objects.get(domain_name=data.get('domain_name'))
+        except DomainConfig.DoesNotExist:
+            raise serializers.ValidationError(f"Domain {data.get('domain_name')} does not exist")
+
+        if domain.domain_code != data.get('domain_code'):
+            raise serializers.ValidationError("Invalid code")
+
+        try:
+            already_created_profile = AdminProfile.objects.get(user=user)
+        except AdminProfile.DoesNotExist:
+            already_created_profile = None
+        if already_created_profile:
+            raise serializers.ValidationError(f"Admin Profile for user with id "
+                                              f"{data.get('user')} already exists")
+
+        return data
+
+    def create(self, validated_data):
+        admin_profile = AdminProfile(
+            user_id=validated_data.get('user'),
+            domain=DomainConfig.objects.get(domain_name=validated_data.get('domain_name'))
+        )
+        admin_profile.save()
+        return admin_profile
+
+    def to_representation(self, instance: AdminProfile):
+        return {
+            'id': instance.id,
+            'user': instance.user.id,
+            'domain': instance.domain.domain_name,
+        }
 
     class Meta:
-        model = AdminProfile
-        fields = ('id', 'user', 'domain', 'role')
+        fields = ('id', 'user', 'domain_name', 'alias', 'domain_code')
 
 
 class CreateUpdateSupervisorProfileSerializer(serializers.Serializer):

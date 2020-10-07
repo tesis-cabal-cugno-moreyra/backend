@@ -13,7 +13,7 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from .models import User, AdminProfile, ResourceProfile, SupervisorProfile
 from .permissions import IsUserOrReadOnly
 from .serializers import CreateUserSerializer, UserSerializer, AdminProfileSerializer, \
-    ResourceProfileSerializer, CreateUpdateSupervisorProfileSerializer, CreateAdminProfileSerializer, \
+    ResourceProfileSerializer, CreateUpdateSupervisorProfileSerializer, CreateUpdateAdminProfileSerializer, \
     ListRetrieveSupervisorProfileSerializer
 from django.core.cache import cache
 
@@ -58,7 +58,7 @@ class AdminProfileCreateViewSet(mixins.CreateModelMixin,
                                 mixins.ListModelMixin,
                                 viewsets.GenericViewSet):
     queryset = AdminProfile.objects.all()
-    serializer_class = CreateAdminProfileSerializer
+    serializer_class = CreateUpdateAdminProfileSerializer
     permission_classes = (AllowAny,)
 
     # def list(self, request, *args, **kwargs):

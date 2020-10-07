@@ -3,7 +3,8 @@ from django.forms.models import model_to_dict
 from django.contrib.auth.hashers import check_password
 from nose.tools import eq_, ok_
 from .factories import UserFactory
-from ..serializers import CreateUserSerializer, CreateUpdateSupervisorProfileSerializer
+from ..serializers import CreateUserSerializer, CreateUpdateSupervisorProfileSerializer, \
+    CreateUpdateAdminProfileSerializer
 from ...domain_config.models import DomainConfig, SupervisorAlias
 
 
@@ -119,6 +120,75 @@ class TestCreateSupervisorProfileSerializer(TestCase):
             'domain_name': self.domain.domain_name,
             'user': self.user.id,
             'alias': 'asdasdasd',
+
+        })
+        eq_(serializer.is_valid(), False)
+
+
+class TestCreateAdminProfileSerializer(TestCase):
+    def setUp(self):
+        self.user = UserFactory.build()
+        self.user.save()
+        self.domain = DomainConfig()
+        self.domain.domain_name = "Name"
+        self.domain.domain_code = "AABBCCDDEE"
+        self.domain.admin_alias = "Alias"
+        self.domain.parsed_json = {}
+        self.domain.save()
+
+    def test_serializer_with_empty_data(self):
+        serializer = CreateUpdateAdminProfileSerializer(data={})
+        eq_(serializer.is_valid(), False)
+
+    def test_serializer_with_valid_data(self):
+        serializer = CreateUpdateAdminProfileSerializer(data={
+            'domain_code': self.domain.domain_code,
+            'domain_name': self.domain.domain_name,
+            'user': self.user.id,
+        })
+        eq_(serializer.is_valid(), True)
+
+    def test_serializer_with_non_existent_user(self):
+        serializer = CreateUpdateAdminProfileSerializer(data={
+            'domain_code': self.domain.domain_code,
+            'domain_name': self.domain.domain_name,
+            'user': '',
+
+        })
+        eq_(serializer.is_valid(), False)
+
+    def test_serializer_with_invalid_code(self):
+        serializer = CreateUpdateAdminProfileSerializer(data={
+            'domain_code': 'asdasdasd',
+            'domain_name': self.domain.domain_name,
+            'user': '',
+
+        })
+        eq_(serializer.is_valid(), False)
+
+    def test_serializer_with_user_with_already_created_profile(self):
+        serializer = CreateUpdateAdminProfileSerializer(data={
+            'domain_code': self.domain.domain_code,
+            'domain_name': self.domain.domain_name,
+            'user': self.user.id,
+
+        })
+        eq_(serializer.is_valid(), True)
+        serializer.save()
+
+        serializer2 = CreateUpdateAdminProfileSerializer(data={
+            'domain_code': self.domain.domain_code,
+            'domain_name': self.domain.domain_name,
+            'user': self.user.id,
+
+        })
+        eq_(serializer2.is_valid(), False)
+
+    def test_serializer_with_non_existent_domain(self):
+        serializer = CreateUpdateAdminProfileSerializer(data={
+            'domain_code': self.domain.domain_code,
+            'domain_name': 'asdasdasd',
+            'user': self.user.id,
 
         })
         eq_(serializer.is_valid(), False)
