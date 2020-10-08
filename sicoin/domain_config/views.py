@@ -29,16 +29,16 @@ class DomainConfigAPIView(APIView):
                                     400: 'Domain already created'})
     def post(self, request):
         serializer = DomainSerializer(data=request.data)
-        if serializer.is_valid(raise_exception=True):
-            if len(models.DomainConfig.objects.all()):
-                return HttpResponse(json.dumps({'message': 'Another domain is already created.'}),
-                                    status=status.HTTP_400_BAD_REQUEST)
-                # ^^ We currently support a single domain.
+        serializer.is_valid(raise_exception=True)
+        if len(models.DomainConfig.objects.all()):
+            return HttpResponse(json.dumps({'message': 'Another domain is already created.'}),
+                                status=status.HTTP_400_BAD_REQUEST)
+            # ^^ We currently support a single domain.
 
-            if bool(os.getenv('SAVE_DOMAIN_CONFIG')):
-                serializer.save()
-            # ENABLE THIS when frontend trials are finished
-            return HttpResponse(json.dumps({'message': 'Domain successfully created'}))
+        if bool(os.getenv('SAVE_DOMAIN_CONFIG')):
+            serializer.save()
+        # ENABLE THIS when frontend trials are finished
+        return HttpResponse(json.dumps({'message': 'Domain successfully created'}))
 
 
 class GenerateNewDomainCodeAPIView(APIView):

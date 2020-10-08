@@ -7,6 +7,7 @@ from faker import Faker
 import factory
 from ..models import User
 from .factories import UserFactory
+from ...domain_config.models import DomainConfig
 
 fake = Faker()
 
@@ -19,12 +20,22 @@ class TestUserListTestCase(APITestCase):
     def setUp(self):
         self.url = reverse('user-list')
         self.user_data = factory.build(dict, FACTORY_CLASS=UserFactory)
+        self.domain = DomainConfig()
+        self.domain.domain_name = "Name"
+        self.domain.domain_code = "AABBCCDDEE"
+        self.domain.parsed_json = {}
+        self.domain.save()
 
     def test_post_request_with_no_data_fails(self):
         response = self.client.post(self.url, {})
         eq_(response.status_code, status.HTTP_400_BAD_REQUEST)
 
+    def test_post_request_with_no_domain_code_fails(self):
+        response = self.client.post(self.url, self.user_data)
+        eq_(response.status_code, status.HTTP_400_BAD_REQUEST)
+
     def test_post_request_with_valid_data_succeeds(self):
+        self.user_data['domain_code'] = self.domain.domain_code
         response = self.client.post(self.url, self.user_data)
         eq_(response.status_code, status.HTTP_201_CREATED)
 
