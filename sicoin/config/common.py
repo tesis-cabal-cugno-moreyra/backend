@@ -21,7 +21,8 @@ except FileNotFoundError:
 class Common(Configuration):
 
     INSTALLED_APPS = (
-        'django.contrib.admin',
+        'material.admin',
+        'material.admin.default',
         'django.contrib.auth',
         'django.contrib.contenttypes',
         'django.contrib.sessions',
@@ -275,4 +276,29 @@ class Common(Configuration):
                 "PASSWORD": env('REDIS_PASSWD')
             }
         }
+    }
+
+    MATERIAL_ADMIN_SITE = {
+        'HEADER': 'SICOIN Internal Administration',  # Admin site header
+        'TITLE': 'SICOIN Internal Administration',  # Admin site title
+        'MAIN_BG_COLOR': 'black',  # Admin site main color, css color should be specified
+        'MAIN_HOVER_COLOR': 'blue',  # Admin site main hover color, css color should be specified
+        # 'PROFILE_PICTURE': 'path/to/image',  # Admin site profile picture
+        # 'PROFILE_BG': 'path/to/image',  # Admin site profile background
+        # 'LOGIN_LOGO': 'path/to/image',  # Admin site logo on login page
+        # 'LOGOUT_BG': 'path/to/image',
+        # Admin site background on login/logout pages (path to static should be specified)
+        'SHOW_THEMES': True,  # Show default admin themes button
+        # 'TRAY_REVERSE': True,  # Hide object-tools and additional-submit-line by default
+        'SHOW_COUNTS': True,  # Show instances counts for each model
+        # 'APP_ICONS': {
+        #     # Set icons for applications(lowercase), including 3rd party apps,
+        #     {'application_name': 'material_icon_name', ...}
+        #     'sites': 'send',
+        # },
+        # 'MODEL_ICONS': {
+        #     # Set icons for models(lowercase), including 3rd party models,
+        #     {'model_name': 'material_icon_name', ...}
+        #     'site': 'contact_mail',
+        # }
     }
