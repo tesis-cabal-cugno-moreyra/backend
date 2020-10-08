@@ -19,6 +19,7 @@ class SupervisorAlias(BaseModel):
         return f"SupervisorAlias ({self.id}): alias: {self.alias}, domain: {self.domain_config.domain_name}"
 
     class Meta:
+        verbose_name_plural = "Supervisor Aliases"
         constraints = [
             models.UniqueConstraint(fields=['domain_config', 'alias'],
                                     name='unique supervisor alias for a domain')
@@ -39,7 +40,7 @@ class ResourceType(BaseModel):
         ]
 
 
-class MapPointDescriptions(BaseModel):
+class MapPointDescription(BaseModel):
     text = models.TextField()
     incident_type = models.ForeignKey('IncidentType', on_delete=models.PROTECT)
 
@@ -51,7 +52,7 @@ class MapPointDescriptions(BaseModel):
         return f"MapPointDescriptions ({self.id}): incident type: {self.incident_type.name}"
 
 
-class IncidentTypeResources(BaseModel):
+class IncidentTypeResource(BaseModel):
     incident_type = models.ForeignKey('IncidentType', on_delete=models.PROTECT)
     resource_type = models.ForeignKey('ResourceType', on_delete=models.PROTECT)
 

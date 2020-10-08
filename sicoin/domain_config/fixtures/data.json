@@ -50,7 +50,7 @@
     }
   },
   {
-    "model": "domain_config.mappointdescriptions",
+    "model": "domain_config.mappointdescription",
     "pk": 1,
     "fields": {
       "created_at": "2020-10-08T00:51:08.451Z",
@@ -60,7 +60,7 @@
     }
   },
   {
-    "model": "domain_config.mappointdescriptions",
+    "model": "domain_config.mappointdescription",
     "pk": 2,
     "fields": {
       "created_at": "2020-10-08T00:51:08.467Z",
@@ -70,7 +70,7 @@
     }
   },
   {
-    "model": "domain_config.incidenttyperesources",
+    "model": "domain_config.incidenttyperesource",
     "pk": 1,
     "fields": {
       "created_at": "2020-10-08T00:51:08.461Z",
@@ -80,7 +80,7 @@
     }
   },
   {
-    "model": "domain_config.incidenttyperesources",
+    "model": "domain_config.incidenttyperesource",
     "pk": 2,
     "fields": {
       "created_at": "2020-10-08T00:51:08.474Z",
@@ -90,7 +90,7 @@
     }
   },
   {
-    "model": "domain_config.incidenttyperesources",
+    "model": "domain_config.incidenttyperesource",
     "pk": 3,
     "fields": {
       "created_at": "2020-10-08T00:51:08.483Z",

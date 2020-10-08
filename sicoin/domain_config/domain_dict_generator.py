@@ -32,17 +32,17 @@ class DomainDictGenerator:
         return {
             "name": incident_type.name,
             "descriptions": [self._map_point_description_to_dict(map_point) for map_point in
-                             incident_type.mappointdescriptions_set.all()],
+                             incident_type.mappointdescription_set.all()],
             "resourceTypes": [self._incident_type_resource_type_to_dict(resource) for resource in
-                              incident_type.incidenttyperesources_set.all()],
+                              incident_type.incidenttyperesource_set.all()],
         }
 
-    def _incident_type_resource_type_to_dict(self, incident_type_resource: models.IncidentTypeResources):
+    def _incident_type_resource_type_to_dict(self, incident_type_resource: models.IncidentTypeResource):
         return {
             "name": incident_type_resource.resource_type.name
         }
 
-    def _map_point_description_to_dict(self, map_point_description: models.MapPointDescriptions):
+    def _map_point_description_to_dict(self, map_point_description: models.MapPointDescription):
         return {
             "text": map_point_description.text
         }
