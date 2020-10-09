@@ -50,7 +50,7 @@ class IncidentAbstractionSerializer(DomainSerializer):
                     'abstraction': incident_abstraction_instance
                 })
                 for description in incident_type.get('descriptions'):
-                    models.MapPointDescriptions.objects.create(**{
+                    models.MapPointDescription.objects.create(**{
                         'text': description.get('text'),
                         'incident_type': incident_type_instance
                     })
@@ -59,7 +59,7 @@ class IncidentAbstractionSerializer(DomainSerializer):
                         'name': resource_type.get('name'),
                         'domain_config': domain
                     })
-                    models.IncidentTypeResources.objects.update_or_create(**{
+                    models.IncidentTypeResource.objects.update_or_create(**{
                         'incident_type': incident_type_instance,
                         'resource_type': resource_instance[0]
                     })
