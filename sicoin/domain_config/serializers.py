@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from sicoin.domain_config import models
+from sicoin.domain_config.models import DomainConfig
 from sicoin.domain_config.utils import get_random_alphanumeric_string
 
 
@@ -91,3 +92,17 @@ class DomainSerializer(serializers.Serializer):
 
     def update(self, instance, validated_data):
         raise Exception("Not implemented function")
+
+
+class CheckDomainCodeSerializer(serializers.Serializer):
+    domain_code = serializers.CharField(max_length=200)
+
+    def validate_domain_code(self, value):
+        try:
+            domain = DomainConfig.objects.all()[0]
+        except IndexError:
+            raise serializers.ValidationError("Incorrect code or No Domain exists")
+
+        if domain.domain_code != value:
+            raise serializers.ValidationError("Incorrect code or No Domain exists")
+        return value
