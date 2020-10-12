@@ -205,6 +205,7 @@ class EnableUserView(APIView):
                                 status=status.HTTP_400_BAD_REQUEST)
 
         user.is_active = True
+        user.save()
         return HttpResponse(json.dumps({'message': 'User activated successfully'}))
 
 

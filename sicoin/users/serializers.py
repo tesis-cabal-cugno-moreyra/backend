@@ -21,7 +21,6 @@ class CreateUserSerializer(serializers.ModelSerializer):
         # call create_user on user object. Without this
         # the password will be stored in plain text.
         user = User.objects.create_user(**validated_data)
-        user.is_active = False
         return user
 
     def validate(self, attrs):
