@@ -24,9 +24,18 @@ class Incident(BaseModel):
         (INCIDENT_STATUS_PAUSED, INCIDENT_STATUS_PAUSED),
         (INCIDENT_STATUS_FINALIZED, INCIDENT_STATUS_FINALIZED),
     )
+    INCIDENT_VISIBILITY_PRIVATE = "Private"
+    INCIDENT_VISIBILITY_PUBLIC = "Public"
+    INCIDENT_VISIBILITIES = (
+        (INCIDENT_VISIBILITY_PRIVATE, INCIDENT_VISIBILITY_PRIVATE),
+        (INCIDENT_VISIBILITY_PUBLIC, INCIDENT_VISIBILITY_PUBLIC),
+    )
 
     domain_config = models.ForeignKey(DomainConfig, on_delete=models.PROTECT)
     incident_type = models.ForeignKey(IncidentType, on_delete=models.PROTECT)
+    incident_visibility = models.CharField(max_length=255,
+                                           choices=INCIDENT_VISIBILITIES,
+                                           default=INCIDENT_VISIBILITY_PRIVATE)
     details = models.TextField()
     status = models.CharField(max_length=255, choices=INCIDENT_STATUSES, default=INCIDENT_STATUS_CREATED)
     location_as_string_reference = models.CharField(max_length=255, blank=True)
