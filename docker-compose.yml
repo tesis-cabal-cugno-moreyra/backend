@@ -1,8 +1,8 @@
 version: '3.7'
 
 services:
-  postgres:
-    image: postgres:11-alpine
+  postgis:
+    image: kartoza/postgis:11.5-2.8
     volumes:
       - data-db:/var/lib/postgresql/data
     environment:
@@ -27,7 +27,7 @@ services:
     ports:
       - "8000:8000"
     depends_on:
-      - postgres
+      - postgis
       - redis
     networks:
       SicoinNetwork:
