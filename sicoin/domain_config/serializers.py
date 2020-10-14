@@ -94,6 +94,13 @@ class DomainSerializer(serializers.Serializer):
         raise Exception("Not implemented function")
 
 
+class DomainFromDatabaseSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = DomainConfig
+        exclude = ['parsed_json', 'domain_code']
+
+
 class CheckDomainCodeSerializer(serializers.Serializer):
     domain_code = serializers.CharField(max_length=200)
 

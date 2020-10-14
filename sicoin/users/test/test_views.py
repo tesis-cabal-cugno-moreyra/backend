@@ -61,10 +61,10 @@ class TestUserDetailTestCase(APITestCase):
         eq_(response.status_code, status.HTTP_200_OK)
 
     def test_put_request_updates_a_user(self):
-        new_first_name = fake.first_name()
-        payload = {'first_name': new_first_name}
+        new_email = fake.email()
+        payload = {'email': new_email}
         response = self.client.put(self.url, payload)
         eq_(response.status_code, status.HTTP_200_OK)
 
         user = User.objects.get(pk=self.user.id)
-        eq_(user.first_name, new_first_name)
+        eq_(user.email, new_email)

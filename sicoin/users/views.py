@@ -2,6 +2,7 @@ import requests
 from django.contrib.auth.base_user import BaseUserManager
 from django.contrib.auth.hashers import make_password
 from django.http import HttpResponse
+from django_filters import rest_framework as filters
 from drf_yasg.utils import swagger_auto_schema
 from rest_framework import viewsets, mixins, status
 from rest_framework.permissions import AllowAny
@@ -73,6 +74,9 @@ class AdminProfileCreateViewSet(mixins.CreateModelMixin,
     queryset = AdminProfile.objects.all()
     serializer_class = serializers.CreateUpdateAdminProfileSerializer
     permission_classes = (AllowAny,)
+    filter_backends = (filters.DjangoFilterBackend,)
+    filterset_fields = ('user__username', 'user__first_name',
+                        'user__last_name', 'user__is_active')
 
     def list(self, request, *args, **kwargs):
         queryset = self.filter_queryset(self.get_queryset())
@@ -115,6 +119,9 @@ class SupervisorProfileCreateUpdateListViewSet(mixins.CreateModelMixin,
     queryset = SupervisorProfile.objects.all()
     serializer_class = serializers.CreateUpdateSupervisorProfileSerializer
     permission_classes = (AllowAny,)
+    filter_backends = (filters.DjangoFilterBackend,)
+    filterset_fields = ('user__username', 'user__first_name', 'user__last_name',
+                        'user__is_active', 'alias__alias')
 
     def list(self, request, *args, **kwargs):
         queryset = self.filter_queryset(self.get_queryset())
@@ -158,6 +165,9 @@ class ResourceProfileCreateUpdateViewSet(mixins.CreateModelMixin,
     queryset = ResourceProfile.objects.all()
     serializer_class = serializers.CreateUpdateResourceProfileSerializer
     permission_classes = (AllowAny,)
+    filter_backends = (filters.DjangoFilterBackend,)
+    filterset_fields = ('user__username', 'user__first_name', 'user__last_name',
+                        'user__is_active', 'type__name')
 
     def list(self, request, *args, **kwargs):
         queryset = self.filter_queryset(self.get_queryset())
