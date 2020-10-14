@@ -6,6 +6,11 @@ COPY ./requirements.txt requirements.txt
 RUN apk add --no-cache --virtual .build-deps \
     ca-certificates gcc postgresql-dev linux-headers musl-dev \
     libffi-dev jpeg-dev zlib-dev \
+    && apk add --no-cache --repository http://dl-cdn.alpinelinux.org/alpine/edge/testing \
+        gdal-dev \
+        geos-dev \
+        proj-dev \
+        binutils \
     && pip install -r requirements.txt \
     && find /usr/local \
         \( -type d -a -name test -o -name tests \) \
