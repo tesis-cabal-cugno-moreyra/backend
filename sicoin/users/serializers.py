@@ -4,13 +4,14 @@ from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
 from .models import User, AdminProfile, SupervisorProfile, ResourceProfile
 from ..domain_config.models import DomainConfig, SupervisorAlias, ResourceType
+from ..domain_config.serializers import DomainFromDatabaseSerializer
 
 
 class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ('id', 'username', 'first_name', 'last_name', 'is_active')
+        fields = ('id', 'email', 'username', 'first_name', 'last_name', 'is_active')
         read_only_fields = ('username', )
 
 
@@ -46,7 +47,8 @@ class CreateUserSerializer(serializers.ModelSerializer):
 
 
 class ListRetrieveAdminProfileSerializer(serializers.ModelSerializer):
-    user = CreateUserSerializer()
+    user = UserSerializer()
+    domain = DomainFromDatabaseSerializer()
 
     class Meta:
         model = AdminProfile
@@ -176,6 +178,9 @@ class CreateUpdateSupervisorProfileSerializer(serializers.Serializer):
 
 
 class ListRetrieveSupervisorProfileSerializer(serializers.ModelSerializer):
+    user = UserSerializer()
+    domain = DomainFromDatabaseSerializer()
+
     class Meta:
         model = SupervisorProfile
         fields = ('id', 'user', 'domain', 'alias')
@@ -250,8 +255,8 @@ class CreateUpdateResourceProfileSerializer(serializers.Serializer):
 
 
 class ListRetrieveResourceProfileSerializer(serializers.ModelSerializer):
-    domain = serializers.PrimaryKeyRelatedField(queryset=DomainConfig.objects.all(), read_only=False)
-    type = serializers.PrimaryKeyRelatedField(queryset=ResourceType.objects.all(), read_only=False)
+    user = UserSerializer()
+    domain = DomainFromDatabaseSerializer()
 
     class Meta:
         model = ResourceProfile

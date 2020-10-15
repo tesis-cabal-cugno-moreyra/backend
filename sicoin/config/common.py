@@ -28,6 +28,7 @@ class Common(Configuration):
         'django.contrib.sessions',
         'django.contrib.messages',
         'django.contrib.staticfiles',
+        'django.contrib.gis',
 
 
         # Third party apps
@@ -37,10 +38,13 @@ class Common(Configuration):
         'rest_framework.authtoken',  # token authentication
         'django_filters',            # for filtering rest endpoints
         'encrypted_fields',
+        'simple_history',
 
         # Your apps
         'sicoin.users',
         'sicoin.domain_config',
+        'sicoin.incident',
+        'sicoin.geolocation',
         'chat',
         'drf_yasg',
 
@@ -58,6 +62,7 @@ class Common(Configuration):
         'django.contrib.auth.middleware.AuthenticationMiddleware',
         'django.contrib.messages.middleware.MessageMiddleware',
         'django.middleware.clickjacking.XFrameOptionsMiddleware',
+        'simple_history.middleware.HistoryRequestMiddleware',
     )
 
     STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
@@ -98,7 +103,8 @@ class Common(Configuration):
     DATABASES = {
         'default': dj_database_url.config(
             default=env('POSTGRES_CONN', default='postgresql://root:password@postgres:5432/db_dev'),
-            conn_max_age=int(env('POSTGRES_CONN_MAX_AGE', default=600))
+            conn_max_age=int(env('POSTGRES_CONN_MAX_AGE', default=600)),
+            engine='django.contrib.gis.db.backends.postgis'
         )
     }
 
