@@ -6,6 +6,8 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.views.generic.base import RedirectView
 from rest_framework.routers import DefaultRouter
+
+from .incident.views import AddIncidentResourceToIncidentAPIView
 from .users import views
 from .domain_config.views import DomainConfigAPIView, GenerateNewDomainCodeAPIView,\
     GetCurrentDomainCodeAPIView, CheckCurrentDomainCodeAPIView
@@ -45,6 +47,9 @@ urlpatterns = [
     path('api/v1/domain-config/renew-domain-code/', GenerateNewDomainCodeAPIView.as_view()),
     path('api/v1/domain-config/domain-code/', GetCurrentDomainCodeAPIView.as_view()),
     path('api/v1/domain-config/domain-code/check/', CheckCurrentDomainCodeAPIView.as_view()),
+    # path('api/v1/incidents/<int:incident_id>/resources/', ListResourcesFromIncident.as_view()),
+    path('api/v1/incidents/<int:incident_id>/resources/<int:resource_id>/',
+         AddIncidentResourceToIncidentAPIView.as_view()),
 
     re_path(r'^rest-auth/', include('dj_rest_auth.urls')),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
