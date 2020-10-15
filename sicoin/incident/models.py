@@ -16,14 +16,22 @@ class BaseModel(models.Model):
 
 
 class Incident(BaseModel):
-    INCIDENT_STATUS_CREATED = "Created"
-    INCIDENT_STATUS_PAUSED = "Paused"
+    INCIDENT_STATUS_STARTED = "Started"
+    INCIDENT_STATUS_CANCELED = "Canceled"
     INCIDENT_STATUS_FINALIZED = "Finalized"
     INCIDENT_STATUSES = (
-        (INCIDENT_STATUS_CREATED, INCIDENT_STATUS_CREATED),
-        (INCIDENT_STATUS_PAUSED, INCIDENT_STATUS_PAUSED),
+        (INCIDENT_STATUS_STARTED, INCIDENT_STATUS_STARTED),
+        (INCIDENT_STATUS_CANCELED, INCIDENT_STATUS_CANCELED),
         (INCIDENT_STATUS_FINALIZED, INCIDENT_STATUS_FINALIZED),
     )
+
+    INCIDENT_DATA_STATUS_INCOMPLETE = 'Incomplete'
+    INCIDENT_DATA_STATUS_COMPLETE = 'Complete'
+    INCIDENT_DATA_STATUSES = (
+        (INCIDENT_DATA_STATUS_INCOMPLETE, INCIDENT_DATA_STATUS_INCOMPLETE),
+        (INCIDENT_DATA_STATUS_COMPLETE, INCIDENT_DATA_STATUS_COMPLETE)
+    )
+
     INCIDENT_VISIBILITY_PRIVATE = "Private"
     INCIDENT_VISIBILITY_PUBLIC = "Public"
     INCIDENT_VISIBILITIES = (
@@ -33,11 +41,14 @@ class Incident(BaseModel):
 
     domain_config = models.ForeignKey(DomainConfig, on_delete=models.PROTECT)
     incident_type = models.ForeignKey(IncidentType, on_delete=models.PROTECT)
-    incident_visibility = models.CharField(max_length=255,
-                                           choices=INCIDENT_VISIBILITIES,
-                                           default=INCIDENT_VISIBILITY_PRIVATE)
+    visibility = models.CharField(max_length=255,
+                                  choices=INCIDENT_VISIBILITIES,
+                                  default=INCIDENT_VISIBILITY_PRIVATE)
     details = models.TextField()
-    status = models.CharField(max_length=255, choices=INCIDENT_STATUSES, default=INCIDENT_STATUS_CREATED)
+    status = models.CharField(max_length=255, choices=INCIDENT_STATUSES,
+                              default=INCIDENT_STATUS_STARTED)
+    data_status = models.CharField(max_length=255, choices=INCIDENT_DATA_STATUSES,
+                                   default=INCIDENT_DATA_STATUS_INCOMPLETE)
     location_as_string_reference = models.CharField(max_length=255, blank=True)
     location_point = PointField()
     finalized_at = models.DateTimeField(null=True, blank=True)
