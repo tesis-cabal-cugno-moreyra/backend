@@ -174,10 +174,10 @@ class ResourceProfileCreateUpdateViewSet(mixins.CreateModelMixin,
 
         page = self.paginate_queryset(queryset)
         if page is not None:
-            serializer = serializers.ListRetrieveSupervisorProfileSerializer(page, many=True)
+            serializer = serializers.ListRetrieveResourceProfileSerializer(page, many=True)
             return self.get_paginated_response(serializer.data)
 
-        serializer = serializers.ListRetrieveSupervisorProfileSerializer(queryset, many=True)
+        serializer = serializers.ListRetrieveResourceProfileSerializer(queryset, many=True)
         return Response(serializer.data)
 
 

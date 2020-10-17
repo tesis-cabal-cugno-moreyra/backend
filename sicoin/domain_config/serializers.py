@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from sicoin.domain_config import models
-from sicoin.domain_config.models import DomainConfig
+from sicoin.domain_config.models import DomainConfig, ResourceType
 from sicoin.domain_config.utils import get_random_alphanumeric_string
 
 
@@ -99,6 +99,13 @@ class DomainFromDatabaseSerializer(serializers.ModelSerializer):
     class Meta:
         model = DomainConfig
         exclude = ['parsed_json', 'domain_code']
+
+
+class ResourceTypeFromDatabaseSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = ResourceType
+        exclude = []
 
 
 class CheckDomainCodeSerializer(serializers.Serializer):

@@ -4,7 +4,7 @@ from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
 from .models import User, AdminProfile, SupervisorProfile, ResourceProfile
 from ..domain_config.models import DomainConfig, SupervisorAlias, ResourceType
-from ..domain_config.serializers import DomainFromDatabaseSerializer
+from ..domain_config.serializers import DomainFromDatabaseSerializer, ResourceTypeFromDatabaseSerializer
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -257,6 +257,7 @@ class CreateUpdateResourceProfileSerializer(serializers.Serializer):
 class ListRetrieveResourceProfileSerializer(serializers.ModelSerializer):
     user = UserSerializer()
     domain = DomainFromDatabaseSerializer()
+    type = ResourceTypeFromDatabaseSerializer()
 
     class Meta:
         model = ResourceProfile
