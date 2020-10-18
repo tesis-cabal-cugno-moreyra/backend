@@ -20,8 +20,6 @@ class CreateIncidentSerializer(serializers.Serializer):
     incident_type_name = serializers.CharField(max_length=255)
     visibility = serializers.ChoiceField(choices=Incident.INCIDENT_VISIBILITIES)
     details = serializers.JSONField()
-    status = serializers.ChoiceField(choices=Incident.INCIDENT_STATUSES)
-    data_status = serializers.ChoiceField(choices=Incident.INCIDENT_DATA_STATUSES)
     location_as_string_reference = serializers.CharField(max_length=255, allow_blank=True)
     location_point = GeometryField()
 
@@ -29,13 +27,15 @@ class CreateIncidentSerializer(serializers.Serializer):
         try:
             DomainConfig.objects.get(domain_name=data.get('domain_name'))
         except DomainConfig.DoesNotExist:
-            raise serializers.ValidationError(f"Domain {data.get('domain_name')} does not exist")
+            raise serializers.ValidationError(
+                {'domain_name': f"Domain {data.get('domain_name')} does not exist"})
 
         try:
             IncidentType.objects.get(name=data.get('incident_type_name'))
         except IncidentType.DoesNotExist:
-            raise serializers.ValidationError(f"Incident type {data.get('incident_type_name')}"
-                                              f"does not exist")
+            raise serializers.ValidationError(
+                {'incident_type_name': f"Incident type {data.get('incident_type_name')}"
+                                       f"does not exist"})
 
         return data
 
@@ -45,8 +45,6 @@ class CreateIncidentSerializer(serializers.Serializer):
         incident.incident_type = IncidentType.objects.get(name=validated_data.get('incident_type_name'))
         incident.visibility = validated_data.get('visibility')
         incident.details = validated_data.get('details')
-        incident.status = validated_data.get('status')
-        incident.data_status = validated_data.get('data_status')
         incident.location_as_string_reference = validated_data.get('location_as_string_reference')
         incident.location_point = validated_data.get('location_point')
         incident.save()
