@@ -1,3 +1,4 @@
+from django.contrib.postgres.fields import JSONField
 from django.db import models
 from simple_history.models import HistoricalRecords
 from django.contrib.gis.db.models import PointField
@@ -44,7 +45,7 @@ class Incident(BaseModel):
     visibility = models.CharField(max_length=255,
                                   choices=INCIDENT_VISIBILITIES,
                                   default=INCIDENT_VISIBILITY_PRIVATE)
-    details = models.TextField()
+    details = JSONField()
     status = models.CharField(max_length=255, choices=INCIDENT_STATUSES,
                               default=INCIDENT_STATUS_STARTED)
     data_status = models.CharField(max_length=255, choices=INCIDENT_DATA_STATUSES,

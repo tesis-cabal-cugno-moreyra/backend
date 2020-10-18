@@ -35,6 +35,7 @@ class Common(Configuration):
         'corsheaders',
         'channels',
         'rest_framework',            # utilities for rest apis
+        'rest_framework_gis',
         'rest_framework.authtoken',  # token authentication
         'django_filters',            # for filtering rest endpoints
         'encrypted_fields',

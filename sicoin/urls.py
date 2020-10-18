@@ -7,7 +7,7 @@ from django.contrib import admin
 from django.views.generic.base import RedirectView
 from rest_framework.routers import DefaultRouter
 
-from .incident.views import AddIncidentResourceToIncidentAPIView
+from .incident.views import AddIncidentResourceToIncidentAPIView, IncidentCreateListViewSet
 from .users import views
 from .domain_config.views import DomainConfigAPIView, GenerateNewDomainCodeAPIView,\
     GetCurrentDomainCodeAPIView, CheckCurrentDomainCodeAPIView
@@ -24,6 +24,7 @@ router.register(r'supervisors', views.SupervisorProfileViewSet)
 router.register(r'supervisors', views.SupervisorProfileCreateUpdateListViewSet)
 router.register(r'resources', views.ResourceProfileCreateUpdateViewSet)
 router.register(r'resources', views.ResourceProfileRetrieveDestroyViewSet)
+router.register(r'incidents', IncidentCreateListViewSet)
 
 schema_view = get_schema_view(
     openapi.Info(
