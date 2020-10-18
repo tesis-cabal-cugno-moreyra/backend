@@ -34,7 +34,8 @@ class CreateIncidentSerializer(serializers.Serializer):
         try:
             IncidentType.objects.get(name=data.get('incident_type_name'))
         except IncidentType.DoesNotExist:
-            raise serializers.ValidationError(f"Incident type {data.get('incident_type_name')} does not exist")
+            raise serializers.ValidationError(f"Incident type {data.get('incident_type_name')}"
+                                              f"does not exist")
 
         return data
 
