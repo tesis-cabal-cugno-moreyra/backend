@@ -1,3 +1,4 @@
+import django_filters
 import requests
 from django.contrib.auth.base_user import BaseUserManager
 from django.contrib.auth.hashers import make_password
@@ -159,6 +160,18 @@ class ResourceProfileRetrieveDestroyViewSet(mixins.RetrieveModelMixin,
         return Response(serializer.data)
 
 
+class ResourceFilter(django_filters.FilterSet):
+    user__username = django_filters.CharFilter(lookup_expr='iexact')
+    user__first_name = django_filters.CharFilter(lookup_expr='iexact')
+    user__last_name = django_filters.CharFilter(lookup_expr='iexact')
+    user__is_active = django_filters.CharFilter(lookup_expr='iexact')
+    type__name = django_filters.CharFilter(lookup_expr='iexact')
+
+    class Meta:
+        model = ResourceProfile
+        exclude = ['user', 'type', 'domain']
+
+
 class ResourceProfileCreateUpdateViewSet(mixins.CreateModelMixin,
                                          mixins.ListModelMixin,
                                          viewsets.GenericViewSet):
@@ -166,8 +179,7 @@ class ResourceProfileCreateUpdateViewSet(mixins.CreateModelMixin,
     serializer_class = serializers.CreateUpdateResourceProfileSerializer
     permission_classes = (AllowAny,)
     filter_backends = (filters.DjangoFilterBackend,)
-    filterset_fields = ('user__username', 'user__first_name', 'user__last_name',
-                        'user__is_active', 'type__name')
+    filterset_class = ResourceFilter
 
     def list(self, request, *args, **kwargs):
         queryset = self.filter_queryset(self.get_queryset())
