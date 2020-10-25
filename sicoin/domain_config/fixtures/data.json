@@ -180,7 +180,8 @@
                   {
                     "name": "Canino"
                   }
-                ]
+                ],
+                "detailsSchema": {}
               }
             ]
           },
@@ -198,7 +199,8 @@
                   {
                     "name": "Bombero"
                   }
-                ]
+                ],
+                "detailsSchema": {}
               }
             ]
           }

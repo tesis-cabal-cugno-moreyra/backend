@@ -1,4 +1,5 @@
 from django.contrib.postgres.fields import JSONField
+from django.core.serializers.json import DjangoJSONEncoder
 from django.db import models
 from encrypted_fields import fields
 
@@ -69,6 +70,7 @@ class IncidentTypeResource(BaseModel):
 class IncidentType(BaseModel):
     name = models.CharField(max_length=255)
     abstraction = models.ForeignKey('IncidentAbstraction', on_delete=models.PROTECT)
+    details_schema = JSONField(default=dict, blank=True, encoder=DjangoJSONEncoder)
 
     @property
     def domain_config(self):
@@ -76,6 +78,12 @@ class IncidentType(BaseModel):
 
     def __str__(self):
         return f"IncidentType ({self.id}): name: {self.name}, abstraction: {self.abstraction.alias}"
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=['name', 'abstraction'],
+                                    name='unique incident type name for related abstraction')
+        ]
 
 
 class IncidentAbstraction(BaseModel):
