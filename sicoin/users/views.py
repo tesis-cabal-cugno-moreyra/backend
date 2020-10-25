@@ -1,109 +1,196 @@
+import django_filters
 import requests
 from django.contrib.auth.base_user import BaseUserManager
 from django.contrib.auth.hashers import make_password
 from django.http import HttpResponse
-from rest_framework import viewsets, mixins
+from django_filters import rest_framework as filters
+from drf_yasg.utils import swagger_auto_schema
+from rest_framework import viewsets, mixins, status
 from rest_framework.permissions import AllowAny
+from rest_framework.response import Response
 from rest_framework.utils import json
 from rest_framework.views import APIView
 from rest_framework_simplejwt.tokens import RefreshToken
 
 from .models import User, AdminProfile, ResourceProfile, SupervisorProfile
 from .permissions import IsUserOrReadOnly
-from .serializers import CreateUserSerializer, UserSerializer, AdminProfileSerializer, \
-    ResourceProfileSerializer, SupervisorProfileSerializer, CreateAdminProfileSerializer
+from . import serializers
 from django.core.cache import cache
 
 
-class UserViewSet(mixins.RetrieveModelMixin,
-                  mixins.UpdateModelMixin,
-                  viewsets.GenericViewSet):
-    """
-    Updates and retrieves user accounts
-    """
+class UserRetrieveUpdateViewSet(mixins.RetrieveModelMixin,
+                                mixins.UpdateModelMixin,
+                                viewsets.GenericViewSet):
     queryset = User.objects.all()
-    serializer_class = UserSerializer
+    serializer_class = serializers.UserSerializer
     permission_classes = (IsUserOrReadOnly,)
 
 
-class UserCreateViewSet(mixins.CreateModelMixin,
-                        mixins.ListModelMixin,
-                        viewsets.GenericViewSet):
-    """
-    Creates user accounts
-    """
+class UserCreateListViewSet(mixins.CreateModelMixin,
+                            mixins.ListModelMixin,
+                            viewsets.GenericViewSet):
     queryset = User.objects.all()
-    serializer_class = CreateUserSerializer
+    serializer_class = serializers.CreateUserSerializer
     permission_classes = (AllowAny,)
+
+    def list(self, request, *args, **kwargs):
+        queryset = self.filter_queryset(self.get_queryset())
+
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = serializers.UserSerializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+
+        serializer = serializers.UserSerializer(queryset, many=True)
+        return Response(serializer.data)
 
 
 class AdminProfileViewSet(mixins.RetrieveModelMixin,
                           mixins.UpdateModelMixin,
                           mixins.DestroyModelMixin,
                           viewsets.GenericViewSet):
-    """
-    Updates and retrieves user accounts
-    """
     queryset = AdminProfile.objects.all()
-    serializer_class = AdminProfileSerializer
+    serializer_class = serializers.ListRetrieveAdminProfileSerializer
     permission_classes = (AllowAny,)
+
+    def update(self, request, *args, **kwargs):
+        partial = kwargs.pop('partial', False)
+        instance = self.get_object()
+        serializer = serializers.CreateUpdateAdminProfileSerializer(instance, data=request.data,
+                                                                    partial=partial)
+        serializer.is_valid(raise_exception=True)
+        self.perform_update(serializer)
+
+        if getattr(instance, '_prefetched_objects_cache', None):
+            # If 'prefetch_related' has been applied to a queryset, we need to
+            # forcibly invalidate the prefetch cache on the instance.
+            instance._prefetched_objects_cache = {}
+
+        return Response(serializer.data)
 
 
 class AdminProfileCreateViewSet(mixins.CreateModelMixin,
                                 mixins.ListModelMixin,
                                 viewsets.GenericViewSet):
-    """
-    Creates user accounts
-    """
     queryset = AdminProfile.objects.all()
-    serializer_class = CreateAdminProfileSerializer
+    serializer_class = serializers.CreateUpdateAdminProfileSerializer
     permission_classes = (AllowAny,)
+    filter_backends = (filters.DjangoFilterBackend,)
+    filterset_fields = ('user__username', 'user__first_name',
+                        'user__last_name', 'user__is_active')
+
+    def list(self, request, *args, **kwargs):
+        queryset = self.filter_queryset(self.get_queryset())
+
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = serializers.ListRetrieveAdminProfileSerializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+
+        serializer = serializers.ListRetrieveAdminProfileSerializer(queryset, many=True)
+        return Response(serializer.data)
 
 
 class SupervisorProfileViewSet(mixins.RetrieveModelMixin,
                                mixins.UpdateModelMixin,
                                mixins.DestroyModelMixin,
                                viewsets.GenericViewSet):
-    """
-    Updates and retrieves user accounts
-    """
     queryset = SupervisorProfile.objects.all()
-    serializer_class = SupervisorProfileSerializer
+    serializer_class = serializers.ListRetrieveSupervisorProfileSerializer
     permission_classes = (AllowAny,)
 
+    def update(self, request, *args, **kwargs):
+        partial = kwargs.pop('partial', False)
+        instance = self.get_object()
+        serializer = serializers.CreateUpdateSupervisorProfileSerializer(instance, data=request.data,
+                                                                         partial=partial)
+        serializer.is_valid(raise_exception=True)
+        self.perform_update(serializer)
 
-class SupervisorProfileCreateViewSet(mixins.CreateModelMixin,
-                                     mixins.ListModelMixin,
-                                     viewsets.GenericViewSet):
-    """
-    Creates user accounts
-    """
+        if getattr(instance, '_prefetched_objects_cache', None):
+            # If 'prefetch_related' has been applied to a queryset, we need to
+            # forcibly invalidate the prefetch cache on the instance.
+            instance._prefetched_objects_cache = {}
+
+        return Response(serializer.data)
+
+
+class SupervisorProfileCreateUpdateListViewSet(mixins.CreateModelMixin,
+                                               viewsets.GenericViewSet):
     queryset = SupervisorProfile.objects.all()
-    serializer_class = SupervisorProfileSerializer
+    serializer_class = serializers.CreateUpdateSupervisorProfileSerializer
     permission_classes = (AllowAny,)
+    filter_backends = (filters.DjangoFilterBackend,)
+    filterset_fields = ('user__username', 'user__first_name', 'user__last_name',
+                        'user__is_active', 'alias__alias')
+
+    def list(self, request, *args, **kwargs):
+        queryset = self.filter_queryset(self.get_queryset())
+
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = serializers.ListRetrieveSupervisorProfileSerializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+
+        serializer = serializers.ListRetrieveSupervisorProfileSerializer(queryset, many=True)
+        return Response(serializer.data)
 
 
-class ResourceProfileViewSet(mixins.RetrieveModelMixin,
-                             mixins.UpdateModelMixin,
-                             mixins.DestroyModelMixin,
-                             viewsets.GenericViewSet):
-    """
-    Updates and retrieves user accounts
-    """
+class ResourceProfileRetrieveDestroyViewSet(mixins.RetrieveModelMixin,
+                                            mixins.UpdateModelMixin,
+                                            mixins.DestroyModelMixin,
+                                            viewsets.GenericViewSet):
     queryset = ResourceProfile.objects.all()
-    serializer_class = ResourceProfileSerializer
+    serializer_class = serializers.ListRetrieveResourceProfileSerializer
     permission_classes = (AllowAny,)
 
+    def update(self, request, *args, **kwargs):
+        partial = kwargs.pop('partial', False)
+        instance = self.get_object()
+        serializer = serializers.CreateUpdateResourceProfileSerializer(instance, data=request.data,
+                                                                       partial=partial)
+        serializer.is_valid(raise_exception=True)
+        self.perform_update(serializer)
 
-class ResourceProfileCreateViewSet(mixins.CreateModelMixin,
-                                   mixins.ListModelMixin,
-                                   viewsets.GenericViewSet):
-    """
-    Creates user accounts
-    """
+        if getattr(instance, '_prefetched_objects_cache', None):
+            # If 'prefetch_related' has been applied to a queryset, we need to
+            # forcibly invalidate the prefetch cache on the instance.
+            instance._prefetched_objects_cache = {}
+
+        return Response(serializer.data)
+
+
+class ResourceFilter(django_filters.FilterSet):
+    user__username = django_filters.CharFilter(lookup_expr='iexact')
+    user__first_name = django_filters.CharFilter(lookup_expr='iexact')
+    user__last_name = django_filters.CharFilter(lookup_expr='iexact')
+    user__is_active = django_filters.CharFilter(lookup_expr='iexact')
+    type__name = django_filters.CharFilter(lookup_expr='iexact')
+
+    class Meta:
+        model = ResourceProfile
+        exclude = ['user', 'type', 'domain']
+
+
+class ResourceProfileCreateUpdateViewSet(mixins.CreateModelMixin,
+                                         mixins.ListModelMixin,
+                                         viewsets.GenericViewSet):
     queryset = ResourceProfile.objects.all()
-    serializer_class = ResourceProfileSerializer
+    serializer_class = serializers.CreateUpdateResourceProfileSerializer
     permission_classes = (AllowAny,)
+    filter_backends = (filters.DjangoFilterBackend,)
+    filterset_class = ResourceFilter
+
+    def list(self, request, *args, **kwargs):
+        queryset = self.filter_queryset(self.get_queryset())
+
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = serializers.ListRetrieveResourceProfileSerializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+
+        serializer = serializers.ListRetrieveResourceProfileSerializer(queryset, many=True)
+        return Response(serializer.data)
 
 
 class HelloView(APIView):
@@ -113,6 +200,35 @@ class HelloView(APIView):
         cache.set("key", "Hello from redis cache!", timeout=None)
         content = {'message': cache.get("key")}
         return HttpResponse(json.dumps(content))
+
+
+@swagger_auto_schema(operation_description="Enable user, Only Admin user",
+                     request_body={'user_id': 'USER_ID'},
+                     responses={200: 'Domain successfully created',
+                                400: 'Domain already created'})
+class EnableUserView(APIView):
+    permission_classes = (AllowAny,)
+
+    def post(self, request):
+        user_id = request.data.get('user_id')
+
+        if not user_id:
+            return HttpResponse(json.dumps({'message': 'User id invalid or empty'}),
+                                status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            user = User.objects.get(id=user_id)
+        except User.DoesNotExist:
+            return HttpResponse(json.dumps({'message': 'Error changing user status'}),
+                                status=status.HTTP_400_BAD_REQUEST)
+
+        if user.is_active:
+            return HttpResponse(json.dumps({'message': 'Error changing user status'}),
+                                status=status.HTTP_400_BAD_REQUEST)
+
+        user.is_active = True
+        user.save()
+        return HttpResponse(json.dumps({'message': 'User activated successfully'}))
 
 
 class GoogleView(APIView):

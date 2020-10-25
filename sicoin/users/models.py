@@ -11,6 +11,7 @@ from sicoin.users.enums import ValidRoles
 
 class User(AbstractUser):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    email = models.EmailField(unique=True)
 
     def __str__(self):
         return self.username

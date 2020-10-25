@@ -21,25 +21,31 @@ except FileNotFoundError:
 class Common(Configuration):
 
     INSTALLED_APPS = (
-        'django.contrib.admin',
+        'material.admin',
+        'material.admin.default',
         'django.contrib.auth',
         'django.contrib.contenttypes',
         'django.contrib.sessions',
         'django.contrib.messages',
         'django.contrib.staticfiles',
+        'django.contrib.gis',
 
 
         # Third party apps
         'corsheaders',
         'channels',
         'rest_framework',            # utilities for rest apis
+        'rest_framework_gis',
         'rest_framework.authtoken',  # token authentication
         'django_filters',            # for filtering rest endpoints
         'encrypted_fields',
+        'simple_history',
 
         # Your apps
         'sicoin.users',
         'sicoin.domain_config',
+        'sicoin.incident',
+        'sicoin.geolocation',
         'chat',
         'drf_yasg',
 
@@ -57,6 +63,7 @@ class Common(Configuration):
         'django.contrib.auth.middleware.AuthenticationMiddleware',
         'django.contrib.messages.middleware.MessageMiddleware',
         'django.middleware.clickjacking.XFrameOptionsMiddleware',
+        'simple_history.middleware.HistoryRequestMiddleware',
     )
 
     STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
@@ -97,7 +104,8 @@ class Common(Configuration):
     DATABASES = {
         'default': dj_database_url.config(
             default=env('POSTGRES_CONN', default='postgresql://root:password@postgres:5432/db_dev'),
-            conn_max_age=int(env('POSTGRES_CONN_MAX_AGE', default=600))
+            conn_max_age=int(env('POSTGRES_CONN_MAX_AGE', default=600)),
+            engine='django.contrib.gis.db.backends.postgis'
         )
     }
 
@@ -275,4 +283,29 @@ class Common(Configuration):
                 "PASSWORD": env('REDIS_PASSWD')
             }
         }
+    }
+
+    MATERIAL_ADMIN_SITE = {
+        'HEADER': 'SICOIN Internal Administration',  # Admin site header
+        'TITLE': 'SICOIN Internal Administration',  # Admin site title
+        'MAIN_BG_COLOR': 'black',  # Admin site main color, css color should be specified
+        'MAIN_HOVER_COLOR': 'blue',  # Admin site main hover color, css color should be specified
+        # 'PROFILE_PICTURE': 'path/to/image',  # Admin site profile picture
+        # 'PROFILE_BG': 'path/to/image',  # Admin site profile background
+        # 'LOGIN_LOGO': 'path/to/image',  # Admin site logo on login page
+        # 'LOGOUT_BG': 'path/to/image',
+        # Admin site background on login/logout pages (path to static should be specified)
+        'SHOW_THEMES': True,  # Show default admin themes button
+        # 'TRAY_REVERSE': True,  # Hide object-tools and additional-submit-line by default
+        'SHOW_COUNTS': True,  # Show instances counts for each model
+        # 'APP_ICONS': {
+        #     # Set icons for applications(lowercase), including 3rd party apps,
+        #     {'application_name': 'material_icon_name', ...}
+        #     'sites': 'send',
+        # },
+        # 'MODEL_ICONS': {
+        #     # Set icons for models(lowercase), including 3rd party models,
+        #     {'model_name': 'material_icon_name', ...}
+        #     'site': 'contact_mail',
+        # }
     }

@@ -1,0 +1,211 @@
+[
+  {
+    "model": "domain_config.supervisoralias",
+    "pk": 1,
+    "fields": {
+      "created_at": "2020-10-08T00:51:08.439Z",
+      "updated_at": "2020-10-08T00:51:08.439Z",
+      "alias": "Bombero",
+      "domain_config": 1
+    }
+  },
+  {
+    "model": "domain_config.supervisoralias",
+    "pk": 2,
+    "fields": {
+      "created_at": "2020-10-08T00:51:08.443Z",
+      "updated_at": "2020-10-08T00:51:08.443Z",
+      "alias": "Oficial",
+      "domain_config": 1
+    }
+  },
+  {
+    "model": "domain_config.supervisoralias",
+    "pk": 3,
+    "fields": {
+      "created_at": "2020-10-08T00:51:08.445Z",
+      "updated_at": "2020-10-08T00:51:08.445Z",
+      "alias": "Suboficial",
+      "domain_config": 1
+    }
+  },
+  {
+    "model": "domain_config.resourcetype",
+    "pk": 1,
+    "fields": {
+      "created_at": "2020-10-08T00:51:08.456Z",
+      "updated_at": "2020-10-08T00:51:08.470Z",
+      "name": "Bombero",
+      "domain_config": 1
+    }
+  },
+  {
+    "model": "domain_config.resourcetype",
+    "pk": 2,
+    "fields": {
+      "created_at": "2020-10-08T00:51:08.480Z",
+      "updated_at": "2020-10-08T00:51:08.480Z",
+      "name": "Canino",
+      "domain_config": 1
+    }
+  },
+  {
+    "model": "domain_config.mappointdescription",
+    "pk": 1,
+    "fields": {
+      "created_at": "2020-10-08T00:51:08.451Z",
+      "updated_at": "2020-10-08T00:51:08.451Z",
+      "text": "descripcion util para un map point en particular",
+      "incident_type": 1
+    }
+  },
+  {
+    "model": "domain_config.mappointdescription",
+    "pk": 2,
+    "fields": {
+      "created_at": "2020-10-08T00:51:08.467Z",
+      "updated_at": "2020-10-08T00:51:08.467Z",
+      "text": "descripcion util para un map point en particular",
+      "incident_type": 2
+    }
+  },
+  {
+    "model": "domain_config.incidenttyperesource",
+    "pk": 1,
+    "fields": {
+      "created_at": "2020-10-08T00:51:08.461Z",
+      "updated_at": "2020-10-08T00:51:08.461Z",
+      "incident_type": 1,
+      "resource_type": 1
+    }
+  },
+  {
+    "model": "domain_config.incidenttyperesource",
+    "pk": 2,
+    "fields": {
+      "created_at": "2020-10-08T00:51:08.474Z",
+      "updated_at": "2020-10-08T00:51:08.475Z",
+      "incident_type": 2,
+      "resource_type": 1
+    }
+  },
+  {
+    "model": "domain_config.incidenttyperesource",
+    "pk": 3,
+    "fields": {
+      "created_at": "2020-10-08T00:51:08.483Z",
+      "updated_at": "2020-10-08T00:51:08.483Z",
+      "incident_type": 2,
+      "resource_type": 2
+    }
+  },
+  {
+    "model": "domain_config.incidenttype",
+    "pk": 1,
+    "fields": {
+      "created_at": "2020-10-08T00:51:08.448Z",
+      "updated_at": "2020-10-08T00:51:08.448Z",
+      "name": "Incendio de Campo",
+      "abstraction": 1
+    }
+  },
+  {
+    "model": "domain_config.incidenttype",
+    "pk": 2,
+    "fields": {
+      "created_at": "2020-10-08T00:51:08.466Z",
+      "updated_at": "2020-10-08T00:51:08.466Z",
+      "name": "B\u00fasqueda",
+      "abstraction": 2
+    }
+  },
+  {
+    "model": "domain_config.incidentabstraction",
+    "pk": 1,
+    "fields": {
+      "created_at": "2020-10-08T00:51:08.446Z",
+      "updated_at": "2020-10-08T00:51:08.446Z",
+      "alias": "Incidente",
+      "domain_config": 1
+    }
+  },
+  {
+    "model": "domain_config.incidentabstraction",
+    "pk": 2,
+    "fields": {
+      "created_at": "2020-10-08T00:51:08.464Z",
+      "updated_at": "2020-10-08T00:51:08.464Z",
+      "alias": "B\u00fasqueda",
+      "domain_config": 1
+    }
+  },
+  {
+    "model": "domain_config.domainconfig",
+    "pk": 1,
+    "fields": {
+      "created_at": "2020-10-08T00:51:08.432Z",
+      "updated_at": "2020-10-08T00:51:08.432Z",
+      "domain_name": "DominioPersonalizado",
+      "admin_alias": "Administrador",
+      "domain_code": "K44YWHOI51",
+      "parsed_json": {
+        "name": "DominioPersonalizado",
+        "adminAlias": "Administrador",
+        "supervisorAliases": [
+          {
+            "name": "Suboficial"
+          },
+          {
+            "name": "Oficial"
+          },
+          {
+            "name": "Bombero"
+          }
+        ],
+        "incidentAbstractions": [
+          {
+            "name": "B\u00fasqueda",
+            "types": [
+              {
+                "name": "B\u00fasqueda",
+                "descriptions": [
+                  {
+                    "text": "descripcion util para un map point en particular"
+                  }
+                ],
+                "resourceTypes": [
+                  {
+                    "name": "Bombero"
+                  },
+                  {
+                    "name": "Canino"
+                  }
+                ],
+                "detailsSchema": {}
+              }
+            ]
+          },
+          {
+            "name": "Incidente",
+            "types": [
+              {
+                "name": "Incendio de Campo",
+                "descriptions": [
+                  {
+                    "text": "descripcion util para un map point en particular"
+                  }
+                ],
+                "resourceTypes": [
+                  {
+                    "name": "Bombero"
+                  }
+                ],
+                "detailsSchema": {}
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }
+]

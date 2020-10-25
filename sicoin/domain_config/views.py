@@ -8,7 +8,7 @@ from rest_framework.permissions import AllowAny
 from rest_framework.views import APIView
 
 from sicoin.domain_config import models
-from sicoin.domain_config.serializers import DomainSerializer
+from sicoin.domain_config.serializers import DomainSerializer, CheckDomainCodeSerializer
 from sicoin.domain_config.utils import get_random_alphanumeric_string
 
 
@@ -29,16 +29,16 @@ class DomainConfigAPIView(APIView):
                                     400: 'Domain already created'})
     def post(self, request):
         serializer = DomainSerializer(data=request.data)
-        if serializer.is_valid(raise_exception=True):
-            if len(models.DomainConfig.objects.all()):
-                return HttpResponse(json.dumps({'message': 'Another domain is already created.'}),
-                                    status=status.HTTP_400_BAD_REQUEST)
-                # ^^ We currently support a single domain.
+        serializer.is_valid(raise_exception=True)
+        if len(models.DomainConfig.objects.all()):
+            return HttpResponse(json.dumps({'message': 'Another domain is already created.'}),
+                                status=status.HTTP_400_BAD_REQUEST)
+            # ^^ We currently support a single domain.
 
-            if bool(os.getenv('SAVE_DOMAIN_CONFIG')):
-                serializer.save()
-            # ENABLE THIS when frontend trials are finished
-            return HttpResponse(json.dumps({'message': 'Domain successfully created'}))
+        if bool(os.getenv('SAVE_DOMAIN_CONFIG')):
+            serializer.save()
+        # ENABLE THIS when frontend trials are finished
+        return HttpResponse(json.dumps({'message': 'Domain successfully created'}))
 
 
 class GenerateNewDomainCodeAPIView(APIView):
@@ -70,3 +70,16 @@ class GetCurrentDomainCodeAPIView(APIView):
             return HttpResponse(json.dumps({'domain_code': domain_config.domain_code}))
         return HttpResponse(json.dumps({'message': 'No Domain exists'}), status=status.HTTP_404_NOT_FOUND)
         # ^^ We currently support a single domain.
+
+
+class CheckCurrentDomainCodeAPIView(APIView):
+    permission_classes = (AllowAny,)
+
+    @swagger_auto_schema(operation_description="Check of current domain code",
+                         request_body=CheckDomainCodeSerializer,
+                         responses={200: "{'message': 'CURRENT_CODE'}",
+                                    400: "{'message': 'Incorrect code or No Domain exists'}"})
+    def post(self, request):
+        serializer = CheckDomainCodeSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        return HttpResponse(json.dumps({'message': 'Correct code'}))

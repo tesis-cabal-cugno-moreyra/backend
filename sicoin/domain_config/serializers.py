@@ -1,5 +1,8 @@
 from rest_framework import serializers
+from rest_framework.fields import JSONField
+
 from sicoin.domain_config import models
+from sicoin.domain_config.models import DomainConfig, ResourceType
 from sicoin.domain_config.utils import get_random_alphanumeric_string
 
 
@@ -31,6 +34,7 @@ class MapPointDescriptionSerializer(DomainSerializer):
 class IncidentTypeSerializer(DomainSerializer):
     name = serializers.CharField(max_length=200)
     descriptions = MapPointDescriptionSerializer(many=True)
+    detailsSchema = JSONField()
     resourceTypes = ResourceTypeSerializer(many=True)
 
 
@@ -47,10 +51,11 @@ class IncidentAbstractionSerializer(DomainSerializer):
             for incident_type in incident_abstraction.get('types'):
                 incident_type_instance = models.IncidentType.objects.create(**{
                     'name': incident_type.get('name'),
+                    'details_schema': incident_type.get('detailsSchema'),
                     'abstraction': incident_abstraction_instance
                 })
                 for description in incident_type.get('descriptions'):
-                    models.MapPointDescriptions.objects.create(**{
+                    models.MapPointDescription.objects.create(**{
                         'text': description.get('text'),
                         'incident_type': incident_type_instance
                     })
@@ -59,7 +64,7 @@ class IncidentAbstractionSerializer(DomainSerializer):
                         'name': resource_type.get('name'),
                         'domain_config': domain
                     })
-                    models.IncidentTypeResources.objects.update_or_create(**{
+                    models.IncidentTypeResource.objects.update_or_create(**{
                         'incident_type': incident_type_instance,
                         'resource_type': resource_instance[0]
                     })
@@ -91,3 +96,31 @@ class DomainSerializer(serializers.Serializer):
 
     def update(self, instance, validated_data):
         raise Exception("Not implemented function")
+
+
+class DomainFromDatabaseSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = DomainConfig
+        exclude = ['parsed_json', 'domain_code']
+
+
+class ResourceTypeFromDatabaseSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = ResourceType
+        exclude = []
+
+
+class CheckDomainCodeSerializer(serializers.Serializer):
+    domain_code = serializers.CharField(max_length=200)
+
+    def validate_domain_code(self, value):
+        try:
+            domain = DomainConfig.objects.all()[0]
+        except IndexError:
+            raise serializers.ValidationError("Incorrect code or No Domain exists")
+
+        if domain.domain_code != value:
+            raise serializers.ValidationError("Incorrect code or No Domain exists")
+        return value
