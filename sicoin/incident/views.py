@@ -44,6 +44,22 @@ class IncidentCreateListViewSet(mixins.CreateModelMixin,
         return Response(serializer.data)
 
 
+class ValidateIncidentDetailsAPIView(APIView):
+    permission_classes = (AllowAny,)
+
+    @swagger_auto_schema(operation_description="Enable user, Only Admin user",
+                         request_body=serializers.ValidateIncidentDetailsSerializer,
+                         responses={200: '{ "message": "Incident data is complete" }',
+                                    400: "{'message': 'Incident with id: ID does not exist'},"
+                                         "{'message': 'Details validation failed. Error: ERROR'}"})
+    def post(self, request, format=None):
+        serializer = serializers.ValidateIncidentDetailsSerializer(data=request.data)
+        if serializer.is_valid(raise_exception=True):
+            serializer.save()
+            return HttpResponse(json.dumps({'message': 'Incident data is complete'}),
+                                status=status.HTTP_200_OK)
+
+
 class AddIncidentResourceToIncidentAPIView(APIView):
     permission_classes = (AllowAny,)
 

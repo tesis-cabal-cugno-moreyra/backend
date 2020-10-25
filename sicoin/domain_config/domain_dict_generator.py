@@ -35,6 +35,7 @@ class DomainDictGenerator:
                              incident_type.mappointdescription_set.all()],
             "resourceTypes": [self._incident_type_resource_type_to_dict(resource) for resource in
                               incident_type.incidenttyperesource_set.all()],
+            "detailsSchema": incident_type.details_schema
         }
 
     def _incident_type_resource_type_to_dict(self, incident_type_resource: models.IncidentTypeResource):
