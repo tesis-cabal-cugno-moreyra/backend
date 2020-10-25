@@ -27,7 +27,8 @@ class TestCreateDomainSerializer(TestCase):
                         {
                             "name": "Incendio de Campo",
                             "descriptions": [{"text": "descripcion util para un map point en particular"}],
-                            "resourceTypes": [{"name": "Bombero"}]
+                            "resourceTypes": [{"name": "Bombero"}],
+                            "detailsSchema": {}
                         }
                     ]
                 },
@@ -37,7 +38,9 @@ class TestCreateDomainSerializer(TestCase):
                         {
                             "name": "Búsqueda",
                             "descriptions": [{"text": "descripcion util para un map point en particular"}],
-                            "resourceTypes": [{"name": "Bombero"}, {"name": "Canino"}]}
+                            "resourceTypes": [{"name": "Bombero"}, {"name": "Canino"}],
+                            "detailsSchema": {}
+                        }
                     ]
                 }
             ],

@@ -1,4 +1,6 @@
 from rest_framework import serializers
+from rest_framework.fields import JSONField
+
 from sicoin.domain_config import models
 from sicoin.domain_config.models import DomainConfig, ResourceType
 from sicoin.domain_config.utils import get_random_alphanumeric_string
@@ -32,6 +34,7 @@ class MapPointDescriptionSerializer(DomainSerializer):
 class IncidentTypeSerializer(DomainSerializer):
     name = serializers.CharField(max_length=200)
     descriptions = MapPointDescriptionSerializer(many=True)
+    detailsSchema = JSONField()
     resourceTypes = ResourceTypeSerializer(many=True)
 
 
@@ -48,6 +51,7 @@ class IncidentAbstractionSerializer(DomainSerializer):
             for incident_type in incident_abstraction.get('types'):
                 incident_type_instance = models.IncidentType.objects.create(**{
                     'name': incident_type.get('name'),
+                    'details_schema': incident_type.get('detailsSchema'),
                     'abstraction': incident_abstraction_instance
                 })
                 for description in incident_type.get('descriptions'):
