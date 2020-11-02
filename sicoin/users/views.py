@@ -202,16 +202,14 @@ class HelloView(APIView):
         return HttpResponse(json.dumps(content))
 
 
-@swagger_auto_schema(operation_description="Enable user, Only Admin user",
-                     request_body={'user_id': 'USER_ID'},
-                     responses={200: 'Domain successfully created',
-                                400: 'Domain already created'})
-class EnableUserView(APIView):
+class ChangeUserStatusUserView(APIView):
     permission_classes = (AllowAny,)
 
-    def post(self, request):
-        user_id = request.data.get('user_id')
-
+    @swagger_auto_schema(operation_description="Activate or deactivate user, Only Admin user",
+                         responses={200: "{'message': 'Changed user status successfully'}",
+                                    400: "{'message': 'User id invalid or empty'},"
+                                         "{'message': 'Error changing user status'}"})
+    def post(self, request, user_id):
         if not user_id:
             return HttpResponse(json.dumps({'message': 'User id invalid or empty'}),
                                 status=status.HTTP_400_BAD_REQUEST)
@@ -222,13 +220,26 @@ class EnableUserView(APIView):
             return HttpResponse(json.dumps({'message': 'Error changing user status'}),
                                 status=status.HTTP_400_BAD_REQUEST)
 
-        if user.is_active:
+        if user.is_active == self.get_user_is_active_change_to():
             return HttpResponse(json.dumps({'message': 'Error changing user status'}),
                                 status=status.HTTP_400_BAD_REQUEST)
 
-        user.is_active = True
+        user.is_active = self.get_user_is_active_change_to()
         user.save()
-        return HttpResponse(json.dumps({'message': 'User activated successfully'}))
+        return HttpResponse(json.dumps({'message': 'Changed user status successfully'}))
+
+    def get_user_is_active_change_to(self) -> bool:
+        raise NotImplementedError()
+
+
+class ActivateUserView(ChangeUserStatusUserView):
+    def get_user_is_active_change_to(self):
+        return True
+
+
+class DeactivateUserView(ChangeUserStatusUserView):
+    def get_user_is_active_change_to(self):
+        return False
 
 
 class GoogleView(APIView):
