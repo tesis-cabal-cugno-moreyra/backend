@@ -44,6 +44,50 @@ class IncidentCreateListViewSet(mixins.CreateModelMixin,
         return Response(serializer.data)
 
 
+class ChangeIncidentVisibilityAPIView(APIView):
+    permission_classes = (AllowAny,)
+
+    @swagger_auto_schema(operation_description="Set incident visibility as Private or Public,"
+                                               "Only Admin user",
+                         responses={200: "{'message': 'Changed user status successfully'}",
+                                    400: "{'message': 'Incident with id {ID} does not exists'},"
+                                         "{'message': 'Incident visibility as --- already set'}"})
+    def post(self, request, incident_id):
+        if not incident_id:
+            return HttpResponse(json.dumps({'message': 'Incident id invalid or empty'}),
+                                status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            incident = Incident.objects.get(id=incident_id)
+        except Incident.DoesNotExist:
+            return HttpResponse(json.dumps({'message': f'Incident with id {incident_id} '
+                                                       f'does not exists'}),
+                                status=status.HTTP_400_BAD_REQUEST)
+
+        if incident.visibility == self.get_incident_visibility_change_to():
+            return HttpResponse(json.dumps({'message': f'Incident visibility as '
+                                                       f'{self.get_incident_visibility_change_to()} '
+                                                       f'already set'}),
+                                status=status.HTTP_400_BAD_REQUEST)
+
+        incident.visibility = self.get_incident_visibility_change_to()
+        incident.save()
+        return HttpResponse(json.dumps({'message': 'Changed incident visibility successfully'}))
+
+    def get_incident_visibility_change_to(self) -> str:
+        raise NotImplementedError()
+
+
+class IncidentVisibilityPublicAPIView(ChangeIncidentVisibilityAPIView):
+    def get_incident_visibility_change_to(self) -> str:
+        return Incident.INCIDENT_VISIBILITY_PUBLIC
+
+
+class IncidentVisibilityPrivateAPIView(ChangeIncidentVisibilityAPIView):
+    def get_incident_visibility_change_to(self) -> str:
+        return Incident.INCIDENT_VISIBILITY_PRIVATE
+
+
 class ValidateIncidentDetailsAPIView(APIView):
     permission_classes = (AllowAny,)
 
@@ -68,7 +112,7 @@ class AddIncidentResourceToIncidentAPIView(APIView):
                                     400: "{'message': 'Incident is not at Created state'},"
                                          "{'message': 'User resource is not active'}",
                                     404: "{'message': 'Incident not found'},"
-                                         "{'message': 'Resource not found'}"},)
+                                         "{'message': 'Resource not found'}"}, )
     def post(self, request, incident_id, resource_id):
         try:
             incident = models.Incident.objects.get(id=incident_id)
