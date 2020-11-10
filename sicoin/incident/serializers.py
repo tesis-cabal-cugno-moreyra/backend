@@ -19,8 +19,9 @@ class ListIncidentSerializer(serializers.ModelSerializer):
 class CreateIncidentSerializer(serializers.Serializer):
     domain_name = serializers.CharField(max_length=255)
     incident_type_name = serializers.CharField(max_length=255)
-    visibility = serializers.ChoiceField(choices=Incident.INCIDENT_VISIBILITIES)
+    external_assistance = serializers.ChoiceField(choices=Incident.INCIDENT_ASSISTANCE_OPTIONS)
     location_as_string_reference = serializers.CharField(max_length=255, allow_blank=True)
+    reference = serializers.CharField(max_length=255)
     location_point = GeometryField()
 
     def validate(self, data):
@@ -43,9 +44,10 @@ class CreateIncidentSerializer(serializers.Serializer):
         incident = Incident()
         incident.domain_config = DomainConfig.objects.get(domain_name=validated_data.get('domain_name'))
         incident.incident_type = IncidentType.objects.get(name=validated_data.get('incident_type_name'))
-        incident.visibility = validated_data.get('visibility')
+        incident.external_assistance = validated_data.get('external_assistance')
         incident.location_as_string_reference = validated_data.get('location_as_string_reference')
         incident.location_point = validated_data.get('location_point')
+        incident.reference = validated_data.get('reference')
         incident.save()
         return incident
 
@@ -56,7 +58,7 @@ class CreateIncidentSerializer(serializers.Serializer):
             'id': instance.id,
             'domain_name': instance.domain_config.domain_name,
             'incident_type_name': instance.incident_type.name,
-            'visibility': instance.visibility,
+            'external_assistance': instance.external_assistance,
             'data_status': instance.data_status,
             'status': instance.status,
             'location_as_string_reference': instance.location_as_string_reference,
@@ -67,8 +69,8 @@ class CreateIncidentSerializer(serializers.Serializer):
         }
 
     class Meta:
-        fields = ('id', 'domain_name', 'incident_type_name', 'visibility',
-                  'data_status', 'status', 'location_as_string_reference',
+        fields = ('id', 'domain_name', 'incident_type_name', 'external_assistance',
+                  'reference', 'data_status', 'status', 'location_as_string_reference',
                   'location_point', 'created_at', 'updated_at', 'finalized_at')
 
 

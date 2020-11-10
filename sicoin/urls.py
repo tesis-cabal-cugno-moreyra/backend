@@ -8,7 +8,8 @@ from django.views.generic.base import RedirectView
 from rest_framework.routers import DefaultRouter
 
 from .incident.views import AddIncidentResourceToIncidentAPIView, IncidentCreateListViewSet, \
-    ValidateIncidentDetailsAPIView, IncidentVisibilityPublicAPIView, IncidentVisibilityPrivateAPIView
+    ValidateIncidentDetailsAPIView, IncidentAssistanceWithExternalSupportAPIView, \
+    IncidentAssistanceWithoutExternalSupportAPIView
 from .users import views
 from .domain_config.views import DomainConfigAPIView, GenerateNewDomainCodeAPIView,\
     GetCurrentDomainCodeAPIView, CheckCurrentDomainCodeAPIView
@@ -52,8 +53,10 @@ urlpatterns = [
     path('api/v1/domain-config/domain-code/', GetCurrentDomainCodeAPIView.as_view()),
     path('api/v1/domain-config/domain-code/check/', CheckCurrentDomainCodeAPIView.as_view()),
     # path('api/v1/incidents/<int:incident_id>/resources/', ListResourcesFromIncident.as_view()),
-    path('api/v1/incidents/<int:incident_id>/public/', IncidentVisibilityPublicAPIView.as_view()),
-    path('api/v1/incidents/<int:incident_id>/private/', IncidentVisibilityPrivateAPIView.as_view()),
+    path('api/v1/incidents/<int:incident_id>/with-external-support/',
+         IncidentAssistanceWithExternalSupportAPIView.as_view()),
+    path('api/v1/incidents/<int:incident_id>/without-external-support/',
+         IncidentAssistanceWithoutExternalSupportAPIView.as_view()),
     path('api/v1/incidents/details/', ValidateIncidentDetailsAPIView.as_view()),
     path('api/v1/incidents/<int:incident_id>/resources/<int:resource_id>/',
          AddIncidentResourceToIncidentAPIView.as_view()),
