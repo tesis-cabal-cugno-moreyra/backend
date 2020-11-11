@@ -9,7 +9,8 @@ from rest_framework.routers import DefaultRouter
 
 from .incident.views import AddIncidentResourceToIncidentAPIView, IncidentCreateListViewSet, \
     ValidateIncidentDetailsAPIView, IncidentAssistanceWithExternalSupportAPIView, \
-    IncidentAssistanceWithoutExternalSupportAPIView
+    IncidentAssistanceWithoutExternalSupportAPIView, IncidentStatusFinalizeAPIView, \
+    IncidentStatusCancelAPIView
 from .users import views
 from .domain_config.views import DomainConfigAPIView, GenerateNewDomainCodeAPIView,\
     GetCurrentDomainCodeAPIView, CheckCurrentDomainCodeAPIView
@@ -53,6 +54,8 @@ urlpatterns = [
     path('api/v1/domain-config/domain-code/', GetCurrentDomainCodeAPIView.as_view()),
     path('api/v1/domain-config/domain-code/check/', CheckCurrentDomainCodeAPIView.as_view()),
     # path('api/v1/incidents/<int:incident_id>/resources/', ListResourcesFromIncident.as_view()),
+    path('api/v1/incidents/<int:incident_id>/finalize/', IncidentStatusFinalizeAPIView.as_view()),
+    path('api/v1/incidents/<int:incident_id>/cancel/', IncidentStatusCancelAPIView.as_view()),
     path('api/v1/incidents/<int:incident_id>/with-external-support/',
          IncidentAssistanceWithExternalSupportAPIView.as_view()),
     path('api/v1/incidents/<int:incident_id>/without-external-support/',

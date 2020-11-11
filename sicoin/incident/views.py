@@ -49,7 +49,7 @@ class ChangeIncidentExternalAssistanceAPIView(APIView):
 
     @swagger_auto_schema(operation_description="Set incident external assistance as With or Without "
                                                "external support, Only Admin user",
-                         responses={200: "{'message': 'Changed user status successfully'}",
+                         responses={200: "{'message': 'Changed incident status successfully'}",
                                     400: "{'message': 'Incident with id {ID} does not exists'},"
                                          "{'message': 'Incident external assistance as --- already set'}"})
     def post(self, request, incident_id):
@@ -86,6 +86,66 @@ class IncidentAssistanceWithExternalSupportAPIView(ChangeIncidentExternalAssista
 class IncidentAssistanceWithoutExternalSupportAPIView(ChangeIncidentExternalAssistanceAPIView):
     def get_incident_external_assistance_change_to(self) -> str:
         return Incident.INCIDENT_ASSISTANCE_WITHOUT_EXTERNAL_SUPPORT
+
+
+class ChangeIncidentStatusAPIView(APIView):
+    permission_classes = (AllowAny,)
+
+    @swagger_auto_schema(operation_description="Change incident status to Cancelled or Finalized",
+                         responses={200: "{'message': 'Changed incident status successfully'}",
+                                    400: "{'message': 'Incident with id {ID} does not exists'},"
+                                         "{'message': 'Incident status as --- already set'}"})
+    def post(self, request, incident_id):
+        if not incident_id:
+            return HttpResponse(json.dumps({'message': 'Incident id invalid or empty'}),
+                                status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            incident = Incident.objects.get(id=incident_id)
+        except Incident.DoesNotExist:
+            return HttpResponse(json.dumps({'message': f'Incident with id {incident_id} '
+                                                       f'does not exists'}),
+                                status=status.HTTP_400_BAD_REQUEST)
+
+        if self.is_able_to_change_status(incident):
+            incident.status = self.get_incident_status_change_to()
+            incident.save()
+            return HttpResponse(json.dumps({'message': 'Changed incident status successfully'}))
+        else:
+            return HttpResponse(json.dumps({'message': f'Incident with id {incident_id} '
+                                                       f'cannot change from state {incident.status} to '
+                                                       f'state {self.get_incident_status_change_to()}'}),
+                                status=status.HTTP_400_BAD_REQUEST)
+
+    def get_incident_status_change_to(self) -> str:
+        raise NotImplementedError()
+
+    def is_able_to_change_status(self, incident: Incident) -> bool:
+        raise NotImplementedError()
+
+
+class IncidentStatusFinalizeAPIView(ChangeIncidentStatusAPIView):
+    def get_incident_status_change_to(self) -> str:
+        return Incident.INCIDENT_STATUS_FINALIZED
+
+    def is_able_to_change_status(self, incident: Incident) -> bool:
+        if incident.status == Incident.INCIDENT_STATUS_CANCELED:
+            return False
+        if incident.status == self.get_incident_status_change_to():
+            return False
+        return True
+
+
+class IncidentStatusCancelAPIView(ChangeIncidentStatusAPIView):
+    def get_incident_status_change_to(self) -> str:
+        return Incident.INCIDENT_STATUS_CANCELED
+
+    def is_able_to_change_status(self, incident: Incident) -> bool:
+        if incident.status == Incident.INCIDENT_STATUS_FINALIZED:
+            return False
+        if incident.status == self.get_incident_status_change_to():
+            return False
+        return True
 
 
 class ValidateIncidentDetailsAPIView(APIView):
