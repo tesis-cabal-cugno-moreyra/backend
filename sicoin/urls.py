@@ -7,14 +7,17 @@ from django.contrib import admin
 from django.views.generic.base import RedirectView
 from rest_framework.routers import DefaultRouter
 
-from .incident.views import AddIncidentResourceToIncidentAPIView, IncidentCreateListViewSet,\
-    ValidateIncidentDetailsAPIView
+from .incident.views import AddIncidentResourceToIncidentAPIView, IncidentCreateListViewSet, \
+    ValidateIncidentDetailsAPIView, IncidentAssistanceWithExternalSupportAPIView, \
+    IncidentAssistanceWithoutExternalSupportAPIView
 from .users import views
 from .domain_config.views import DomainConfigAPIView, GenerateNewDomainCodeAPIView,\
     GetCurrentDomainCodeAPIView, CheckCurrentDomainCodeAPIView
 from rest_framework import permissions
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
+
+from .users.views import ActivateUserView, DeactivateUserView
 
 router = DefaultRouter()
 router.register(r'users', views.UserCreateListViewSet)
@@ -50,10 +53,16 @@ urlpatterns = [
     path('api/v1/domain-config/domain-code/', GetCurrentDomainCodeAPIView.as_view()),
     path('api/v1/domain-config/domain-code/check/', CheckCurrentDomainCodeAPIView.as_view()),
     # path('api/v1/incidents/<int:incident_id>/resources/', ListResourcesFromIncident.as_view()),
+    path('api/v1/incidents/<int:incident_id>/with-external-support/',
+         IncidentAssistanceWithExternalSupportAPIView.as_view()),
+    path('api/v1/incidents/<int:incident_id>/without-external-support/',
+         IncidentAssistanceWithoutExternalSupportAPIView.as_view()),
     path('api/v1/incidents/details/', ValidateIncidentDetailsAPIView.as_view()),
     path('api/v1/incidents/<int:incident_id>/resources/<int:resource_id>/',
          AddIncidentResourceToIncidentAPIView.as_view()),
 
+    path('api/v1/users/<uuid:user_id>/activate/', ActivateUserView.as_view()),
+    path('api/v1/users/<uuid:user_id>/deactivate/', DeactivateUserView.as_view()),
     re_path(r'^rest-auth/', include('dj_rest_auth.urls')),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     path('hello/', views.HelloView.as_view()),

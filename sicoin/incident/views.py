@@ -30,7 +30,7 @@ class IncidentCreateListViewSet(mixins.CreateModelMixin,
     serializer_class = serializers.CreateIncidentSerializer
     permission_classes = (AllowAny,)
     filter_backends = (filters.DjangoFilterBackend,)
-    filterset_fields = ('incident_type__name', 'visibility', 'status', 'data_status')
+    filterset_fields = ('incident_type__name', 'external_assistance', 'status', 'data_status')
 
     def list(self, request, *args, **kwargs):
         queryset = self.filter_queryset(self.get_queryset())
@@ -42,6 +42,50 @@ class IncidentCreateListViewSet(mixins.CreateModelMixin,
 
         serializer = serializers.ListIncidentSerializer(queryset, many=True)
         return Response(serializer.data)
+
+
+class ChangeIncidentExternalAssistanceAPIView(APIView):
+    permission_classes = (AllowAny,)
+
+    @swagger_auto_schema(operation_description="Set incident external assistance as With or Without "
+                                               "external support, Only Admin user",
+                         responses={200: "{'message': 'Changed user status successfully'}",
+                                    400: "{'message': 'Incident with id {ID} does not exists'},"
+                                         "{'message': 'Incident external assistance as --- already set'}"})
+    def post(self, request, incident_id):
+        if not incident_id:
+            return HttpResponse(json.dumps({'message': 'Incident id invalid or empty'}),
+                                status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            incident = Incident.objects.get(id=incident_id)
+        except Incident.DoesNotExist:
+            return HttpResponse(json.dumps({'message': f'Incident with id {incident_id} '
+                                                       f'does not exists'}),
+                                status=status.HTTP_400_BAD_REQUEST)
+
+        if incident.external_assistance == self.get_incident_external_assistance_change_to():
+            return HttpResponse(json.dumps({'message': f'Incident external assistance as '
+                                                       f'{self.get_incident_external_assistance_change_to()} '
+                                                       f'already set'}),
+                                status=status.HTTP_400_BAD_REQUEST)
+
+        incident.external_assistance = self.get_incident_external_assistance_change_to()
+        incident.save()
+        return HttpResponse(json.dumps({'message': 'Changed incident assistance successfully'}))
+
+    def get_incident_external_assistance_change_to(self) -> str:
+        raise NotImplementedError()
+
+
+class IncidentAssistanceWithExternalSupportAPIView(ChangeIncidentExternalAssistanceAPIView):
+    def get_incident_external_assistance_change_to(self) -> str:
+        return Incident.INCIDENT_ASSISTANCE_WITH_EXTERNAL_SUPPORT
+
+
+class IncidentAssistanceWithoutExternalSupportAPIView(ChangeIncidentExternalAssistanceAPIView):
+    def get_incident_external_assistance_change_to(self) -> str:
+        return Incident.INCIDENT_ASSISTANCE_WITHOUT_EXTERNAL_SUPPORT
 
 
 class ValidateIncidentDetailsAPIView(APIView):
@@ -68,7 +112,7 @@ class AddIncidentResourceToIncidentAPIView(APIView):
                                     400: "{'message': 'Incident is not at Created state'},"
                                          "{'message': 'User resource is not active'}",
                                     404: "{'message': 'Incident not found'},"
-                                         "{'message': 'Resource not found'}"},)
+                                         "{'message': 'Resource not found'}"}, )
     def post(self, request, incident_id, resource_id):
         try:
             incident = models.Incident.objects.get(id=incident_id)
