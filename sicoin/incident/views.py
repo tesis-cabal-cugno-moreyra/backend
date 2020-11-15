@@ -1,15 +1,5 @@
-# from django.shortcuts import render
-
-# Create your views here.
-
-# Create incident
-
-# Data REALLY needed ->
-# Pause incident
-# Finalize incident
-# List filtered incidents DEFAULT=ALL, querystring for additional statuses
-
 import json
+from datetime import datetime
 
 from django.http import HttpResponse
 from django_filters import rest_framework as filters
@@ -18,13 +8,16 @@ from rest_framework import status, mixins, viewsets
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from rest_framework.viewsets import GenericViewSet
+
 from sicoin.incident import models, serializers
-from sicoin.incident.models import Incident
+from sicoin.incident.models import Incident, IncidentResource
+from sicoin.incident.serializers import IncidentResourceSerializer
 from sicoin.users.models import ResourceProfile
 
 
 class IncidentCreateListViewSet(mixins.CreateModelMixin,
-                                mixins.ListModelMixin,
+                                mixins.RetrieveModelMixin,
                                 viewsets.GenericViewSet):
     queryset = Incident.objects.all()
     serializer_class = serializers.CreateIncidentSerializer
@@ -194,4 +187,35 @@ class AddIncidentResourceToIncidentAPIView(APIView):
             return HttpResponse(json.dumps({'message': 'User resource is not active'}),
                                 status=status.HTTP_400_BAD_REQUEST)
 
+        incident_resource = IncidentResource()
+
+        incident_resource.incident = incident
+        incident_resource.resource = resource
+        incident_resource.save()
+
         return HttpResponse(json.dumps({'message': 'IncidentResource successfully created'}))
+
+
+class IncidentResourceViewSet(GenericViewSet):
+    permission_classes = (AllowAny,)
+    queryset = IncidentResource.objects.all()
+    serializer_class = IncidentResourceSerializer
+
+    def list(self, request, *args, **kwargs):
+        incident_id = kwargs.get('incident_id')
+        assert incident_id is not None, "incident_id is required"
+        try:
+            incident = models.Incident.objects.get(id=incident_id)
+        except models.Incident.DoesNotExist:
+            return HttpResponse(json.dumps({'message': 'Incident not found'}),
+                                status=status.HTTP_404_NOT_FOUND)
+
+        incident_resources = incident.incidentresource_set.all()
+
+        page = self.paginate_queryset(incident_resources)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+
+        serializer = self.get_serializer(incident_resources, many=True)
+        return Response(serializer.data)

@@ -10,7 +10,7 @@ from rest_framework.routers import DefaultRouter
 from .incident.views import AddIncidentResourceToIncidentAPIView, IncidentCreateListViewSet, \
     ValidateIncidentDetailsAPIView, IncidentAssistanceWithExternalSupportAPIView, \
     IncidentAssistanceWithoutExternalSupportAPIView, IncidentStatusFinalizeAPIView, \
-    IncidentStatusCancelAPIView
+    IncidentStatusCancelAPIView, IncidentResourceViewSet
 from .users import views
 from .domain_config.views import DomainConfigAPIView, GenerateNewDomainCodeAPIView,\
     GetCurrentDomainCodeAPIView, CheckCurrentDomainCodeAPIView
@@ -29,6 +29,7 @@ router.register(r'supervisors', views.SupervisorProfileViewSet)
 router.register(r'supervisors', views.SupervisorProfileCreateUpdateListViewSet)
 router.register(r'resources', views.ResourceProfileCreateUpdateViewSet)
 router.register(r'resources', views.ResourceProfileRetrieveDestroyViewSet)
+router.register(r'incidents/(?P<incident_id>\d+)/resources', IncidentResourceViewSet)
 router.register(r'incidents', IncidentCreateListViewSet)
 
 schema_view = get_schema_view(

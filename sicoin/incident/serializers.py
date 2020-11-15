@@ -3,7 +3,7 @@ from rest_framework_gis.fields import GeometryField
 
 from sicoin.domain_config.models import DomainConfig, IncidentType
 from sicoin.domain_config.serializers import DomainFromDatabaseSerializer
-from sicoin.incident.models import Incident
+from sicoin.incident.models import Incident, IncidentResource
 from jsonschema import validate, ValidationError
 
 
@@ -103,3 +103,10 @@ class ValidateIncidentDetailsSerializer(serializers.Serializer):
 
     class Meta:
         fields = ('incident_id', 'details')
+
+
+class IncidentResourceSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = IncidentResource
+        fields = '__all__'
+        depth = 1
