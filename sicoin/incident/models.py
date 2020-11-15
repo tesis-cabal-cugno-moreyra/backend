@@ -55,6 +55,7 @@ class Incident(BaseModel):
     reference = models.CharField(max_length=255, blank=True)
     location_point = PointField()
     finalized_at = models.DateTimeField(null=True, blank=True)
+    cancelled_at = models.DateTimeField(null=True, blank=True)
 
     def __str__(self):
         return f"Incident ({self.id}): type: {self.incident_type.name}, " \

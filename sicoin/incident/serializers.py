@@ -63,8 +63,10 @@ class CreateIncidentSerializer(serializers.Serializer):
             'status': instance.status,
             'location_as_string_reference': instance.location_as_string_reference,
             'location_point': location_point,
+            'reference': instance.reference,
             'created_at': instance.created_at,
             'updated_at': instance.updated_at,
+            'cancelled_at': instance.cancelled_at,
             'finalized_at': instance.finalized_at,
         }
 

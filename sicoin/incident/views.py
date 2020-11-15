@@ -102,6 +102,7 @@ class ChangeIncidentStatusAPIView(APIView):
 
         if self.is_able_to_change_status(incident):
             incident.status = self.get_incident_status_change_to()
+            incident = self.make_changes_to_incident_according_to_status_change(incident)
             incident.save()
             return HttpResponse(json.dumps({'message': 'Changed incident status successfully'}))
         else:
@@ -116,6 +117,9 @@ class ChangeIncidentStatusAPIView(APIView):
     def is_able_to_change_status(self, incident: Incident) -> bool:
         raise NotImplementedError()
 
+    def make_changes_to_incident_according_to_status_change(self, incident: Incident) -> Incident:
+        raise NotImplementedError()
+
 
 class IncidentStatusFinalizeAPIView(ChangeIncidentStatusAPIView):
     def get_incident_status_change_to(self) -> str:
@@ -128,6 +132,10 @@ class IncidentStatusFinalizeAPIView(ChangeIncidentStatusAPIView):
             return False
         return True
 
+    def make_changes_to_incident_according_to_status_change(self, incident: Incident) -> Incident:
+        incident.finalized_at = datetime.now()
+        return incident
+
 
 class IncidentStatusCancelAPIView(ChangeIncidentStatusAPIView):
     def get_incident_status_change_to(self) -> str:
@@ -139,6 +147,10 @@ class IncidentStatusCancelAPIView(ChangeIncidentStatusAPIView):
         if incident.status == self.get_incident_status_change_to():
             return False
         return True
+
+    def make_changes_to_incident_according_to_status_change(self, incident: Incident) -> Incident:
+        incident.cancelled_at = datetime.now()
+        return incident
 
 
 class ValidateIncidentDetailsAPIView(APIView):
