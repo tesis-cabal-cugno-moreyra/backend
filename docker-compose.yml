@@ -29,6 +29,8 @@ services:
     depends_on:
       - postgis
       - redis
+    stdin_open: true
+    tty: true
     networks:
       SicoinNetwork:
         ipv4_address: 172.3.0.3
