@@ -77,15 +77,14 @@ class CreateIncidentSerializer(serializers.Serializer):
 
 
 class ValidateIncidentDetailsSerializer(serializers.Serializer):
-    incident_id = serializers.IntegerField()
     details = serializers.JSONField()
 
     def validate(self, data):
         try:
-            incident = Incident.objects.get(id=data.get('incident_id'))
+            incident = Incident.objects.get(id=self.context.get('incident_id'))
         except Incident.DoesNotExist:
             raise serializers.ValidationError(
-                {'incident_id': f"Incident with id: {data.get('incident_id')} does not exist"})
+                {'incident_id': f"Incident with id: {self.context.get('incident_id')} does not exist"})
 
         details_schema = incident.incident_type.details_schema
         details_data = data.get('details')
@@ -97,7 +96,7 @@ class ValidateIncidentDetailsSerializer(serializers.Serializer):
         return data
 
     def create(self, validated_data):
-        incident = Incident.objects.get(id=validated_data.get('incident_id'))
+        incident = Incident.objects.get(id=self.context.get('incident_id'))
         incident.details = validated_data.get('details')
         incident.data_status = Incident.INCIDENT_DATA_STATUS_COMPLETE
         incident.save()

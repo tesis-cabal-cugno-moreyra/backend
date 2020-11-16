@@ -161,8 +161,9 @@ class ValidateIncidentDetailsAPIView(APIView):
                          responses={200: '{ "message": "Incident data is complete" }',
                                     400: "{'message': 'Incident with id: ID does not exist'},"
                                          "{'message': 'Details validation failed. Error: ERROR'}"})
-    def post(self, request, format=None):
-        serializer = serializers.ValidateIncidentDetailsSerializer(data=request.data)
+    def post(self, request, incident_id):
+        serializer = serializers.ValidateIncidentDetailsSerializer(data=request.data,
+                                                                   context={'incident_id': incident_id})
         if serializer.is_valid(raise_exception=True):
             serializer.save()
             return HttpResponse(json.dumps({'message': 'Incident data is complete'}),

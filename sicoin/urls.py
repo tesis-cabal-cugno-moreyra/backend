@@ -61,7 +61,7 @@ urlpatterns = [
          IncidentAssistanceWithExternalSupportAPIView.as_view()),
     path('api/v1/incidents/<int:incident_id>/without-external-support/',
          IncidentAssistanceWithoutExternalSupportAPIView.as_view()),
-    path('api/v1/incidents/details/', ValidateIncidentDetailsAPIView.as_view()),
+    path('api/v1/incidents/<int:incident_id>/details/', ValidateIncidentDetailsAPIView.as_view()),
     path('api/v1/incidents/<int:incident_id>/resources/<int:resource_id>/',
          AddIncidentResourceToIncidentAPIView.as_view()),
 
