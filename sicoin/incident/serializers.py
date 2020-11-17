@@ -3,7 +3,7 @@ from rest_framework_gis.fields import GeometryField
 
 from sicoin.domain_config.models import DomainConfig, IncidentType
 from sicoin.domain_config.serializers import DomainFromDatabaseSerializer
-from sicoin.incident.models import Incident
+from sicoin.incident.models import Incident, IncidentResource
 from jsonschema import validate, ValidationError
 
 
@@ -63,8 +63,10 @@ class CreateIncidentSerializer(serializers.Serializer):
             'status': instance.status,
             'location_as_string_reference': instance.location_as_string_reference,
             'location_point': location_point,
+            'reference': instance.reference,
             'created_at': instance.created_at,
             'updated_at': instance.updated_at,
+            'cancelled_at': instance.cancelled_at,
             'finalized_at': instance.finalized_at,
         }
 
@@ -75,15 +77,14 @@ class CreateIncidentSerializer(serializers.Serializer):
 
 
 class ValidateIncidentDetailsSerializer(serializers.Serializer):
-    incident_id = serializers.IntegerField()
     details = serializers.JSONField()
 
     def validate(self, data):
         try:
-            incident = Incident.objects.get(id=data.get('incident_id'))
+            incident = Incident.objects.get(id=self.context.get('incident_id'))
         except Incident.DoesNotExist:
             raise serializers.ValidationError(
-                {'incident_id': f"Incident with id: {data.get('incident_id')} does not exist"})
+                {'incident_id': f"Incident with id: {self.context.get('incident_id')} does not exist"})
 
         details_schema = incident.incident_type.details_schema
         details_data = data.get('details')
@@ -95,7 +96,7 @@ class ValidateIncidentDetailsSerializer(serializers.Serializer):
         return data
 
     def create(self, validated_data):
-        incident = Incident.objects.get(id=validated_data.get('incident_id'))
+        incident = Incident.objects.get(id=self.context.get('incident_id'))
         incident.details = validated_data.get('details')
         incident.data_status = Incident.INCIDENT_DATA_STATUS_COMPLETE
         incident.save()
@@ -103,3 +104,10 @@ class ValidateIncidentDetailsSerializer(serializers.Serializer):
 
     class Meta:
         fields = ('incident_id', 'details')
+
+
+class IncidentResourceSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = IncidentResource
+        fields = '__all__'
+        depth = 1

@@ -1,15 +1,5 @@
-# from django.shortcuts import render
-
-# Create your views here.
-
-# Create incident
-
-# Data REALLY needed ->
-# Pause incident
-# Finalize incident
-# List filtered incidents DEFAULT=ALL, querystring for additional statuses
-
 import json
+from datetime import datetime
 
 from django.http import HttpResponse
 from django_filters import rest_framework as filters
@@ -18,13 +8,16 @@ from rest_framework import status, mixins, viewsets
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from rest_framework.viewsets import GenericViewSet
+
 from sicoin.incident import models, serializers
-from sicoin.incident.models import Incident
+from sicoin.incident.models import Incident, IncidentResource
+from sicoin.incident.serializers import IncidentResourceSerializer
 from sicoin.users.models import ResourceProfile
 
 
 class IncidentCreateListViewSet(mixins.CreateModelMixin,
-                                mixins.ListModelMixin,
+                                mixins.RetrieveModelMixin,
                                 viewsets.GenericViewSet):
     queryset = Incident.objects.all()
     serializer_class = serializers.CreateIncidentSerializer
@@ -109,6 +102,7 @@ class ChangeIncidentStatusAPIView(APIView):
 
         if self.is_able_to_change_status(incident):
             incident.status = self.get_incident_status_change_to()
+            incident = self.make_changes_to_incident_according_to_status_change(incident)
             incident.save()
             return HttpResponse(json.dumps({'message': 'Changed incident status successfully'}))
         else:
@@ -123,6 +117,9 @@ class ChangeIncidentStatusAPIView(APIView):
     def is_able_to_change_status(self, incident: Incident) -> bool:
         raise NotImplementedError()
 
+    def make_changes_to_incident_according_to_status_change(self, incident: Incident) -> Incident:
+        raise NotImplementedError()
+
 
 class IncidentStatusFinalizeAPIView(ChangeIncidentStatusAPIView):
     def get_incident_status_change_to(self) -> str:
@@ -134,6 +131,10 @@ class IncidentStatusFinalizeAPIView(ChangeIncidentStatusAPIView):
         if incident.status == self.get_incident_status_change_to():
             return False
         return True
+
+    def make_changes_to_incident_according_to_status_change(self, incident: Incident) -> Incident:
+        incident.finalized_at = datetime.now()
+        return incident
 
 
 class IncidentStatusCancelAPIView(ChangeIncidentStatusAPIView):
@@ -147,6 +148,10 @@ class IncidentStatusCancelAPIView(ChangeIncidentStatusAPIView):
             return False
         return True
 
+    def make_changes_to_incident_according_to_status_change(self, incident: Incident) -> Incident:
+        incident.cancelled_at = datetime.now()
+        return incident
+
 
 class ValidateIncidentDetailsAPIView(APIView):
     permission_classes = (AllowAny,)
@@ -156,8 +161,9 @@ class ValidateIncidentDetailsAPIView(APIView):
                          responses={200: '{ "message": "Incident data is complete" }',
                                     400: "{'message': 'Incident with id: ID does not exist'},"
                                          "{'message': 'Details validation failed. Error: ERROR'}"})
-    def post(self, request, format=None):
-        serializer = serializers.ValidateIncidentDetailsSerializer(data=request.data)
+    def post(self, request, incident_id):
+        serializer = serializers.ValidateIncidentDetailsSerializer(data=request.data,
+                                                                   context={'incident_id': incident_id})
         if serializer.is_valid(raise_exception=True):
             serializer.save()
             return HttpResponse(json.dumps({'message': 'Incident data is complete'}),
@@ -167,7 +173,7 @@ class ValidateIncidentDetailsAPIView(APIView):
 class AddIncidentResourceToIncidentAPIView(APIView):
     permission_classes = (AllowAny,)
 
-    @swagger_auto_schema(operation_description="Check of current domain code",
+    @swagger_auto_schema(operation_description="Create incident resource",
                          responses={200: "{'message': 'IncidentResource successfully created'}",
                                     400: "{'message': 'Incident is not at Created state'},"
                                          "{'message': 'User resource is not active'}",
@@ -194,4 +200,67 @@ class AddIncidentResourceToIncidentAPIView(APIView):
             return HttpResponse(json.dumps({'message': 'User resource is not active'}),
                                 status=status.HTTP_400_BAD_REQUEST)
 
+        incident_resource = IncidentResource()
+
+        incident_resource.incident = incident
+        incident_resource.resource = resource
+        incident_resource.save()
+
         return HttpResponse(json.dumps({'message': 'IncidentResource successfully created'}))
+
+    @swagger_auto_schema(operation_description="Delete incident resource",
+                         responses={200: "{'message': 'IncidentResource successfully deleted'}",
+                                    400: "{'message': 'Incident is not at Created state'},"
+                                         "{'message': 'User resource is not active'}",
+                                    404: "{'message': 'Incident not found'},"
+                                         "{'message': 'Resource not found'}"}, )
+    def delete(self, request, incident_id, resource_id):
+        try:
+            incident = models.Incident.objects.get(id=incident_id)
+        except models.Incident.DoesNotExist:
+            return HttpResponse(json.dumps({'message': 'Incident not found'}),
+                                status=status.HTTP_404_NOT_FOUND)
+
+        if incident.status != incident.INCIDENT_STATUS_STARTED:
+            return HttpResponse(json.dumps({'message': 'Incident is not at Created state'}),
+                                status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            resource = ResourceProfile.objects.get(id=resource_id)
+        except ResourceProfile.DoesNotExist:
+            return HttpResponse(json.dumps({'message': 'Resource not found'}),
+                                status=status.HTTP_404_NOT_FOUND)
+
+        if not resource.user.is_active:
+            return HttpResponse(json.dumps({'message': 'User resource is not active'}),
+                                status=status.HTTP_400_BAD_REQUEST)
+
+        incident_resource = IncidentResource.objects.get(incident=incident, resource=resource)
+        incident_resource.delete()
+
+        return HttpResponse(json.dumps({'message': 'IncidentResource successfully deleted'}))
+
+
+class IncidentResourceViewSet(GenericViewSet):
+    permission_classes = (AllowAny,)
+    queryset = IncidentResource.objects.all()
+    serializer_class = IncidentResourceSerializer
+
+    def list(self, request, *args, **kwargs):
+        incident_id = kwargs.get('incident_id')
+        assert incident_id is not None, "incident_id is required"
+        try:
+            incident = models.Incident.objects.get(id=incident_id)
+        except models.Incident.DoesNotExist:
+            return HttpResponse(json.dumps({'message': 'Incident not found'}),
+                                status=status.HTTP_404_NOT_FOUND)
+
+        incident_resources = incident.incidentresource_set.all()
+
+        page = self.paginate_queryset(incident_resources)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+
+        serializer = self.get_serializer(incident_resources, many=True)
+        return Response(serializer.data)
