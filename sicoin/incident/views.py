@@ -173,7 +173,7 @@ class ValidateIncidentDetailsAPIView(APIView):
 class AddIncidentResourceToIncidentAPIView(APIView):
     permission_classes = (AllowAny,)
 
-    @swagger_auto_schema(operation_description="Check of current domain code",
+    @swagger_auto_schema(operation_description="Create incident resource",
                          responses={200: "{'message': 'IncidentResource successfully created'}",
                                     400: "{'message': 'Incident is not at Created state'},"
                                          "{'message': 'User resource is not active'}",
@@ -207,6 +207,38 @@ class AddIncidentResourceToIncidentAPIView(APIView):
         incident_resource.save()
 
         return HttpResponse(json.dumps({'message': 'IncidentResource successfully created'}))
+
+    @swagger_auto_schema(operation_description="Delete incident resource",
+                         responses={200: "{'message': 'IncidentResource successfully deleted'}",
+                                    400: "{'message': 'Incident is not at Created state'},"
+                                         "{'message': 'User resource is not active'}",
+                                    404: "{'message': 'Incident not found'},"
+                                         "{'message': 'Resource not found'}"}, )
+    def delete(self, request, incident_id, resource_id):
+        try:
+            incident = models.Incident.objects.get(id=incident_id)
+        except models.Incident.DoesNotExist:
+            return HttpResponse(json.dumps({'message': 'Incident not found'}),
+                                status=status.HTTP_404_NOT_FOUND)
+
+        if incident.status != incident.INCIDENT_STATUS_STARTED:
+            return HttpResponse(json.dumps({'message': 'Incident is not at Created state'}),
+                                status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            resource = ResourceProfile.objects.get(id=resource_id)
+        except ResourceProfile.DoesNotExist:
+            return HttpResponse(json.dumps({'message': 'Resource not found'}),
+                                status=status.HTTP_404_NOT_FOUND)
+
+        if not resource.user.is_active:
+            return HttpResponse(json.dumps({'message': 'User resource is not active'}),
+                                status=status.HTTP_400_BAD_REQUEST)
+
+        incident_resource = IncidentResource.objects.get(incident=incident, resource=resource)
+        incident_resource.delete()
+
+        return HttpResponse(json.dumps({'message': 'IncidentResource successfully deleted'}))
 
 
 class IncidentResourceViewSet(GenericViewSet):
