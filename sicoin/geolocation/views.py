@@ -1,6 +1,8 @@
 import json
+import logging
 
 from django.http import HttpResponse, JsonResponse
+from drf_yasg import openapi
 from drf_yasg.utils import swagger_auto_schema
 from rest_framework import status
 from rest_framework.permissions import AllowAny
@@ -9,15 +11,48 @@ from rest_framework.views import APIView
 from sicoin.geolocation.models import MapPoint
 from sicoin.geolocation.serializers import MapPointSerializer
 from sicoin.incident.models import Incident
+from django.utils import timezone
+
+resource_id_query_parameter = openapi.Parameter('resource_id', openapi.IN_QUERY,
+                                                description="Related resource id", type=openapi.TYPE_INTEGER)
+
+timedelta_in_seconds_query_parameter = openapi.Parameter('timedelta_in_seconds', openapi.IN_QUERY,
+                                                         description="filter by created on the last X seconds",
+                                                         type=openapi.TYPE_INTEGER)
 
 
 class GetMapPointsFromIncident(APIView):
     permission_classes = (AllowAny,)
 
-    # @swagger_auto_schema(operation_description="Change incident status to Cancelled or Finalized",
-    #                      responses={200: "{'message': 'Changed incident status successfully'}",
-    #                                 400: "{'message': 'Incident with id {ID} does not exists'},"
-    #                                      "{'message': 'Incident status as --- already set'}"})
+    def get_queryset(self, incident: Incident):
+        queryset = MapPoint.objects.filter(incident=incident)
+        resource_id = self.request.query_params.get('resource_id', None)
+        if resource_id is not None:
+            queryset = queryset.filter(incident_resource__resource_id=resource_id)
+
+        timedelta_in_seconds = self.request.query_params.get('timedelta_in_seconds', None)
+        if timedelta_in_seconds is not None:
+            now = timezone.datetime.now()
+            try:
+                earlier = now - timezone.timedelta(seconds=int(timedelta_in_seconds))
+                queryset = queryset.filter(time_created__range=(earlier, now))
+            except ValueError as value_error:
+                logging.debug(value_error)
+        return queryset
+
+    @swagger_auto_schema(operation_description="List Map Points for related incident",
+                         manual_parameters=[resource_id_query_parameter, timedelta_in_seconds_query_parameter],
+                         responses={200: "[\n"
+                                         "{\n"
+                                         "  'location': GeometryField,\n"
+                                         "  'collected_at': instance.time_created,\n"
+                                         "  'internal_type': 'MapPoint',\n"
+                                         "  'resource_id': instance.incident_resource.resource_id,\n"
+                                         "  'comment': instance.description_text\n"
+                                         "}, ...\n"
+                                         "]",
+                                    400: "{'message': 'Incident with id {ID} does not exists'},\n"
+                                         "{'message': 'Map points for Incident with id {ID} are nonexistent'}"})
     def get(self, request, incident_id):
         if not incident_id:
             return HttpResponse(json.dumps({'message': 'Incident id invalid or empty'}),
@@ -31,7 +66,7 @@ class GetMapPointsFromIncident(APIView):
                                 status=status.HTTP_404_NOT_FOUND)
 
         try:
-            map_points_from_incident = MapPoint.objects.filter(incident=incident)
+            map_points_from_incident = self.get_queryset(incident)
         except MapPoint.DoesNotExist:
             return HttpResponse(json.dumps({'message': f'Map points for Incident with id {incident_id} '
                                                        f'are nonexistent'}),
@@ -48,8 +83,10 @@ class CreateMapPoint(APIView):
     @swagger_auto_schema(operation_description="Create MapPoint, Only Resource user",
                          request_body=MapPointSerializer,
                          responses={200: '{ "message": "MapPoint successfully created" }',
-                                    400: "{'message': 'Incident with id: ID does not exist'},"
-                                         "{'message': 'Details validation failed. Error: ERROR'}"})
+                                    400: "{'incident_id': 'Incident with id: ID does not exist'},\n"
+                                         "{'incident_id': 'Incident with id: ID is not at Created state'},\n"
+                                         "{'resource_id': 'Resource with id: ID does not exist'},\n"
+                                         "{'resource_id': 'User related to Resource with id: ID is not active'}"})
     def post(self, request, incident_id, resource_id):
         serializer = MapPointSerializer(data=request.data,
                                         context={'incident_id': incident_id, 'resource_id': resource_id})

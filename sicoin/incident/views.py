@@ -156,7 +156,7 @@ class IncidentStatusCancelAPIView(ChangeIncidentStatusAPIView):
 class ValidateIncidentDetailsAPIView(APIView):
     permission_classes = (AllowAny,)
 
-    @swagger_auto_schema(operation_description="Enable user, Only Admin user",
+    @swagger_auto_schema(operation_description="Validate incident details, Only Admin user",
                          request_body=serializers.ValidateIncidentDetailsSerializer,
                          responses={200: '{ "message": "Incident data is complete" }',
                                     400: "{'message': 'Incident with id: ID does not exist'},"
