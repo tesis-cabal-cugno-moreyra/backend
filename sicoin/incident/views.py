@@ -245,6 +245,8 @@ class IncidentResourceViewSet(GenericViewSet):
     permission_classes = (AllowAny,)
     queryset = IncidentResource.objects.all()
     serializer_class = IncidentResourceSerializer
+    filter_backends = (filters.DjangoFilterBackend,)
+    filterset_fields = ('resource__user__first_name', 'resource__user__last_name', 'resource__type')
 
     def list(self, request, *args, **kwargs):
         incident_id = kwargs.get('incident_id')

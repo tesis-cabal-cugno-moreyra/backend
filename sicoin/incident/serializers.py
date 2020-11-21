@@ -6,6 +6,8 @@ from sicoin.domain_config.serializers import DomainFromDatabaseSerializer
 from sicoin.incident.models import Incident, IncidentResource
 from jsonschema import validate, ValidationError
 
+from sicoin.users.serializers import ListRetrieveResourceProfileSerializer
+
 
 class ListIncidentSerializer(serializers.ModelSerializer):
     domain_config = DomainFromDatabaseSerializer()
@@ -107,7 +109,9 @@ class ValidateIncidentDetailsSerializer(serializers.Serializer):
 
 
 class IncidentResourceSerializer(serializers.ModelSerializer):
+    incident = CreateIncidentSerializer()
+    resource = ListRetrieveResourceProfileSerializer()
+
     class Meta:
         model = IncidentResource
         fields = '__all__'
-        depth = 1
