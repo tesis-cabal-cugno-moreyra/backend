@@ -66,6 +66,7 @@ class Incident(BaseModel):
 class IncidentResource(BaseModel):
     incident = models.ForeignKey("Incident", on_delete=models.PROTECT)
     resource = models.ForeignKey(ResourceProfile, on_delete=models.PROTECT)
+    # Validate uniqueness: Incident and resource MUST be related only once
 
     def __str__(self):
         return f"Incident Resource ({self.id})"
