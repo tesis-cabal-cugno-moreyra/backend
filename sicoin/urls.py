@@ -7,7 +7,7 @@ from django.contrib import admin
 from django.views.generic.base import RedirectView
 from rest_framework.routers import DefaultRouter
 
-from .geolocation.views import GetMapPointsFromIncident, CreateMapPoint
+from .geolocation.views import GetMapPointsFromIncident, CreateMapPoint, CreateTrackPoint, GetTrackPointsFromIncident
 from .incident.views import AddIncidentResourceToIncidentAPIView, IncidentCreateListViewSet, \
     ValidateIncidentDetailsAPIView, IncidentAssistanceWithExternalSupportAPIView, \
     IncidentAssistanceWithoutExternalSupportAPIView, IncidentStatusFinalizeAPIView, \
@@ -64,6 +64,8 @@ urlpatterns = [
     path('api/v1/incidents/<int:incident_id>/resources/<int:resource_id>/map-point/',
          CreateMapPoint.as_view()),
     path('api/v1/incidents/<int:incident_id>/map-points/', GetMapPointsFromIncident.as_view()),
+    path('api/v1/incidents/<int:incident_id>/resources/<int:resource_id>/track-point/', CreateTrackPoint.as_view()),
+    path('api/v1/incidents/<int:incident_id>/track-points/', GetTrackPointsFromIncident.as_view()),
 
     path('api/v1/users/<uuid:user_id>/activate/', ActivateUserView.as_view()),
     path('api/v1/users/<uuid:user_id>/deactivate/', DeactivateUserView.as_view()),
