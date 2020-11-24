@@ -7,6 +7,7 @@ from django.contrib import admin
 from django.views.generic.base import RedirectView
 from rest_framework.routers import DefaultRouter
 
+from .geolocation.views import GetMapPointsFromIncident, CreateMapPoint, CreateTrackPoint, GetTrackPointsFromIncident
 from .incident.views import AddIncidentResourceToIncidentAPIView, IncidentCreateListViewSet, \
     ValidateIncidentDetailsAPIView, IncidentAssistanceWithExternalSupportAPIView, \
     IncidentAssistanceWithoutExternalSupportAPIView, IncidentStatusFinalizeAPIView, \
@@ -34,11 +35,8 @@ router.register(r'incidents', IncidentCreateListViewSet)
 
 schema_view = get_schema_view(
     openapi.Info(
-        title="Snippets API",
+        title="SiCoIn Rest API Documentation",
         default_version='v1',
-        description="Test description",
-        terms_of_service="https://www.google.com/policies/terms/",
-        contact=openapi.Contact(email="contact@snippets.local"),
         license=openapi.License(name="BSD License"),
     ),
     public=True,
@@ -54,7 +52,6 @@ urlpatterns = [
     path('api/v1/domain-config/renew-domain-code/', GenerateNewDomainCodeAPIView.as_view()),
     path('api/v1/domain-config/domain-code/', GetCurrentDomainCodeAPIView.as_view()),
     path('api/v1/domain-config/domain-code/check/', CheckCurrentDomainCodeAPIView.as_view()),
-    # path('api/v1/incidents/<int:incident_id>/resources/', ListResourcesFromIncident.as_view()),
     path('api/v1/incidents/<int:incident_id>/finalize/', IncidentStatusFinalizeAPIView.as_view()),
     path('api/v1/incidents/<int:incident_id>/cancel/', IncidentStatusCancelAPIView.as_view()),
     path('api/v1/incidents/<int:incident_id>/with-external-support/',
@@ -64,6 +61,11 @@ urlpatterns = [
     path('api/v1/incidents/<int:incident_id>/details/', ValidateIncidentDetailsAPIView.as_view()),
     path('api/v1/incidents/<int:incident_id>/resources/<int:resource_id>/',
          AddIncidentResourceToIncidentAPIView.as_view()),
+    path('api/v1/incidents/<int:incident_id>/resources/<int:resource_id>/map-point/',
+         CreateMapPoint.as_view()),
+    path('api/v1/incidents/<int:incident_id>/map-points/', GetMapPointsFromIncident.as_view()),
+    path('api/v1/incidents/<int:incident_id>/resources/<int:resource_id>/track-point/', CreateTrackPoint.as_view()),
+    path('api/v1/incidents/<int:incident_id>/track-points/', GetTrackPointsFromIncident.as_view()),
 
     path('api/v1/users/<uuid:user_id>/activate/', ActivateUserView.as_view()),
     path('api/v1/users/<uuid:user_id>/deactivate/', DeactivateUserView.as_view()),

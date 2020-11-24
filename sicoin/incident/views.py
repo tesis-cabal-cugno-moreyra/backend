@@ -1,6 +1,7 @@
 import json
 from datetime import datetime
 
+import django_filters
 from django.http import HttpResponse
 from django_filters import rest_framework as filters
 from drf_yasg.utils import swagger_auto_schema
@@ -156,7 +157,7 @@ class IncidentStatusCancelAPIView(ChangeIncidentStatusAPIView):
 class ValidateIncidentDetailsAPIView(APIView):
     permission_classes = (AllowAny,)
 
-    @swagger_auto_schema(operation_description="Enable user, Only Admin user",
+    @swagger_auto_schema(operation_description="Validate incident details, Only Admin user",
                          request_body=serializers.ValidateIncidentDetailsSerializer,
                          responses={200: '{ "message": "Incident data is complete" }',
                                     400: "{'message': 'Incident with id: ID does not exist'},"
@@ -241,10 +242,24 @@ class AddIncidentResourceToIncidentAPIView(APIView):
         return HttpResponse(json.dumps({'message': 'IncidentResource successfully deleted'}))
 
 
+class IncidentResourceFilter(django_filters.FilterSet):
+    resource__user__username = django_filters.CharFilter(lookup_expr='iexact')
+    resource__user__first_name = django_filters.CharFilter(lookup_expr='iexact')
+    resource__user__last_name = django_filters.CharFilter(lookup_expr='iexact')
+    resource__user__is_active = django_filters.CharFilter(lookup_expr='iexact')
+    resource__type__name = django_filters.CharFilter(lookup_expr='iexact')
+
+    class Meta:
+        model = IncidentResource
+        exclude = ['created_at', 'updated_at', 'incident', 'resource']
+
+
 class IncidentResourceViewSet(GenericViewSet):
     permission_classes = (AllowAny,)
     queryset = IncidentResource.objects.all()
     serializer_class = IncidentResourceSerializer
+    filter_backends = (filters.DjangoFilterBackend,)
+    filterset_class = IncidentResourceFilter
 
     def list(self, request, *args, **kwargs):
         incident_id = kwargs.get('incident_id')
@@ -255,7 +270,7 @@ class IncidentResourceViewSet(GenericViewSet):
             return HttpResponse(json.dumps({'message': 'Incident not found'}),
                                 status=status.HTTP_404_NOT_FOUND)
 
-        incident_resources = incident.incidentresource_set.all()
+        incident_resources = self.filter_queryset(self.get_queryset()).filter(incident=incident)
 
         page = self.paginate_queryset(incident_resources)
         if page is not None:

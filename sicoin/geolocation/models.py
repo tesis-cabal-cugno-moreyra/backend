@@ -1,21 +1,23 @@
 from django.contrib.gis.db import models
+from django.contrib.gis.geos import Point
 
 from sicoin.incident.models import Incident, IncidentResource
 
 
-class PointInTime(models.Model):
-    location = models.PointField()
+class BasePointInTime(models.Model):
+    location = models.PointField(default=Point(0.0, 0.0))
     time_created = models.DateTimeField(auto_now_add=True)
 
+    class Meta:
+        abstract = True
 
-class TrackPoint(models.Model):
+
+class TrackPoint(BasePointInTime):
     incident = models.ForeignKey(Incident, on_delete=models.PROTECT)
     incident_resource = models.ForeignKey(IncidentResource, on_delete=models.PROTECT)
-    point_in_time = models.ForeignKey(PointInTime, on_delete=models.PROTECT)
 
 
-class MapPoint(models.Model):
+class MapPoint(BasePointInTime):
     incident = models.ForeignKey(Incident, on_delete=models.PROTECT)
     incident_resource = models.ForeignKey(IncidentResource, on_delete=models.PROTECT)
     description_text = models.TextField()
-    point_in_time = models.ForeignKey(PointInTime, on_delete=models.PROTECT)
