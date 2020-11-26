@@ -6,6 +6,7 @@ from django.http import HttpResponse
 from django_filters import rest_framework as filters
 from drf_yasg.utils import swagger_auto_schema
 from rest_framework import status, mixins, viewsets
+from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -254,12 +255,19 @@ class IncidentResourceFilter(django_filters.FilterSet):
         exclude = ['created_at', 'updated_at', 'incident', 'resource']
 
 
+class LargeResultsSetPagination(PageNumberPagination):
+    page_size = 10
+    page_size_query_param = 'page_size'
+    max_page_size = 10000
+
+
 class IncidentResourceViewSet(GenericViewSet):
     permission_classes = (AllowAny,)
     queryset = IncidentResource.objects.all()
     serializer_class = IncidentResourceSerializer
     filter_backends = (filters.DjangoFilterBackend,)
     filterset_class = IncidentResourceFilter
+    pagination_class = LargeResultsSetPagination
 
     def list(self, request, *args, **kwargs):
         incident_id = kwargs.get('incident_id')
