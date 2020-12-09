@@ -34,26 +34,28 @@ class Incident(BaseModel):
         (INCIDENT_DATA_STATUS_COMPLETE, INCIDENT_DATA_STATUS_COMPLETE)
     )
 
-    INCIDENT_VISIBILITY_PRIVATE = "Private"
-    INCIDENT_VISIBILITY_PUBLIC = "Public"
-    INCIDENT_VISIBILITIES = (
-        (INCIDENT_VISIBILITY_PRIVATE, INCIDENT_VISIBILITY_PRIVATE),
-        (INCIDENT_VISIBILITY_PUBLIC, INCIDENT_VISIBILITY_PUBLIC),
+    INCIDENT_ASSISTANCE_WITH_EXTERNAL_SUPPORT = "With external support"
+    INCIDENT_ASSISTANCE_WITHOUT_EXTERNAL_SUPPORT = "Without external support"
+    INCIDENT_ASSISTANCE_OPTIONS = (
+        (INCIDENT_ASSISTANCE_WITH_EXTERNAL_SUPPORT, INCIDENT_ASSISTANCE_WITH_EXTERNAL_SUPPORT),
+        (INCIDENT_ASSISTANCE_WITHOUT_EXTERNAL_SUPPORT, INCIDENT_ASSISTANCE_WITHOUT_EXTERNAL_SUPPORT),
     )
 
     domain_config = models.ForeignKey(DomainConfig, on_delete=models.PROTECT)
     incident_type = models.ForeignKey(IncidentType, on_delete=models.PROTECT)
-    visibility = models.CharField(max_length=255,
-                                  choices=INCIDENT_VISIBILITIES,
-                                  default=INCIDENT_VISIBILITY_PRIVATE)
+    external_assistance = models.CharField(max_length=255,
+                                           choices=INCIDENT_ASSISTANCE_OPTIONS,
+                                           default=INCIDENT_ASSISTANCE_WITHOUT_EXTERNAL_SUPPORT)
     details = JSONField(default=dict, blank=True, encoder=DjangoJSONEncoder)
     status = models.CharField(max_length=255, choices=INCIDENT_STATUSES,
                               default=INCIDENT_STATUS_STARTED)
     data_status = models.CharField(max_length=255, choices=INCIDENT_DATA_STATUSES,
                                    default=INCIDENT_DATA_STATUS_INCOMPLETE)
     location_as_string_reference = models.CharField(max_length=255, blank=True)
+    reference = models.CharField(max_length=255, blank=True)
     location_point = PointField()
     finalized_at = models.DateTimeField(null=True, blank=True)
+    cancelled_at = models.DateTimeField(null=True, blank=True)
 
     def __str__(self):
         return f"Incident ({self.id}): type: {self.incident_type.name}, " \
@@ -64,6 +66,7 @@ class Incident(BaseModel):
 class IncidentResource(BaseModel):
     incident = models.ForeignKey("Incident", on_delete=models.PROTECT)
     resource = models.ForeignKey(ResourceProfile, on_delete=models.PROTECT)
+    # Validate uniqueness: Incident and resource MUST be related only once
 
     def __str__(self):
         return f"Incident Resource ({self.id})"

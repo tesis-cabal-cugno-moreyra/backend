@@ -1,0 +1,4065 @@
+[
+  {
+    "model": "incident.incident",
+    "pk": 1,
+    "fields": {
+      "created_at": "2020-10-18T22:19:35.428Z",
+      "updated_at": "2020-11-10T14:02:21.752Z",
+      "domain_config": 1,
+      "incident_type": 1,
+      "external_assistance": "Without external support",
+      "details": {},
+      "status": "Started",
+      "data_status": "Incomplete",
+      "location_as_string_reference": "string",
+      "reference": "",
+      "location_point": "SRID=4326;POINT (-62.11000442504883 -31.4209727624279)",
+      "finalized_at": null
+    }
+  },
+  {
+    "model": "incident.incident",
+    "pk": 2,
+    "fields": {
+      "created_at": "2020-10-18T22:20:51.492Z",
+      "updated_at": "2020-11-10T14:43:37.941Z",
+      "domain_config": 1,
+      "incident_type": 2,
+      "external_assistance": "With external support",
+      "details": {},
+      "status": "Started",
+      "data_status": "Incomplete",
+      "location_as_string_reference": "string",
+      "reference": "",
+      "location_point": "SRID=4326;POINT (-62.11000442504883 -31.4209727624279)",
+      "finalized_at": null
+    }
+  },
+  {
+    "model": "incident.incident",
+    "pk": 3,
+    "fields": {
+      "created_at": "2020-10-22T22:52:12.018Z",
+      "updated_at": "2020-11-10T14:44:15.217Z",
+      "domain_config": 1,
+      "incident_type": 3,
+      "external_assistance": "With external support",
+      "details": {},
+      "status": "Started",
+      "data_status": "Incomplete",
+      "location_as_string_reference": "Aspen, CO, USA",
+      "reference": "",
+      "location_point": "SRID=4326;POINT (39.1910983 -106.8175387)",
+      "finalized_at": null
+    }
+  },
+  {
+    "model": "incident.incident",
+    "pk": 12,
+    "fields": {
+      "created_at": "2020-10-25T21:14:40.694Z",
+      "updated_at": "2020-11-12T00:04:43.104Z",
+      "domain_config": 1,
+      "incident_type": 3,
+      "external_assistance": "With external support",
+      "details": {},
+      "status": "Started",
+      "data_status": "Incomplete",
+      "location_as_string_reference": "",
+      "reference": "",
+      "location_point": "SRID=4326;POINT (-31.426470454823 -62.11048776031392)",
+      "finalized_at": null
+    }
+  },
+  {
+    "model": "incident.incident",
+    "pk": 13,
+    "fields": {
+      "created_at": "2020-10-25T21:35:21.981Z",
+      "updated_at": "2020-11-12T18:24:25.904Z",
+      "domain_config": 1,
+      "incident_type": 2,
+      "external_assistance": "Without external support",
+      "details": {},
+      "status": "Finalized",
+      "data_status": "Incomplete",
+      "location_as_string_reference": "",
+      "reference": "",
+      "location_point": "SRID=4326;POINT (-31.42643383472339 -62.11054784153391)",
+      "finalized_at": null
+    }
+  },
+  {
+    "model": "incident.incident",
+    "pk": 14,
+    "fields": {
+      "created_at": "2020-10-25T21:36:36.888Z",
+      "updated_at": "2020-11-14T14:19:29.426Z",
+      "domain_config": 1,
+      "incident_type": 2,
+      "external_assistance": "Without external support",
+      "details": {},
+      "status": "Canceled",
+      "data_status": "Incomplete",
+      "location_as_string_reference": "",
+      "reference": "",
+      "location_point": "SRID=4326;POINT (-31.42643383472339 -62.11046201084544)",
+      "finalized_at": null
+    }
+  },
+  {
+    "model": "incident.incident",
+    "pk": 15,
+    "fields": {
+      "created_at": "2020-10-25T21:37:14.526Z",
+      "updated_at": "2020-10-25T21:37:14.526Z",
+      "domain_config": 1,
+      "incident_type": 3,
+      "external_assistance": "Without external support",
+      "details": {},
+      "status": "Started",
+      "data_status": "Incomplete",
+      "location_as_string_reference": "",
+      "reference": "",
+      "location_point": "SRID=4326;POINT (-31.42401687652897 -62.10968953464915)",
+      "finalized_at": null
+    }
+  },
+  {
+    "model": "incident.incident",
+    "pk": 16,
+    "fields": {
+      "created_at": "2020-10-25T21:37:28.147Z",
+      "updated_at": "2020-11-10T16:08:52.343Z",
+      "domain_config": 1,
+      "incident_type": 3,
+      "external_assistance": "Without external support",
+      "details": {},
+      "status": "Started",
+      "data_status": "Incomplete",
+      "location_as_string_reference": "Plaza C\u00edvica de Pro, Los Olivos, Peru",
+      "reference": "",
+      "location_point": "SRID=4326;POINT (-11.9351224 -77.0767018)",
+      "finalized_at": null
+    }
+  },
+  {
+    "model": "incident.incident",
+    "pk": 17,
+    "fields": {
+      "created_at": "2020-10-25T21:37:43.155Z",
+      "updated_at": "2020-11-10T14:02:34.898Z",
+      "domain_config": 1,
+      "incident_type": 3,
+      "external_assistance": "Without external support",
+      "details": {},
+      "status": "Started",
+      "data_status": "Incomplete",
+      "location_as_string_reference": "Plaza C\u00edvica de Pro, Los Olivos, Peru",
+      "reference": "",
+      "location_point": "SRID=4326;POINT (-11.9351224 -77.0767018)",
+      "finalized_at": null
+    }
+  },
+  {
+    "model": "incident.incident",
+    "pk": 18,
+    "fields": {
+      "created_at": "2020-10-25T21:39:36.428Z",
+      "updated_at": "2020-11-10T14:40:35.128Z",
+      "domain_config": 1,
+      "incident_type": 3,
+      "external_assistance": "With external support",
+      "details": {},
+      "status": "Started",
+      "data_status": "Incomplete",
+      "location_as_string_reference": "Plaza C\u00edvica de Pro, Los Olivos, Peru",
+      "reference": "",
+      "location_point": "SRID=4326;POINT (-11.9351224 -77.0767018)",
+      "finalized_at": null
+    }
+  },
+  {
+    "model": "incident.incident",
+    "pk": 19,
+    "fields": {
+      "created_at": "2020-10-25T21:47:29.201Z",
+      "updated_at": "2020-10-25T21:47:29.201Z",
+      "domain_config": 1,
+      "incident_type": 3,
+      "external_assistance": "Without external support",
+      "details": {},
+      "status": "Started",
+      "data_status": "Incomplete",
+      "location_as_string_reference": "",
+      "reference": "",
+      "location_point": "SRID=4326;POINT (-31.42291823857435 -62.10428220127513)",
+      "finalized_at": null
+    }
+  },
+  {
+    "model": "incident.incident",
+    "pk": 20,
+    "fields": {
+      "created_at": "2020-10-25T21:48:16.197Z",
+      "updated_at": "2020-10-25T21:48:16.197Z",
+      "domain_config": 1,
+      "incident_type": 2,
+      "external_assistance": "Without external support",
+      "details": {},
+      "status": "Started",
+      "data_status": "Incomplete",
+      "location_as_string_reference": "",
+      "reference": "",
+      "location_point": "SRID=4326;POINT (-31.42317458858164 -62.10509759281565)",
+      "finalized_at": null
+    }
+  },
+  {
+    "model": "incident.incident",
+    "pk": 21,
+    "fields": {
+      "created_at": "2020-10-25T21:48:47.624Z",
+      "updated_at": "2020-10-25T21:48:47.624Z",
+      "domain_config": 1,
+      "incident_type": 3,
+      "external_assistance": "Without external support",
+      "details": {},
+      "status": "Started",
+      "data_status": "Incomplete",
+      "location_as_string_reference": "",
+      "reference": "",
+      "location_point": "SRID=4326;POINT (-31.4246028115087 -62.10998994205882)",
+      "finalized_at": null
+    }
+  },
+  {
+    "model": "incident.incident",
+    "pk": 22,
+    "fields": {
+      "created_at": "2020-10-25T21:49:22.357Z",
+      "updated_at": "2020-10-25T21:49:22.357Z",
+      "domain_config": 1,
+      "incident_type": 3,
+      "external_assistance": "Without external support",
+      "details": {},
+      "status": "Started",
+      "data_status": "Incomplete",
+      "location_as_string_reference": "",
+      "reference": "",
+      "location_point": "SRID=4326;POINT (-31.42159985603965 -62.10908871982981)",
+      "finalized_at": null
+    }
+  },
+  {
+    "model": "incident.incident",
+    "pk": 23,
+    "fields": {
+      "created_at": "2020-10-25T21:52:33.993Z",
+      "updated_at": "2020-10-25T21:52:33.993Z",
+      "domain_config": 1,
+      "incident_type": 3,
+      "external_assistance": "Without external support",
+      "details": {},
+      "status": "Started",
+      "data_status": "Incomplete",
+      "location_as_string_reference": "",
+      "reference": "",
+      "location_point": "SRID=4326;POINT (-31.42258864467819 -62.1098611960261)",
+      "finalized_at": null
+    }
+  },
+  {
+    "model": "incident.incident",
+    "pk": 24,
+    "fields": {
+      "created_at": "2020-10-25T21:55:17.965Z",
+      "updated_at": "2020-10-25T21:55:17.965Z",
+      "domain_config": 1,
+      "incident_type": 2,
+      "external_assistance": "Without external support",
+      "details": {},
+      "status": "Started",
+      "data_status": "Incomplete",
+      "location_as_string_reference": "",
+      "reference": "",
+      "location_point": "SRID=4326;POINT (-31.42174634390317 -62.10848790501048)",
+      "finalized_at": null
+    }
+  },
+  {
+    "model": "incident.incident",
+    "pk": 25,
+    "fields": {
+      "created_at": "2020-10-25T21:58:30.981Z",
+      "updated_at": "2020-10-25T21:58:30.981Z",
+      "domain_config": 1,
+      "incident_type": 1,
+      "external_assistance": "Without external support",
+      "details": {},
+      "status": "Started",
+      "data_status": "Incomplete",
+      "location_as_string_reference": "",
+      "reference": "",
+      "location_point": "SRID=4326;POINT (-31.42094065782231 -62.10928613067524)",
+      "finalized_at": null
+    }
+  },
+  {
+    "model": "incident.incident",
+    "pk": 26,
+    "fields": {
+      "created_at": "2020-10-25T22:02:57.572Z",
+      "updated_at": "2020-10-25T22:02:57.572Z",
+      "domain_config": 1,
+      "incident_type": 1,
+      "external_assistance": "Without external support",
+      "details": {},
+      "status": "Started",
+      "data_status": "Incomplete",
+      "location_as_string_reference": "",
+      "reference": "",
+      "location_point": "SRID=4326;POINT (-31.42105052451363 -62.10920029998677)",
+      "finalized_at": null
+    }
+  },
+  {
+    "model": "incident.incident",
+    "pk": 27,
+    "fields": {
+      "created_at": "2020-10-25T22:05:17.198Z",
+      "updated_at": "2020-10-25T22:05:17.198Z",
+      "domain_config": 1,
+      "incident_type": 2,
+      "external_assistance": "Without external support",
+      "details": {},
+      "status": "Started",
+      "data_status": "Incomplete",
+      "location_as_string_reference": "",
+      "reference": "",
+      "location_point": "SRID=4326;POINT (-31.4230647243786 -62.10967236877339)",
+      "finalized_at": null
+    }
+  },
+  {
+    "model": "incident.incident",
+    "pk": 28,
+    "fields": {
+      "created_at": "2020-10-26T22:25:53.475Z",
+      "updated_at": "2020-10-26T22:25:53.475Z",
+      "domain_config": 1,
+      "incident_type": 1,
+      "external_assistance": "Without external support",
+      "details": {},
+      "status": "Started",
+      "data_status": "Incomplete",
+      "location_as_string_reference": "UTN Facultad Regional de San Francisco, Avenida de la Universidad, San Francisco, C\u00f3rdoba, Argentina",
+      "reference": "",
+      "location_point": "SRID=4326;POINT (-31.4207983 -62.11050599999999)",
+      "finalized_at": null
+    }
+  },
+  {
+    "model": "incident.incident",
+    "pk": 29,
+    "fields": {
+      "created_at": "2020-10-26T22:27:36.349Z",
+      "updated_at": "2020-11-10T16:09:53.858Z",
+      "domain_config": 1,
+      "incident_type": 1,
+      "external_assistance": "With external support",
+      "details": {},
+      "status": "Started",
+      "data_status": "Incomplete",
+      "location_as_string_reference": "UTN Facultad Regional de San Francisco, Avenida de la Universidad, San Francisco, C\u00f3rdoba, Argentina",
+      "reference": "",
+      "location_point": "SRID=4326;POINT (-31.4207983 -62.11050599999999)",
+      "finalized_at": null
+    }
+  },
+  {
+    "model": "incident.incident",
+    "pk": 30,
+    "fields": {
+      "created_at": "2020-10-26T22:27:51.916Z",
+      "updated_at": "2020-11-10T16:10:34.058Z",
+      "domain_config": 1,
+      "incident_type": 1,
+      "external_assistance": "With external support",
+      "details": {},
+      "status": "Started",
+      "data_status": "Incomplete",
+      "location_as_string_reference": "UTN Facultad Regional de San Francisco, Avenida de la Universidad, San Francisco, C\u00f3rdoba, Argentina",
+      "reference": "",
+      "location_point": "SRID=4326;POINT (-31.4207983 -62.11050599999999)",
+      "finalized_at": null
+    }
+  },
+  {
+    "model": "incident.incident",
+    "pk": 31,
+    "fields": {
+      "created_at": "2020-10-27T00:03:04.731Z",
+      "updated_at": "2020-11-14T14:30:00.728Z",
+      "domain_config": 1,
+      "incident_type": 1,
+      "external_assistance": "Without external support",
+      "details": {},
+      "status": "Finalized",
+      "data_status": "Incomplete",
+      "location_as_string_reference": "Utnoor, Telangana, India",
+      "reference": "",
+      "location_point": "SRID=4326;POINT (19.3718044 78.7787889)",
+      "finalized_at": null
+    }
+  },
+  {
+    "model": "incident.incident",
+    "pk": 32,
+    "fields": {
+      "created_at": "2020-10-27T20:46:53.590Z",
+      "updated_at": "2020-10-27T20:46:53.590Z",
+      "domain_config": 1,
+      "incident_type": 1,
+      "external_assistance": "Without external support",
+      "details": {},
+      "status": "Started",
+      "data_status": "Incomplete",
+      "location_as_string_reference": "",
+      "reference": "",
+      "location_point": "SRID=4326;POINT (-31.4448779521987 -62.08143092527409)",
+      "finalized_at": null
+    }
+  },
+  {
+    "model": "incident.incident",
+    "pk": 33,
+    "fields": {
+      "created_at": "2020-11-07T15:58:46.747Z",
+      "updated_at": "2020-11-07T15:58:46.747Z",
+      "domain_config": 1,
+      "incident_type": 2,
+      "external_assistance": "Without external support",
+      "details": {},
+      "status": "Started",
+      "data_status": "Incomplete",
+      "location_as_string_reference": "",
+      "reference": "",
+      "location_point": "SRID=4326;POINT (-31.42492437312432 -62.08405384072265)",
+      "finalized_at": null
+    }
+  },
+  {
+    "model": "incident.incident",
+    "pk": 34,
+    "fields": {
+      "created_at": "2020-11-07T16:01:13.843Z",
+      "updated_at": "2020-11-07T16:01:13.843Z",
+      "domain_config": 1,
+      "incident_type": 1,
+      "external_assistance": "Without external support",
+      "details": {},
+      "status": "Started",
+      "data_status": "Incomplete",
+      "location_as_string_reference": "",
+      "reference": "",
+      "location_point": "SRID=4326;POINT (-31.42521733823666 -62.08662876137694)",
+      "finalized_at": null
+    }
+  },
+  {
+    "model": "incident.incident",
+    "pk": 35,
+    "fields": {
+      "created_at": "2020-11-09T22:57:03.950Z",
+      "updated_at": "2020-11-09T22:57:03.950Z",
+      "domain_config": 1,
+      "incident_type": 3,
+      "external_assistance": "Without external support",
+      "details": {},
+      "status": "Started",
+      "data_status": "Incomplete",
+      "location_as_string_reference": "",
+      "reference": "",
+      "location_point": "SRID=4326;POINT (-31.4236214593913 -62.09109875717773)",
+      "finalized_at": null
+    }
+  },
+  {
+    "model": "incident.incident",
+    "pk": 36,
+    "fields": {
+      "created_at": "2020-11-10T16:40:22.913Z",
+      "updated_at": "2020-11-10T16:40:22.913Z",
+      "domain_config": 1,
+      "incident_type": 1,
+      "external_assistance": "Without external support",
+      "details": {},
+      "status": "Started",
+      "data_status": "Incomplete",
+      "location_as_string_reference": "",
+      "reference": "prueba 2.1",
+      "location_point": "SRID=4326;POINT (-31.42676131010007 -62.07567679092409)",
+      "finalized_at": null
+    }
+  },
+  {
+    "model": "incident.incident",
+    "pk": 37,
+    "fields": {
+      "created_at": "2020-11-10T16:53:49.685Z",
+      "updated_at": "2020-11-10T16:53:49.685Z",
+      "domain_config": 1,
+      "incident_type": 1,
+      "external_assistance": "Without external support",
+      "details": {},
+      "status": "Started",
+      "data_status": "Incomplete",
+      "location_as_string_reference": "",
+      "reference": "prueba 2.2",
+      "location_point": "SRID=4326;POINT (-31.42471056885885 -62.08597647354128)",
+      "finalized_at": null
+    }
+  },
+  {
+    "model": "incident.incident",
+    "pk": 38,
+    "fields": {
+      "created_at": "2020-11-10T16:57:48.722Z",
+      "updated_at": "2020-11-10T16:57:48.722Z",
+      "domain_config": 1,
+      "incident_type": 3,
+      "external_assistance": "With external support",
+      "details": {},
+      "status": "Started",
+      "data_status": "Incomplete",
+      "location_as_string_reference": "",
+      "reference": "prueba 2.3",
+      "location_point": "SRID=4326;POINT (-31.42451156443676 -62.07677928987427)",
+      "finalized_at": null
+    }
+  },
+  {
+    "model": "incident.incident",
+    "pk": 39,
+    "fields": {
+      "created_at": "2020-11-10T17:43:52.634Z",
+      "updated_at": "2020-11-10T17:43:52.634Z",
+      "domain_config": 1,
+      "incident_type": 1,
+      "external_assistance": "Without external support",
+      "details": {},
+      "status": "Started",
+      "data_status": "Incomplete",
+      "location_as_string_reference": "",
+      "reference": "prueba 2.3",
+      "location_point": "SRID=4326;POINT (-31.43469868948571 -62.10608129521484)",
+      "finalized_at": null
+    }
+  },
+  {
+    "model": "incident.incident",
+    "pk": 40,
+    "fields": {
+      "created_at": "2020-11-10T17:44:41.708Z",
+      "updated_at": "2020-11-12T17:44:03.268Z",
+      "domain_config": 1,
+      "incident_type": 3,
+      "external_assistance": "With external support",
+      "details": {},
+      "status": "Canceled",
+      "data_status": "Incomplete",
+      "location_as_string_reference": "Plaza General Maroto, Madrid, Espa\u00f1a",
+      "reference": "prueba 4",
+      "location_point": "SRID=4326;POINT (40.39361280000001 -3.6980457)",
+      "finalized_at": null
+    }
+  },
+  {
+    "model": "incident.incident",
+    "pk": 41,
+    "fields": {
+      "created_at": "2020-11-11T23:50:14.565Z",
+      "updated_at": "2020-11-11T23:50:14.566Z",
+      "domain_config": 1,
+      "incident_type": 3,
+      "external_assistance": "With external support",
+      "details": {},
+      "status": "Started",
+      "data_status": "Incomplete",
+      "location_as_string_reference": "",
+      "reference": "plaza velez sarfield prueba 12 1313",
+      "location_point": "SRID=4326;POINT (-31.41778498569858 -62.06480066650389)",
+      "finalized_at": null
+    }
+  },
+  {
+    "model": "incident.incident",
+    "pk": 42,
+    "fields": {
+      "created_at": "2020-11-11T23:51:26.240Z",
+      "updated_at": "2020-11-11T23:51:26.240Z",
+      "domain_config": 1,
+      "incident_type": 2,
+      "external_assistance": "Without external support",
+      "details": {},
+      "status": "Started",
+      "data_status": "Incomplete",
+      "location_as_string_reference": "",
+      "reference": "prueba 2.0",
+      "location_point": "SRID=4326;POINT (-31.42574436522099 -62.09113567252197)",
+      "finalized_at": null
+    }
+  },
+  {
+    "model": "incident.incident",
+    "pk": 43,
+    "fields": {
+      "created_at": "2020-11-11T23:54:04.642Z",
+      "updated_at": "2020-11-14T14:30:23.330Z",
+      "domain_config": 1,
+      "incident_type": 3,
+      "external_assistance": "Without external support",
+      "details": {},
+      "status": "Canceled",
+      "data_status": "Incomplete",
+      "location_as_string_reference": "\u00c1rea 51, Nevada, EE. UU.",
+      "reference": "plaza velez sarfield prueba 12",
+      "location_point": "SRID=4326;POINT (37.2430548 -115.7930198)",
+      "finalized_at": null
+    }
+  },
+  {
+    "model": "incident.incident",
+    "pk": 44,
+    "fields": {
+      "created_at": "2020-11-11T23:54:38.587Z",
+      "updated_at": "2020-11-11T23:54:38.587Z",
+      "domain_config": 1,
+      "incident_type": 1,
+      "external_assistance": "With external support",
+      "details": {},
+      "status": "Started",
+      "data_status": "Incomplete",
+      "location_as_string_reference": "Honey Pot Hill Orchards, Boon Road, Stow, Massachusetts, EE. UU.",
+      "reference": "problemas de luz",
+      "location_point": "SRID=4326;POINT (42.41163419999999 -71.51387059999999)",
+      "finalized_at": null
+    }
+  },
+  {
+    "model": "incident.incident",
+    "pk": 45,
+    "fields": {
+      "created_at": "2020-11-12T00:00:13.281Z",
+      "updated_at": "2020-11-14T14:18:46.861Z",
+      "domain_config": 1,
+      "incident_type": 3,
+      "external_assistance": "Without external support",
+      "details": {},
+      "status": "Canceled",
+      "data_status": "Incomplete",
+      "location_as_string_reference": "Indonesia - Papua New Guinea Border, Pap\u00faa Nueva Guinea",
+      "reference": "prueba final?",
+      "location_point": "SRID=4326;POINT (-2.6081276 141.0013139)",
+      "finalized_at": null
+    }
+  },
+  {
+    "model": "incident.incident",
+    "pk": 46,
+    "fields": {
+      "created_at": "2020-11-12T00:00:58.357Z",
+      "updated_at": "2020-11-12T00:00:58.357Z",
+      "domain_config": 1,
+      "incident_type": 2,
+      "external_assistance": "With external support",
+      "details": {},
+      "status": "Started",
+      "data_status": "Incomplete",
+      "location_as_string_reference": "Papantla, Ver., M\u00e9xico",
+      "reference": "prueba 40",
+      "location_point": "SRID=4326;POINT (20.4566709 -97.31561309999999)",
+      "finalized_at": null
+    }
+  },
+  {
+    "model": "domain_config.supervisoralias",
+    "pk": 1,
+    "fields": {
+      "created_at": "2020-09-28T00:26:36.194Z",
+      "updated_at": "2020-09-28T00:26:36.194Z",
+      "alias": "Bombero",
+      "domain_config": 1
+    }
+  },
+  {
+    "model": "domain_config.supervisoralias",
+    "pk": 2,
+    "fields": {
+      "created_at": "2020-09-28T00:26:36.221Z",
+      "updated_at": "2020-09-28T00:26:36.221Z",
+      "alias": "Oficial",
+      "domain_config": 1
+    }
+  },
+  {
+    "model": "domain_config.supervisoralias",
+    "pk": 3,
+    "fields": {
+      "created_at": "2020-09-28T00:26:36.225Z",
+      "updated_at": "2020-09-28T00:26:36.225Z",
+      "alias": "Suboficial",
+      "domain_config": 1
+    }
+  },
+  {
+    "model": "domain_config.supervisoralias",
+    "pk": 4,
+    "fields": {
+      "created_at": "2020-10-11T21:58:18.720Z",
+      "updated_at": "2020-10-11T21:58:18.720Z",
+      "alias": "Supervisor en Jefe",
+      "domain_config": 1
+    }
+  },
+  {
+    "model": "domain_config.resourcetype",
+    "pk": 1,
+    "fields": {
+      "created_at": "2020-09-28T00:26:36.352Z",
+      "updated_at": "2020-09-28T00:26:36.403Z",
+      "name": "Bombero",
+      "domain_config": 1
+    }
+  },
+  {
+    "model": "domain_config.resourcetype",
+    "pk": 2,
+    "fields": {
+      "created_at": "2020-09-28T00:26:36.427Z",
+      "updated_at": "2020-09-28T00:26:36.427Z",
+      "name": "Canino",
+      "domain_config": 1
+    }
+  },
+  {
+    "model": "domain_config.mappointdescription",
+    "pk": 1,
+    "fields": {
+      "created_at": "2020-09-28T00:26:36.304Z",
+      "updated_at": "2020-09-28T00:26:36.304Z",
+      "text": "descripcion util para un map point en particular",
+      "incident_type": 1
+    }
+  },
+  {
+    "model": "domain_config.mappointdescription",
+    "pk": 2,
+    "fields": {
+      "created_at": "2020-09-28T00:26:36.393Z",
+      "updated_at": "2020-09-28T00:26:36.394Z",
+      "text": "descripcion util para un map point en particular",
+      "incident_type": 2
+    }
+  },
+  {
+    "model": "domain_config.incidenttyperesource",
+    "pk": 1,
+    "fields": {
+      "created_at": "2020-09-28T00:26:36.371Z",
+      "updated_at": "2020-09-28T00:26:36.371Z",
+      "incident_type": 1,
+      "resource_type": 1
+    }
+  },
+  {
+    "model": "domain_config.incidenttyperesource",
+    "pk": 2,
+    "fields": {
+      "created_at": "2020-09-28T00:26:36.415Z",
+      "updated_at": "2020-09-28T00:26:36.415Z",
+      "incident_type": 2,
+      "resource_type": 1
+    }
+  },
+  {
+    "model": "domain_config.incidenttyperesource",
+    "pk": 3,
+    "fields": {
+      "created_at": "2020-09-28T00:26:36.440Z",
+      "updated_at": "2020-09-28T00:26:36.440Z",
+      "incident_type": 2,
+      "resource_type": 2
+    }
+  },
+  {
+    "model": "domain_config.incidenttype",
+    "pk": 1,
+    "fields": {
+      "created_at": "2020-09-28T00:26:36.290Z",
+      "updated_at": "2020-10-26T22:50:29.342Z",
+      "name": "Incendio de Campo",
+      "abstraction": 1,
+      "details_schema": {
+        "$id": "https://example.com/arrays.schema.json",
+        "type": "object",
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "properties": {
+          "fruits": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "vegetables": {
+            "type": "array",
+            "items": {
+              "$ref": "#/definitions/veggie"
+            }
+          }
+        },
+        "definitions": {
+          "veggie": {
+            "type": "object",
+            "required": [
+              "veggieName",
+              "veggieLike"
+            ],
+            "properties": {
+              "veggieLike": {
+                "type": "boolean",
+                "description": "Do I like this vegetable?"
+              },
+              "veggieName": {
+                "type": "string",
+                "description": "The name of the vegetable."
+              }
+            }
+          }
+        },
+        "description": "A representation of a person, company, organization, or place"
+      }
+    }
+  },
+  {
+    "model": "domain_config.incidenttype",
+    "pk": 2,
+    "fields": {
+      "created_at": "2020-09-28T00:26:36.388Z",
+      "updated_at": "2020-09-28T00:26:36.389Z",
+      "name": "B\u00fasqueda",
+      "abstraction": 2,
+      "details_schema": {}
+    }
+  },
+  {
+    "model": "domain_config.incidenttype",
+    "pk": 3,
+    "fields": {
+      "created_at": "2020-10-09T20:03:09.153Z",
+      "updated_at": "2020-10-09T20:03:09.153Z",
+      "name": "Capacitaic\u00f3n",
+      "abstraction": 2,
+      "details_schema": {}
+    }
+  },
+  {
+    "model": "domain_config.incidentabstraction",
+    "pk": 1,
+    "fields": {
+      "created_at": "2020-09-28T00:26:36.228Z",
+      "updated_at": "2020-09-28T00:26:36.228Z",
+      "alias": "Incidente",
+      "domain_config": 1
+    }
+  },
+  {
+    "model": "domain_config.incidentabstraction",
+    "pk": 2,
+    "fields": {
+      "created_at": "2020-09-28T00:26:36.383Z",
+      "updated_at": "2020-09-28T00:26:36.383Z",
+      "alias": "B\u00fasqueda",
+      "domain_config": 1
+    }
+  },
+  {
+    "model": "domain_config.domainconfig",
+    "pk": 1,
+    "fields": {
+      "created_at": "2020-09-28T00:26:36.144Z",
+      "updated_at": "2020-11-05T14:44:44.314Z",
+      "domain_name": "DominioPersonalizado",
+      "admin_alias": "Administrador",
+      "domain_code": "DPOXFPR8U5",
+      "parsed_json": {
+        "name": "DominioPersonalizado",
+        "adminAlias": "Administrador",
+        "supervisorAliases": [
+          {
+            "name": "Bombero"
+          },
+          {
+            "name": "Oficial"
+          },
+          {
+            "name": "Suboficial"
+          },
+          {
+            "name": "Supervisor en Jefe"
+          }
+        ],
+        "incidentAbstractions": [
+          {
+            "name": "Incidente",
+            "types": [
+              {
+                "name": "Incendio de Campo",
+                "descriptions": [
+                  {
+                    "text": "descripcion util para un map point en particular"
+                  }
+                ],
+                "detailsSchema": {
+                  "$id": "https://example.com/arrays.schema.json",
+                  "type": "object",
+                  "$schema": "http://json-schema.org/draft-07/schema#",
+                  "properties": {
+                    "fruits": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "vegetables": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/definitions/veggie"
+                      }
+                    }
+                  },
+                  "definitions": {
+                    "veggie": {
+                      "type": "object",
+                      "required": [
+                        "veggieName",
+                        "veggieLike"
+                      ],
+                      "properties": {
+                        "veggieLike": {
+                          "type": "boolean",
+                          "description": "Do I like this vegetable?"
+                        },
+                        "veggieName": {
+                          "type": "string",
+                          "description": "The name of the vegetable."
+                        }
+                      }
+                    }
+                  },
+                  "description": "A representation of a person, company, organization, or place"
+                },
+                "resourceTypes": [
+                  {
+                    "name": "Bombero"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "name": "B\u00fasqueda",
+            "types": [
+              {
+                "name": "B\u00fasqueda",
+                "descriptions": [
+                  {
+                    "text": "descripcion util para un map point en particular"
+                  }
+                ],
+                "detailsSchema": {},
+                "resourceTypes": [
+                  {
+                    "name": "Bombero"
+                  },
+                  {
+                    "name": "Canino"
+                  }
+                ]
+              },
+              {
+                "name": "Capacitaic\u00f3n",
+                "descriptions": [],
+                "detailsSchema": {},
+                "resourceTypes": []
+              }
+            ]
+          }
+        ]
+      }
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 1,
+    "fields": {
+      "name": "Can add log entry",
+      "content_type": 1,
+      "codename": "add_logentry"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 2,
+    "fields": {
+      "name": "Can change log entry",
+      "content_type": 1,
+      "codename": "change_logentry"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 3,
+    "fields": {
+      "name": "Can delete log entry",
+      "content_type": 1,
+      "codename": "delete_logentry"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 4,
+    "fields": {
+      "name": "Can view log entry",
+      "content_type": 1,
+      "codename": "view_logentry"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 5,
+    "fields": {
+      "name": "Can add permission",
+      "content_type": 2,
+      "codename": "add_permission"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 6,
+    "fields": {
+      "name": "Can change permission",
+      "content_type": 2,
+      "codename": "change_permission"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 7,
+    "fields": {
+      "name": "Can delete permission",
+      "content_type": 2,
+      "codename": "delete_permission"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 8,
+    "fields": {
+      "name": "Can view permission",
+      "content_type": 2,
+      "codename": "view_permission"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 9,
+    "fields": {
+      "name": "Can add group",
+      "content_type": 3,
+      "codename": "add_group"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 10,
+    "fields": {
+      "name": "Can change group",
+      "content_type": 3,
+      "codename": "change_group"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 11,
+    "fields": {
+      "name": "Can delete group",
+      "content_type": 3,
+      "codename": "delete_group"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 12,
+    "fields": {
+      "name": "Can view group",
+      "content_type": 3,
+      "codename": "view_group"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 13,
+    "fields": {
+      "name": "Can add content type",
+      "content_type": 4,
+      "codename": "add_contenttype"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 14,
+    "fields": {
+      "name": "Can change content type",
+      "content_type": 4,
+      "codename": "change_contenttype"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 15,
+    "fields": {
+      "name": "Can delete content type",
+      "content_type": 4,
+      "codename": "delete_contenttype"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 16,
+    "fields": {
+      "name": "Can view content type",
+      "content_type": 4,
+      "codename": "view_contenttype"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 17,
+    "fields": {
+      "name": "Can add session",
+      "content_type": 5,
+      "codename": "add_session"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 18,
+    "fields": {
+      "name": "Can change session",
+      "content_type": 5,
+      "codename": "change_session"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 19,
+    "fields": {
+      "name": "Can delete session",
+      "content_type": 5,
+      "codename": "delete_session"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 20,
+    "fields": {
+      "name": "Can view session",
+      "content_type": 5,
+      "codename": "view_session"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 21,
+    "fields": {
+      "name": "Can add Token",
+      "content_type": 6,
+      "codename": "add_token"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 22,
+    "fields": {
+      "name": "Can change Token",
+      "content_type": 6,
+      "codename": "change_token"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 23,
+    "fields": {
+      "name": "Can delete Token",
+      "content_type": 6,
+      "codename": "delete_token"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 24,
+    "fields": {
+      "name": "Can view Token",
+      "content_type": 6,
+      "codename": "view_token"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 25,
+    "fields": {
+      "name": "Can add user",
+      "content_type": 7,
+      "codename": "add_user"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 26,
+    "fields": {
+      "name": "Can change user",
+      "content_type": 7,
+      "codename": "change_user"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 27,
+    "fields": {
+      "name": "Can delete user",
+      "content_type": 7,
+      "codename": "delete_user"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 28,
+    "fields": {
+      "name": "Can view user",
+      "content_type": 7,
+      "codename": "view_user"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 29,
+    "fields": {
+      "name": "Can add admin profile",
+      "content_type": 8,
+      "codename": "add_adminprofile"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 30,
+    "fields": {
+      "name": "Can change admin profile",
+      "content_type": 8,
+      "codename": "change_adminprofile"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 31,
+    "fields": {
+      "name": "Can delete admin profile",
+      "content_type": 8,
+      "codename": "delete_adminprofile"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 32,
+    "fields": {
+      "name": "Can view admin profile",
+      "content_type": 8,
+      "codename": "view_adminprofile"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 33,
+    "fields": {
+      "name": "Can add supervisor profile",
+      "content_type": 9,
+      "codename": "add_supervisorprofile"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 34,
+    "fields": {
+      "name": "Can change supervisor profile",
+      "content_type": 9,
+      "codename": "change_supervisorprofile"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 35,
+    "fields": {
+      "name": "Can delete supervisor profile",
+      "content_type": 9,
+      "codename": "delete_supervisorprofile"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 36,
+    "fields": {
+      "name": "Can view supervisor profile",
+      "content_type": 9,
+      "codename": "view_supervisorprofile"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 37,
+    "fields": {
+      "name": "Can add resource profile",
+      "content_type": 10,
+      "codename": "add_resourceprofile"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 38,
+    "fields": {
+      "name": "Can change resource profile",
+      "content_type": 10,
+      "codename": "change_resourceprofile"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 39,
+    "fields": {
+      "name": "Can delete resource profile",
+      "content_type": 10,
+      "codename": "delete_resourceprofile"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 40,
+    "fields": {
+      "name": "Can view resource profile",
+      "content_type": 10,
+      "codename": "view_resourceprofile"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 41,
+    "fields": {
+      "name": "Can add supervisor alias",
+      "content_type": 11,
+      "codename": "add_supervisoralias"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 42,
+    "fields": {
+      "name": "Can change supervisor alias",
+      "content_type": 11,
+      "codename": "change_supervisoralias"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 43,
+    "fields": {
+      "name": "Can delete supervisor alias",
+      "content_type": 11,
+      "codename": "delete_supervisoralias"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 44,
+    "fields": {
+      "name": "Can view supervisor alias",
+      "content_type": 11,
+      "codename": "view_supervisoralias"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 45,
+    "fields": {
+      "name": "Can add resource type",
+      "content_type": 12,
+      "codename": "add_resourcetype"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 46,
+    "fields": {
+      "name": "Can change resource type",
+      "content_type": 12,
+      "codename": "change_resourcetype"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 47,
+    "fields": {
+      "name": "Can delete resource type",
+      "content_type": 12,
+      "codename": "delete_resourcetype"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 48,
+    "fields": {
+      "name": "Can view resource type",
+      "content_type": 12,
+      "codename": "view_resourcetype"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 49,
+    "fields": {
+      "name": "Can add map point descriptions",
+      "content_type": 13,
+      "codename": "add_mappointdescriptions"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 50,
+    "fields": {
+      "name": "Can change map point descriptions",
+      "content_type": 13,
+      "codename": "change_mappointdescriptions"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 51,
+    "fields": {
+      "name": "Can delete map point descriptions",
+      "content_type": 13,
+      "codename": "delete_mappointdescriptions"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 52,
+    "fields": {
+      "name": "Can view map point descriptions",
+      "content_type": 13,
+      "codename": "view_mappointdescriptions"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 53,
+    "fields": {
+      "name": "Can add incident type resources",
+      "content_type": 14,
+      "codename": "add_incidenttyperesources"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 54,
+    "fields": {
+      "name": "Can change incident type resources",
+      "content_type": 14,
+      "codename": "change_incidenttyperesources"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 55,
+    "fields": {
+      "name": "Can delete incident type resources",
+      "content_type": 14,
+      "codename": "delete_incidenttyperesources"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 56,
+    "fields": {
+      "name": "Can view incident type resources",
+      "content_type": 14,
+      "codename": "view_incidenttyperesources"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 57,
+    "fields": {
+      "name": "Can add incident type",
+      "content_type": 15,
+      "codename": "add_incidenttype"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 58,
+    "fields": {
+      "name": "Can change incident type",
+      "content_type": 15,
+      "codename": "change_incidenttype"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 59,
+    "fields": {
+      "name": "Can delete incident type",
+      "content_type": 15,
+      "codename": "delete_incidenttype"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 60,
+    "fields": {
+      "name": "Can view incident type",
+      "content_type": 15,
+      "codename": "view_incidenttype"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 61,
+    "fields": {
+      "name": "Can add incident abstraction",
+      "content_type": 16,
+      "codename": "add_incidentabstraction"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 62,
+    "fields": {
+      "name": "Can change incident abstraction",
+      "content_type": 16,
+      "codename": "change_incidentabstraction"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 63,
+    "fields": {
+      "name": "Can delete incident abstraction",
+      "content_type": 16,
+      "codename": "delete_incidentabstraction"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 64,
+    "fields": {
+      "name": "Can view incident abstraction",
+      "content_type": 16,
+      "codename": "view_incidentabstraction"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 65,
+    "fields": {
+      "name": "Can add domain config",
+      "content_type": 17,
+      "codename": "add_domainconfig"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 66,
+    "fields": {
+      "name": "Can change domain config",
+      "content_type": 17,
+      "codename": "change_domainconfig"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 67,
+    "fields": {
+      "name": "Can delete domain config",
+      "content_type": 17,
+      "codename": "delete_domainconfig"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 68,
+    "fields": {
+      "name": "Can view domain config",
+      "content_type": 17,
+      "codename": "view_domainconfig"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 69,
+    "fields": {
+      "name": "Can add incident type resource",
+      "content_type": 14,
+      "codename": "add_incidenttyperesource"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 70,
+    "fields": {
+      "name": "Can change incident type resource",
+      "content_type": 14,
+      "codename": "change_incidenttyperesource"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 71,
+    "fields": {
+      "name": "Can delete incident type resource",
+      "content_type": 14,
+      "codename": "delete_incidenttyperesource"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 72,
+    "fields": {
+      "name": "Can view incident type resource",
+      "content_type": 14,
+      "codename": "view_incidenttyperesource"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 73,
+    "fields": {
+      "name": "Can add map point description",
+      "content_type": 13,
+      "codename": "add_mappointdescription"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 74,
+    "fields": {
+      "name": "Can change map point description",
+      "content_type": 13,
+      "codename": "change_mappointdescription"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 75,
+    "fields": {
+      "name": "Can delete map point description",
+      "content_type": 13,
+      "codename": "delete_mappointdescription"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 76,
+    "fields": {
+      "name": "Can view map point description",
+      "content_type": 13,
+      "codename": "view_mappointdescription"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 77,
+    "fields": {
+      "name": "Can add incident",
+      "content_type": 18,
+      "codename": "add_incident"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 78,
+    "fields": {
+      "name": "Can change incident",
+      "content_type": 18,
+      "codename": "change_incident"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 79,
+    "fields": {
+      "name": "Can delete incident",
+      "content_type": 18,
+      "codename": "delete_incident"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 80,
+    "fields": {
+      "name": "Can view incident",
+      "content_type": 18,
+      "codename": "view_incident"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 81,
+    "fields": {
+      "name": "Can add incident supervisor",
+      "content_type": 19,
+      "codename": "add_incidentsupervisor"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 82,
+    "fields": {
+      "name": "Can change incident supervisor",
+      "content_type": 19,
+      "codename": "change_incidentsupervisor"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 83,
+    "fields": {
+      "name": "Can delete incident supervisor",
+      "content_type": 19,
+      "codename": "delete_incidentsupervisor"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 84,
+    "fields": {
+      "name": "Can view incident supervisor",
+      "content_type": 19,
+      "codename": "view_incidentsupervisor"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 85,
+    "fields": {
+      "name": "Can add incident resource",
+      "content_type": 20,
+      "codename": "add_incidentresource"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 86,
+    "fields": {
+      "name": "Can change incident resource",
+      "content_type": 20,
+      "codename": "change_incidentresource"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 87,
+    "fields": {
+      "name": "Can delete incident resource",
+      "content_type": 20,
+      "codename": "delete_incidentresource"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 88,
+    "fields": {
+      "name": "Can view incident resource",
+      "content_type": 20,
+      "codename": "view_incidentresource"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 89,
+    "fields": {
+      "name": "Can add historical incident supervisor",
+      "content_type": 21,
+      "codename": "add_historicalincidentsupervisor"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 90,
+    "fields": {
+      "name": "Can change historical incident supervisor",
+      "content_type": 21,
+      "codename": "change_historicalincidentsupervisor"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 91,
+    "fields": {
+      "name": "Can delete historical incident supervisor",
+      "content_type": 21,
+      "codename": "delete_historicalincidentsupervisor"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 92,
+    "fields": {
+      "name": "Can view historical incident supervisor",
+      "content_type": 21,
+      "codename": "view_historicalincidentsupervisor"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 93,
+    "fields": {
+      "name": "Can add historical incident resource",
+      "content_type": 22,
+      "codename": "add_historicalincidentresource"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 94,
+    "fields": {
+      "name": "Can change historical incident resource",
+      "content_type": 22,
+      "codename": "change_historicalincidentresource"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 95,
+    "fields": {
+      "name": "Can delete historical incident resource",
+      "content_type": 22,
+      "codename": "delete_historicalincidentresource"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 96,
+    "fields": {
+      "name": "Can view historical incident resource",
+      "content_type": 22,
+      "codename": "view_historicalincidentresource"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 97,
+    "fields": {
+      "name": "Can add historical incident",
+      "content_type": 23,
+      "codename": "add_historicalincident"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 98,
+    "fields": {
+      "name": "Can change historical incident",
+      "content_type": 23,
+      "codename": "change_historicalincident"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 99,
+    "fields": {
+      "name": "Can delete historical incident",
+      "content_type": 23,
+      "codename": "delete_historicalincident"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 100,
+    "fields": {
+      "name": "Can view historical incident",
+      "content_type": 23,
+      "codename": "view_historicalincident"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 101,
+    "fields": {
+      "name": "Can add map point",
+      "content_type": 24,
+      "codename": "add_mappoint"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 102,
+    "fields": {
+      "name": "Can change map point",
+      "content_type": 24,
+      "codename": "change_mappoint"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 103,
+    "fields": {
+      "name": "Can delete map point",
+      "content_type": 24,
+      "codename": "delete_mappoint"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 104,
+    "fields": {
+      "name": "Can view map point",
+      "content_type": 24,
+      "codename": "view_mappoint"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 105,
+    "fields": {
+      "name": "Can add point in time",
+      "content_type": 25,
+      "codename": "add_pointintime"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 106,
+    "fields": {
+      "name": "Can change point in time",
+      "content_type": 25,
+      "codename": "change_pointintime"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 107,
+    "fields": {
+      "name": "Can delete point in time",
+      "content_type": 25,
+      "codename": "delete_pointintime"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 108,
+    "fields": {
+      "name": "Can view point in time",
+      "content_type": 25,
+      "codename": "view_pointintime"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 109,
+    "fields": {
+      "name": "Can add track point",
+      "content_type": 26,
+      "codename": "add_trackpoint"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 110,
+    "fields": {
+      "name": "Can change track point",
+      "content_type": 26,
+      "codename": "change_trackpoint"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 111,
+    "fields": {
+      "name": "Can delete track point",
+      "content_type": 26,
+      "codename": "delete_trackpoint"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 112,
+    "fields": {
+      "name": "Can view track point",
+      "content_type": 26,
+      "codename": "view_trackpoint"
+    }
+  },
+  {
+    "model": "users.user",
+    "pk": "0955f439-8618-47b8-8762-81032ca82df8",
+    "fields": {
+      "password": "pbkdf2_sha256$180000$58CFK1AEXz4B$lfkZFMLmAB3hTTv2QFVhJZX+4CEskFJMbfMAwNvmeio=",
+      "last_login": null,
+      "is_superuser": false,
+      "username": "12346zxca",
+      "first_name": "Joaquin",
+      "last_name": "Cabal",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2020-10-10T22:22:31.826Z",
+      "email": "asd@asdd.com",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "users.user",
+    "pk": "0ef86394-c8bc-470b-8d0b-d37de270c542",
+    "fields": {
+      "password": "pbkdf2_sha256$180000$JHTqV0jidh2Y$1aG1msAg8VQ/6/tUo73tYv7Ba3Ci3iPHcyoGWHg+t4Q=",
+      "last_login": null,
+      "is_superuser": false,
+      "username": "string",
+      "first_name": "string",
+      "last_name": "string",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2020-10-11T22:32:38.244Z",
+      "email": "user@example.com",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "users.user",
+    "pk": "13a0a00c-ce80-4c0e-9108-64a697069d53",
+    "fields": {
+      "password": "pbkdf2_sha256$180000$UQNpMBkx2V5x$haL5/8PGTqX8zKRdi4nnMaCvo0TVTFVgFTQDTruGQi0=",
+      "last_login": null,
+      "is_superuser": false,
+      "username": "PRasd",
+      "first_name": "Joaquin",
+      "last_name": "Cabal",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2020-10-11T22:29:43.283Z",
+      "email": "jASDASDSAD@asd.com",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "users.user",
+    "pk": "19ba1a2b-86a8-4254-9b63-8fb52ede1334",
+    "fields": {
+      "password": "pbkdf2_sha256$180000$HhN5d71vwRUr$FzzAVABwBUFTdZer5Ff3j5y3D5QSsKdR9+651NXPEOU=",
+      "last_login": null,
+      "is_superuser": false,
+      "username": "asdasdasd",
+      "first_name": "Joaquin",
+      "last_name": "Cabal",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2020-10-10T22:10:48.601Z",
+      "email": "6124324@hotmail.com",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "users.user",
+    "pk": "33850291-970e-4a53-b6c3-824b6d7f50df",
+    "fields": {
+      "password": "pbkdf2_sha256$180000$j9jSzu3PwQw8$5+FANYDOjo+iGgB8VJm9MpgSSx85sbnhg0ZIaeTJBzM=",
+      "last_login": null,
+      "is_superuser": false,
+      "username": "asdasdasdasd",
+      "first_name": "Joaquin",
+      "last_name": "Cabal",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2020-10-11T22:35:04.928Z",
+      "email": "??????@hotmail.com",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "users.user",
+    "pk": "36285938-73fe-4a6f-94ec-2d1efc88f0ec",
+    "fields": {
+      "password": "pbkdf2_sha256$180000$rYQbb6BE1gD3$sS29yugyPxR2WZsV/E7dain61mv8yuaQeHZTAyp56TA=",
+      "last_login": null,
+      "is_superuser": false,
+      "username": "123123123123",
+      "first_name": "Joaquin",
+      "last_name": "Cabal",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2020-10-10T22:12:06.071Z",
+      "email": "548520@hotmail.com",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "users.user",
+    "pk": "3a0a2230-1460-4907-bdfc-6a002e3d203b",
+    "fields": {
+      "password": "pbkdf2_sha256$180000$Xix9KdDr3EQ3$2/Nc+pQUY5VF9leXHF5UOM/TZFmlS5JHUosyLX+Ehnw=",
+      "last_login": null,
+      "is_superuser": false,
+      "username": "prueba123",
+      "first_name": "string",
+      "last_name": "string",
+      "is_staff": false,
+      "is_active": false,
+      "date_joined": "2020-10-18T00:11:01.607Z",
+      "email": "prueba123@example.com",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "users.user",
+    "pk": "3beb38cd-f2d1-4f81-84cf-b0dc128cbc78",
+    "fields": {
+      "password": "pbkdf2_sha256$180000$UUcR8CagwZ6t$Lga0fBjvmij/f0OVqSP5fCbv48eTsbESTz2kP+fVT6w=",
+      "last_login": "2020-11-06T15:57:34.437Z",
+      "is_superuser": false,
+      "username": "supervisor",
+      "first_name": "supervisor",
+      "last_name": "supervisor",
+      "is_staff": false,
+      "is_active": false,
+      "date_joined": "2020-11-06T15:57:03.520Z",
+      "email": "supervisor@supervisor.com",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "users.user",
+    "pk": "44740ee8-506c-466a-8d51-08d90280c51f",
+    "fields": {
+      "password": "pbkdf2_sha256$180000$thDQDFpR6rAB$yjjJN5ydeexyWUnpwe3XyoEztJJjC5FbQwd6+/GMHU4=",
+      "last_login": null,
+      "is_superuser": false,
+      "username": "asdqwe123",
+      "first_name": "Joaquin",
+      "last_name": "Cabal",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2020-10-11T22:19:47.585Z",
+      "email": "asdasdasdsaddaas@hotmail.com",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "users.user",
+    "pk": "4cc26223-b886-43c9-bbf0-67d4e7d5a790",
+    "fields": {
+      "password": "pbkdf2_sha256$180000$B0SA4u0fofu7$JCd2oaSd7+eEIcnBxu1BopCW7HCUSyj0qnyvwg7vXsM=",
+      "last_login": null,
+      "is_superuser": false,
+      "username": "976876867",
+      "first_name": "Joaquin",
+      "last_name": "Cabal",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2020-10-10T22:24:35.919Z",
+      "email": "asdasdasdasd@hotmail.com",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "users.user",
+    "pk": "58f71e3e-86a2-4bec-afea-f3583219676f",
+    "fields": {
+      "password": "pbkdf2_sha256$180000$yXxMtD4mDHz1$JjGAW4H/IYmxrNGovzQHHBPfytEhhBj4SbqQVDTJsrw=",
+      "last_login": null,
+      "is_superuser": false,
+      "username": "facundo2",
+      "first_name": "facundo",
+      "last_name": "moreyra",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2020-10-11T23:35:36.366Z",
+      "email": "facundo2@moreyra.com",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "users.user",
+    "pk": "6b41acc2-4146-4e80-96d5-2b3907b4664d",
+    "fields": {
+      "password": "pbkdf2_sha256$180000$vLMjH5t2blJN$EcOe8a0RmNuhPh3jFMPwi8ODnpvV8DwUWHG+Fj71CqI=",
+      "last_login": null,
+      "is_superuser": false,
+      "username": "123123",
+      "first_name": "Joaquin",
+      "last_name": "Cabal",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2020-10-10T22:09:41.583Z",
+      "email": "qwe@hotmail.com",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "users.user",
+    "pk": "781b322d-8812-4194-8827-96b84c8f69d5",
+    "fields": {
+      "password": "pbkdf2_sha256$180000$50UhWdEtm0KS$GCA0cf/J/NyKfT7NQcx/pfHTRbZW1c+5zz5k34oTIBI=",
+      "last_login": null,
+      "is_superuser": false,
+      "username": "pruebafinal",
+      "first_name": "prueba",
+      "last_name": "final",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2020-10-11T22:22:05.168Z",
+      "email": "prueba@final.com",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "users.user",
+    "pk": "7941bbb3-9c3a-4b5f-90f8-21a97106a2bf",
+    "fields": {
+      "password": "pbkdf2_sha256$180000$2IuFlGThDnL4$EvNEuAmjTcxugCv51Vd5bsNJ9BwH66ifWAlCU5amaAY=",
+      "last_login": null,
+      "is_superuser": false,
+      "username": "facundoeMore",
+      "first_name": "facudno",
+      "last_name": "moreyra",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2020-10-19T17:17:25.658Z",
+      "email": "facunditomoreyrita@123.com",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "users.user",
+    "pk": "856b8f3d-e688-4fcb-b431-28d4352127b9",
+    "fields": {
+      "password": "pbkdf2_sha256$180000$pOgAuwXajoCi$UCP1imWiWpait3T5BPOhi/8INvzp3kX3KHxX1/XvOBM=",
+      "last_login": null,
+      "is_superuser": false,
+      "username": "elfacundo",
+      "first_name": "123",
+      "last_name": "543",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2020-10-10T22:25:13.617Z",
+      "email": "ereased@asdas.com",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "users.user",
+    "pk": "8b5b665d-8a99-4585-8cf4-2323f1d82189",
+    "fields": {
+      "password": "pbkdf2_sha256$180000$dDJqGdqjyhOg$eAIkFAqUmerhlJh4WvrNjCjidbVaoAvnZJ3F6jDxkF8=",
+      "last_login": null,
+      "is_superuser": false,
+      "username": "Emi",
+      "first_name": "Emi",
+      "last_name": "Cugno",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2020-10-08T01:48:26.251Z",
+      "email": "prueba@prueba.com",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "users.user",
+    "pk": "8eb5233e-b3b4-4798-9b26-3809b9d3b068",
+    "fields": {
+      "password": "pbkdf2_sha256$180000$xRVYlNaWnCIz$TjjhfOMqnMVpZkhAScwsHvqfJIylCxCLn+OvpaRK0Yo=",
+      "last_login": null,
+      "is_superuser": false,
+      "username": "facundo3",
+      "first_name": "facundo",
+      "last_name": "moreyra",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2020-10-11T23:36:51.241Z",
+      "email": "facundo3@gmail.com",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "users.user",
+    "pk": "972f6e3a-2f95-4dc0-a5eb-5896b897bfd4",
+    "fields": {
+      "password": "pbkdf2_sha256$180000$2iDzgeiMOZhK$q4ZD9ygujsVd76mzW/BAnpCcsB22Un2oDukhS7mqoVs=",
+      "last_login": null,
+      "is_superuser": false,
+      "username": "asdasd",
+      "first_name": "Joaquin",
+      "last_name": "Cabal",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2020-10-10T22:06:51.204Z",
+      "email": "joaquinasd6@hotmail.com",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "users.user",
+    "pk": "98fc6d81-30f1-4860-9a21-d9240f72e160",
+    "fields": {
+      "password": "pbkdf2_sha256$180000$mn8oN3JReQgd$o+r0dEkGi3e5svjSMadlL9Eba32ZDrqafnprvpOorvQ=",
+      "last_login": "2020-10-11T22:18:06.526Z",
+      "is_superuser": false,
+      "username": "asd123prueba",
+      "first_name": "asd1",
+      "last_name": "23prueba",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2020-10-11T22:17:11.453Z",
+      "email": "asd123prueba@holis.com",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "users.user",
+    "pk": "a4c50701-1a2d-4960-be64-4966a88f8077",
+    "fields": {
+      "password": "pbkdf2_sha256$180000$dnHcAkV1SVGt$iGnwot5Z6VG/ABvgU49do2PfRiPJWMf3sw04bfz0zUk=",
+      "last_login": null,
+      "is_superuser": false,
+      "username": "prueba12",
+      "first_name": "fac",
+      "last_name": "mor",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2020-10-10T22:27:57.062Z",
+      "email": "facmir@asd.com",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "users.user",
+    "pk": "b90982c7-aee2-4a72-aec7-68f869502f8e",
+    "fields": {
+      "password": "pbkdf2_sha256$180000$dkZj7kvjrGAV$odqWA9DnFpcmlA21CmhOUdQ9ecj8wQKAgu6FNPP0rmo=",
+      "last_login": "2020-11-14T19:23:49.279Z",
+      "is_superuser": true,
+      "username": "admin",
+      "first_name": "admin",
+      "last_name": "admin",
+      "is_staff": true,
+      "is_active": true,
+      "date_joined": "2020-09-26T20:33:47.813Z",
+      "email": "admin@admin.com",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "users.user",
+    "pk": "cc1f5410-5671-450d-a6f9-a622efb61fbe",
+    "fields": {
+      "password": "pbkdf2_sha256$180000$1CAaPogURvum$q2bYZUT7aXLhhq4xLuunOFIgxs0c52zSW11M8l8aE1E=",
+      "last_login": null,
+      "is_superuser": false,
+      "username": "facundo",
+      "first_name": "facundo",
+      "last_name": "moreyra",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2020-10-11T23:33:08.846Z",
+      "email": "facundo@moreyra.com",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "users.user",
+    "pk": "dc41404c-7d66-47ca-8554-762c04579a55",
+    "fields": {
+      "password": "pbkdf2_sha256$180000$C6YlXzcAP3Ba$Km9qV1Z7M5JmyMZg/tL889n1JTvyrXVySq65X/rWJRc=",
+      "last_login": null,
+      "is_superuser": false,
+      "username": "pruebafinal2",
+      "first_name": "prueba",
+      "last_name": "final2",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2020-10-11T22:25:59.859Z",
+      "email": "oruega@final2.com",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "users.user",
+    "pk": "dcb52a95-5ef9-4952-8428-4fef1c353127",
+    "fields": {
+      "password": "pbkdf2_sha256$180000$foBw5hloa0qC$oAx7cBfeyJy66RSqdRyKLioenEH56S67i3lj4D3wTW0=",
+      "last_login": null,
+      "is_superuser": false,
+      "username": "123456",
+      "first_name": "Joaquin",
+      "last_name": "Cabal",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2020-10-10T22:03:50.762Z",
+      "email": "joaquin_cabal06@hotmail.com",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "users.user",
+    "pk": "f196f272-c272-4def-b149-6d0fac71ea14",
+    "fields": {
+      "password": "pbkdf2_sha256$180000$Ur70XUspfzLa$kcowYDo77rgOi3GC5+Jy/uDLDKyKIKedXZbEF0PDRZI=",
+      "last_login": null,
+      "is_superuser": false,
+      "username": "carlioss",
+      "first_name": "carlioss",
+      "last_name": "carlioss",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2020-10-18T00:42:58.172Z",
+      "email": "carlioss@carlioss.com",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "users.user",
+    "pk": "fbb9d976-8d77-412e-b3fd-14e6abc336f9",
+    "fields": {
+      "password": "pbkdf2_sha256$180000$L7ZSvD2TKz4e$JbZr16W4UzAtq5u2zgnxz9qFZm9OFEHdrSYgKGzLXKM=",
+      "last_login": null,
+      "is_superuser": false,
+      "username": "holafacu",
+      "first_name": "facundo",
+      "last_name": "more",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2020-10-10T22:17:34.369Z",
+      "email": "elturrito@asd.com",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "users.adminprofile",
+    "pk": 1,
+    "fields": {
+      "user": "b90982c7-aee2-4a72-aec7-68f869502f8e",
+      "domain": null
+    }
+  },
+  {
+    "model": "users.supervisorprofile",
+    "pk": 1,
+    "fields": {
+      "user": "8b5b665d-8a99-4585-8cf4-2323f1d82189",
+      "alias": 3,
+      "domain": 1
+    }
+  },
+  {
+    "model": "users.supervisorprofile",
+    "pk": 2,
+    "fields": {
+      "user": "856b8f3d-e688-4fcb-b431-28d4352127b9",
+      "alias": 1,
+      "domain": 1
+    }
+  },
+  {
+    "model": "users.supervisorprofile",
+    "pk": 3,
+    "fields": {
+      "user": "a4c50701-1a2d-4960-be64-4966a88f8077",
+      "alias": 2,
+      "domain": 1
+    }
+  },
+  {
+    "model": "users.supervisorprofile",
+    "pk": 4,
+    "fields": {
+      "user": "98fc6d81-30f1-4860-9a21-d9240f72e160",
+      "alias": 2,
+      "domain": 1
+    }
+  },
+  {
+    "model": "users.supervisorprofile",
+    "pk": 5,
+    "fields": {
+      "user": "44740ee8-506c-466a-8d51-08d90280c51f",
+      "alias": 1,
+      "domain": 1
+    }
+  },
+  {
+    "model": "users.supervisorprofile",
+    "pk": 6,
+    "fields": {
+      "user": "781b322d-8812-4194-8827-96b84c8f69d5",
+      "alias": 3,
+      "domain": 1
+    }
+  },
+  {
+    "model": "users.supervisorprofile",
+    "pk": 7,
+    "fields": {
+      "user": "dc41404c-7d66-47ca-8554-762c04579a55",
+      "alias": 3,
+      "domain": 1
+    }
+  },
+  {
+    "model": "users.supervisorprofile",
+    "pk": 8,
+    "fields": {
+      "user": "13a0a00c-ce80-4c0e-9108-64a697069d53",
+      "alias": 4,
+      "domain": 1
+    }
+  },
+  {
+    "model": "users.supervisorprofile",
+    "pk": 9,
+    "fields": {
+      "user": "33850291-970e-4a53-b6c3-824b6d7f50df",
+      "alias": 4,
+      "domain": 1
+    }
+  },
+  {
+    "model": "users.supervisorprofile",
+    "pk": 10,
+    "fields": {
+      "user": "8eb5233e-b3b4-4798-9b26-3809b9d3b068",
+      "alias": 1,
+      "domain": 1
+    }
+  },
+  {
+    "model": "users.supervisorprofile",
+    "pk": 11,
+    "fields": {
+      "user": "7941bbb3-9c3a-4b5f-90f8-21a97106a2bf",
+      "alias": 1,
+      "domain": 1
+    }
+  },
+  {
+    "model": "users.supervisorprofile",
+    "pk": 12,
+    "fields": {
+      "user": "3beb38cd-f2d1-4f81-84cf-b0dc128cbc78",
+      "alias": 4,
+      "domain": 1
+    }
+  },
+  {
+    "model": "users.resourceprofile",
+    "pk": 1,
+    "fields": {
+      "user": "856b8f3d-e688-4fcb-b431-28d4352127b9",
+      "type": 1,
+      "domain": 1
+    }
+  },
+  {
+    "model": "users.resourceprofile",
+    "pk": 2,
+    "fields": {
+      "user": "a4c50701-1a2d-4960-be64-4966a88f8077",
+      "type": 1,
+      "domain": 1
+    }
+  },
+  {
+    "model": "users.resourceprofile",
+    "pk": 3,
+    "fields": {
+      "user": "781b322d-8812-4194-8827-96b84c8f69d5",
+      "type": 2,
+      "domain": 1
+    }
+  },
+  {
+    "model": "users.resourceprofile",
+    "pk": 4,
+    "fields": {
+      "user": "dc41404c-7d66-47ca-8554-762c04579a55",
+      "type": 2,
+      "domain": 1
+    }
+  },
+  {
+    "model": "users.resourceprofile",
+    "pk": 5,
+    "fields": {
+      "user": "33850291-970e-4a53-b6c3-824b6d7f50df",
+      "type": 1,
+      "domain": 1
+    }
+  },
+  {
+    "model": "users.resourceprofile",
+    "pk": 6,
+    "fields": {
+      "user": "0ef86394-c8bc-470b-8d0b-d37de270c542",
+      "type": 1,
+      "domain": 1
+    }
+  },
+  {
+    "model": "users.resourceprofile",
+    "pk": 7,
+    "fields": {
+      "user": "13a0a00c-ce80-4c0e-9108-64a697069d53",
+      "type": 1,
+      "domain": 1
+    }
+  },
+  {
+    "model": "users.resourceprofile",
+    "pk": 8,
+    "fields": {
+      "user": "44740ee8-506c-466a-8d51-08d90280c51f",
+      "type": 1,
+      "domain": 1
+    }
+  },
+  {
+    "model": "users.resourceprofile",
+    "pk": 9,
+    "fields": {
+      "user": "98fc6d81-30f1-4860-9a21-d9240f72e160",
+      "type": 2,
+      "domain": 1
+    }
+  },
+  {
+    "model": "users.resourceprofile",
+    "pk": 11,
+    "fields": {
+      "user": "f196f272-c272-4def-b149-6d0fac71ea14",
+      "type": 1,
+      "domain": 1
+    }
+  },
+  {
+    "model": "incident.historicalincident",
+    "pk": 1,
+    "fields": {
+      "id": 1,
+      "created_at": "2020-10-18T22:19:35.428Z",
+      "updated_at": "2020-10-18T22:19:35.428Z",
+      "external_assistance": "Without external support",
+      "details": {},
+      "status": "Started",
+      "data_status": "Incomplete",
+      "location_as_string_reference": "string",
+      "reference": "",
+      "location_point": "SRID=4326;POINT (-62.11000442504883 -31.4209727624279)",
+      "finalized_at": null,
+      "domain_config": 1,
+      "incident_type": 1,
+      "history_date": "2020-10-18T22:19:35.485Z",
+      "history_change_reason": null,
+      "history_type": "+",
+      "history_user": null
+    }
+  },
+  {
+    "model": "incident.historicalincident",
+    "pk": 2,
+    "fields": {
+      "id": 2,
+      "created_at": "2020-10-18T22:20:51.492Z",
+      "updated_at": "2020-10-18T22:20:51.492Z",
+      "external_assistance": "Without external support",
+      "details": {},
+      "status": "Started",
+      "data_status": "Incomplete",
+      "location_as_string_reference": "string",
+      "reference": "",
+      "location_point": "SRID=4326;POINT (-62.11000442504883 -31.4209727624279)",
+      "finalized_at": null,
+      "domain_config": 1,
+      "incident_type": 2,
+      "history_date": "2020-10-18T22:20:51.495Z",
+      "history_change_reason": null,
+      "history_type": "+",
+      "history_user": null
+    }
+  },
+  {
+    "model": "incident.historicalincident",
+    "pk": 3,
+    "fields": {
+      "id": 3,
+      "created_at": "2020-10-22T22:52:12.018Z",
+      "updated_at": "2020-10-22T22:52:12.018Z",
+      "external_assistance": "Without external support",
+      "details": {},
+      "status": "Started",
+      "data_status": "Incomplete",
+      "location_as_string_reference": "Aspen, CO, USA",
+      "reference": "",
+      "location_point": "SRID=4326;POINT (39.1910983 -106.8175387)",
+      "finalized_at": null,
+      "domain_config": 1,
+      "incident_type": 3,
+      "history_date": "2020-10-22T22:52:12.095Z",
+      "history_change_reason": null,
+      "history_type": "+",
+      "history_user": null
+    }
+  },
+  {
+    "model": "incident.historicalincident",
+    "pk": 4,
+    "fields": {
+      "id": 12,
+      "created_at": "2020-10-25T21:14:40.694Z",
+      "updated_at": "2020-10-25T21:14:40.694Z",
+      "external_assistance": "Without external support",
+      "details": {},
+      "status": "Started",
+      "data_status": "Incomplete",
+      "location_as_string_reference": "",
+      "reference": "",
+      "location_point": "SRID=4326;POINT (-31.426470454823 -62.11048776031392)",
+      "finalized_at": null,
+      "domain_config": 1,
+      "incident_type": 3,
+      "history_date": "2020-10-25T21:14:40.738Z",
+      "history_change_reason": null,
+      "history_type": "+",
+      "history_user": null
+    }
+  },
+  {
+    "model": "incident.historicalincident",
+    "pk": 5,
+    "fields": {
+      "id": 13,
+      "created_at": "2020-10-25T21:35:21.981Z",
+      "updated_at": "2020-10-25T21:35:21.981Z",
+      "external_assistance": "Without external support",
+      "details": {},
+      "status": "Started",
+      "data_status": "Incomplete",
+      "location_as_string_reference": "",
+      "reference": "",
+      "location_point": "SRID=4326;POINT (-31.42643383472339 -62.11054784153391)",
+      "finalized_at": null,
+      "domain_config": 1,
+      "incident_type": 2,
+      "history_date": "2020-10-25T21:35:21.998Z",
+      "history_change_reason": null,
+      "history_type": "+",
+      "history_user": null
+    }
+  },
+  {
+    "model": "incident.historicalincident",
+    "pk": 6,
+    "fields": {
+      "id": 14,
+      "created_at": "2020-10-25T21:36:36.888Z",
+      "updated_at": "2020-10-25T21:36:36.888Z",
+      "external_assistance": "Without external support",
+      "details": {},
+      "status": "Started",
+      "data_status": "Incomplete",
+      "location_as_string_reference": "",
+      "reference": "",
+      "location_point": "SRID=4326;POINT (-31.42643383472339 -62.11046201084544)",
+      "finalized_at": null,
+      "domain_config": 1,
+      "incident_type": 2,
+      "history_date": "2020-10-25T21:36:36.912Z",
+      "history_change_reason": null,
+      "history_type": "+",
+      "history_user": null
+    }
+  },
+  {
+    "model": "incident.historicalincident",
+    "pk": 7,
+    "fields": {
+      "id": 15,
+      "created_at": "2020-10-25T21:37:14.526Z",
+      "updated_at": "2020-10-25T21:37:14.526Z",
+      "external_assistance": "Without external support",
+      "details": {},
+      "status": "Started",
+      "data_status": "Incomplete",
+      "location_as_string_reference": "",
+      "reference": "",
+      "location_point": "SRID=4326;POINT (-31.42401687652897 -62.10968953464915)",
+      "finalized_at": null,
+      "domain_config": 1,
+      "incident_type": 3,
+      "history_date": "2020-10-25T21:37:14.530Z",
+      "history_change_reason": null,
+      "history_type": "+",
+      "history_user": null
+    }
+  },
+  {
+    "model": "incident.historicalincident",
+    "pk": 8,
+    "fields": {
+      "id": 16,
+      "created_at": "2020-10-25T21:37:28.147Z",
+      "updated_at": "2020-10-25T21:37:28.147Z",
+      "external_assistance": "Without external support",
+      "details": {},
+      "status": "Started",
+      "data_status": "Incomplete",
+      "location_as_string_reference": "Plaza C\u00edvica de Pro, Los Olivos, Peru",
+      "reference": "",
+      "location_point": "SRID=4326;POINT (-11.9351224 -77.0767018)",
+      "finalized_at": null,
+      "domain_config": 1,
+      "incident_type": 3,
+      "history_date": "2020-10-25T21:37:28.150Z",
+      "history_change_reason": null,
+      "history_type": "+",
+      "history_user": null
+    }
+  },
+  {
+    "model": "incident.historicalincident",
+    "pk": 9,
+    "fields": {
+      "id": 17,
+      "created_at": "2020-10-25T21:37:43.155Z",
+      "updated_at": "2020-10-25T21:37:43.155Z",
+      "external_assistance": "Without external support",
+      "details": {},
+      "status": "Started",
+      "data_status": "Incomplete",
+      "location_as_string_reference": "Plaza C\u00edvica de Pro, Los Olivos, Peru",
+      "reference": "",
+      "location_point": "SRID=4326;POINT (-11.9351224 -77.0767018)",
+      "finalized_at": null,
+      "domain_config": 1,
+      "incident_type": 3,
+      "history_date": "2020-10-25T21:37:43.158Z",
+      "history_change_reason": null,
+      "history_type": "+",
+      "history_user": null
+    }
+  },
+  {
+    "model": "incident.historicalincident",
+    "pk": 10,
+    "fields": {
+      "id": 18,
+      "created_at": "2020-10-25T21:39:36.428Z",
+      "updated_at": "2020-10-25T21:39:36.428Z",
+      "external_assistance": "Without external support",
+      "details": {},
+      "status": "Started",
+      "data_status": "Incomplete",
+      "location_as_string_reference": "Plaza C\u00edvica de Pro, Los Olivos, Peru",
+      "reference": "",
+      "location_point": "SRID=4326;POINT (-11.9351224 -77.0767018)",
+      "finalized_at": null,
+      "domain_config": 1,
+      "incident_type": 3,
+      "history_date": "2020-10-25T21:39:36.432Z",
+      "history_change_reason": null,
+      "history_type": "+",
+      "history_user": null
+    }
+  },
+  {
+    "model": "incident.historicalincident",
+    "pk": 11,
+    "fields": {
+      "id": 19,
+      "created_at": "2020-10-25T21:47:29.201Z",
+      "updated_at": "2020-10-25T21:47:29.201Z",
+      "external_assistance": "Without external support",
+      "details": {},
+      "status": "Started",
+      "data_status": "Incomplete",
+      "location_as_string_reference": "",
+      "reference": "",
+      "location_point": "SRID=4326;POINT (-31.42291823857435 -62.10428220127513)",
+      "finalized_at": null,
+      "domain_config": 1,
+      "incident_type": 3,
+      "history_date": "2020-10-25T21:47:29.219Z",
+      "history_change_reason": null,
+      "history_type": "+",
+      "history_user": null
+    }
+  },
+  {
+    "model": "incident.historicalincident",
+    "pk": 12,
+    "fields": {
+      "id": 20,
+      "created_at": "2020-10-25T21:48:16.197Z",
+      "updated_at": "2020-10-25T21:48:16.197Z",
+      "external_assistance": "Without external support",
+      "details": {},
+      "status": "Started",
+      "data_status": "Incomplete",
+      "location_as_string_reference": "",
+      "reference": "",
+      "location_point": "SRID=4326;POINT (-31.42317458858164 -62.10509759281565)",
+      "finalized_at": null,
+      "domain_config": 1,
+      "incident_type": 2,
+      "history_date": "2020-10-25T21:48:16.201Z",
+      "history_change_reason": null,
+      "history_type": "+",
+      "history_user": null
+    }
+  },
+  {
+    "model": "incident.historicalincident",
+    "pk": 13,
+    "fields": {
+      "id": 21,
+      "created_at": "2020-10-25T21:48:47.624Z",
+      "updated_at": "2020-10-25T21:48:47.624Z",
+      "external_assistance": "Without external support",
+      "details": {},
+      "status": "Started",
+      "data_status": "Incomplete",
+      "location_as_string_reference": "",
+      "reference": "",
+      "location_point": "SRID=4326;POINT (-31.4246028115087 -62.10998994205882)",
+      "finalized_at": null,
+      "domain_config": 1,
+      "incident_type": 3,
+      "history_date": "2020-10-25T21:48:47.628Z",
+      "history_change_reason": null,
+      "history_type": "+",
+      "history_user": null
+    }
+  },
+  {
+    "model": "incident.historicalincident",
+    "pk": 14,
+    "fields": {
+      "id": 22,
+      "created_at": "2020-10-25T21:49:22.357Z",
+      "updated_at": "2020-10-25T21:49:22.357Z",
+      "external_assistance": "Without external support",
+      "details": {},
+      "status": "Started",
+      "data_status": "Incomplete",
+      "location_as_string_reference": "",
+      "reference": "",
+      "location_point": "SRID=4326;POINT (-31.42159985603965 -62.10908871982981)",
+      "finalized_at": null,
+      "domain_config": 1,
+      "incident_type": 3,
+      "history_date": "2020-10-25T21:49:22.361Z",
+      "history_change_reason": null,
+      "history_type": "+",
+      "history_user": null
+    }
+  },
+  {
+    "model": "incident.historicalincident",
+    "pk": 15,
+    "fields": {
+      "id": 23,
+      "created_at": "2020-10-25T21:52:33.993Z",
+      "updated_at": "2020-10-25T21:52:33.993Z",
+      "external_assistance": "Without external support",
+      "details": {},
+      "status": "Started",
+      "data_status": "Incomplete",
+      "location_as_string_reference": "",
+      "reference": "",
+      "location_point": "SRID=4326;POINT (-31.42258864467819 -62.1098611960261)",
+      "finalized_at": null,
+      "domain_config": 1,
+      "incident_type": 3,
+      "history_date": "2020-10-25T21:52:33.998Z",
+      "history_change_reason": null,
+      "history_type": "+",
+      "history_user": null
+    }
+  },
+  {
+    "model": "incident.historicalincident",
+    "pk": 16,
+    "fields": {
+      "id": 24,
+      "created_at": "2020-10-25T21:55:17.965Z",
+      "updated_at": "2020-10-25T21:55:17.965Z",
+      "external_assistance": "Without external support",
+      "details": {},
+      "status": "Started",
+      "data_status": "Incomplete",
+      "location_as_string_reference": "",
+      "reference": "",
+      "location_point": "SRID=4326;POINT (-31.42174634390317 -62.10848790501048)",
+      "finalized_at": null,
+      "domain_config": 1,
+      "incident_type": 2,
+      "history_date": "2020-10-25T21:55:17.969Z",
+      "history_change_reason": null,
+      "history_type": "+",
+      "history_user": null
+    }
+  },
+  {
+    "model": "incident.historicalincident",
+    "pk": 17,
+    "fields": {
+      "id": 25,
+      "created_at": "2020-10-25T21:58:30.981Z",
+      "updated_at": "2020-10-25T21:58:30.981Z",
+      "external_assistance": "Without external support",
+      "details": {},
+      "status": "Started",
+      "data_status": "Incomplete",
+      "location_as_string_reference": "",
+      "reference": "",
+      "location_point": "SRID=4326;POINT (-31.42094065782231 -62.10928613067524)",
+      "finalized_at": null,
+      "domain_config": 1,
+      "incident_type": 1,
+      "history_date": "2020-10-25T21:58:30.997Z",
+      "history_change_reason": null,
+      "history_type": "+",
+      "history_user": null
+    }
+  },
+  {
+    "model": "incident.historicalincident",
+    "pk": 18,
+    "fields": {
+      "id": 26,
+      "created_at": "2020-10-25T22:02:57.572Z",
+      "updated_at": "2020-10-25T22:02:57.572Z",
+      "external_assistance": "Without external support",
+      "details": {},
+      "status": "Started",
+      "data_status": "Incomplete",
+      "location_as_string_reference": "",
+      "reference": "",
+      "location_point": "SRID=4326;POINT (-31.42105052451363 -62.10920029998677)",
+      "finalized_at": null,
+      "domain_config": 1,
+      "incident_type": 1,
+      "history_date": "2020-10-25T22:02:57.576Z",
+      "history_change_reason": null,
+      "history_type": "+",
+      "history_user": null
+    }
+  },
+  {
+    "model": "incident.historicalincident",
+    "pk": 19,
+    "fields": {
+      "id": 27,
+      "created_at": "2020-10-25T22:05:17.198Z",
+      "updated_at": "2020-10-25T22:05:17.198Z",
+      "external_assistance": "Without external support",
+      "details": {},
+      "status": "Started",
+      "data_status": "Incomplete",
+      "location_as_string_reference": "",
+      "reference": "",
+      "location_point": "SRID=4326;POINT (-31.4230647243786 -62.10967236877339)",
+      "finalized_at": null,
+      "domain_config": 1,
+      "incident_type": 2,
+      "history_date": "2020-10-25T22:05:17.202Z",
+      "history_change_reason": null,
+      "history_type": "+",
+      "history_user": null
+    }
+  },
+  {
+    "model": "incident.historicalincident",
+    "pk": 20,
+    "fields": {
+      "id": 28,
+      "created_at": "2020-10-26T22:25:53.475Z",
+      "updated_at": "2020-10-26T22:25:53.475Z",
+      "external_assistance": "Without external support",
+      "details": {},
+      "status": "Started",
+      "data_status": "Incomplete",
+      "location_as_string_reference": "UTN Facultad Regional de San Francisco, Avenida de la Universidad, San Francisco, C\u00f3rdoba, Argentina",
+      "reference": "",
+      "location_point": "SRID=4326;POINT (-31.4207983 -62.11050599999999)",
+      "finalized_at": null,
+      "domain_config": 1,
+      "incident_type": 1,
+      "history_date": "2020-10-26T22:25:53.506Z",
+      "history_change_reason": null,
+      "history_type": "+",
+      "history_user": null
+    }
+  },
+  {
+    "model": "incident.historicalincident",
+    "pk": 21,
+    "fields": {
+      "id": 29,
+      "created_at": "2020-10-26T22:27:36.349Z",
+      "updated_at": "2020-10-26T22:27:36.349Z",
+      "external_assistance": "Without external support",
+      "details": {},
+      "status": "Started",
+      "data_status": "Incomplete",
+      "location_as_string_reference": "UTN Facultad Regional de San Francisco, Avenida de la Universidad, San Francisco, C\u00f3rdoba, Argentina",
+      "reference": "",
+      "location_point": "SRID=4326;POINT (-31.4207983 -62.11050599999999)",
+      "finalized_at": null,
+      "domain_config": 1,
+      "incident_type": 1,
+      "history_date": "2020-10-26T22:27:36.373Z",
+      "history_change_reason": null,
+      "history_type": "+",
+      "history_user": null
+    }
+  },
+  {
+    "model": "incident.historicalincident",
+    "pk": 22,
+    "fields": {
+      "id": 30,
+      "created_at": "2020-10-26T22:27:51.916Z",
+      "updated_at": "2020-10-26T22:27:51.916Z",
+      "external_assistance": "Without external support",
+      "details": {},
+      "status": "Started",
+      "data_status": "Incomplete",
+      "location_as_string_reference": "UTN Facultad Regional de San Francisco, Avenida de la Universidad, San Francisco, C\u00f3rdoba, Argentina",
+      "reference": "",
+      "location_point": "SRID=4326;POINT (-31.4207983 -62.11050599999999)",
+      "finalized_at": null,
+      "domain_config": 1,
+      "incident_type": 1,
+      "history_date": "2020-10-26T22:27:51.920Z",
+      "history_change_reason": null,
+      "history_type": "+",
+      "history_user": null
+    }
+  },
+  {
+    "model": "incident.historicalincident",
+    "pk": 23,
+    "fields": {
+      "id": 31,
+      "created_at": "2020-10-27T00:03:04.731Z",
+      "updated_at": "2020-10-27T00:03:04.731Z",
+      "external_assistance": "Without external support",
+      "details": {},
+      "status": "Started",
+      "data_status": "Incomplete",
+      "location_as_string_reference": "Utnoor, Telangana, India",
+      "reference": "",
+      "location_point": "SRID=4326;POINT (19.3718044 78.7787889)",
+      "finalized_at": null,
+      "domain_config": 1,
+      "incident_type": 1,
+      "history_date": "2020-10-27T00:03:04.755Z",
+      "history_change_reason": null,
+      "history_type": "+",
+      "history_user": null
+    }
+  },
+  {
+    "model": "incident.historicalincident",
+    "pk": 24,
+    "fields": {
+      "id": 32,
+      "created_at": "2020-10-27T20:46:53.590Z",
+      "updated_at": "2020-10-27T20:46:53.590Z",
+      "external_assistance": "Without external support",
+      "details": {},
+      "status": "Started",
+      "data_status": "Incomplete",
+      "location_as_string_reference": "",
+      "reference": "",
+      "location_point": "SRID=4326;POINT (-31.4448779521987 -62.08143092527409)",
+      "finalized_at": null,
+      "domain_config": 1,
+      "incident_type": 1,
+      "history_date": "2020-10-27T20:46:53.627Z",
+      "history_change_reason": null,
+      "history_type": "+",
+      "history_user": null
+    }
+  },
+  {
+    "model": "incident.historicalincident",
+    "pk": 25,
+    "fields": {
+      "id": 33,
+      "created_at": "2020-11-07T15:58:46.747Z",
+      "updated_at": "2020-11-07T15:58:46.747Z",
+      "external_assistance": "Without external support",
+      "details": {},
+      "status": "Started",
+      "data_status": "Incomplete",
+      "location_as_string_reference": "",
+      "reference": "",
+      "location_point": "SRID=4326;POINT (-31.42492437312432 -62.08405384072265)",
+      "finalized_at": null,
+      "domain_config": 1,
+      "incident_type": 2,
+      "history_date": "2020-11-07T15:58:46.764Z",
+      "history_change_reason": null,
+      "history_type": "+",
+      "history_user": null
+    }
+  },
+  {
+    "model": "incident.historicalincident",
+    "pk": 26,
+    "fields": {
+      "id": 34,
+      "created_at": "2020-11-07T16:01:13.843Z",
+      "updated_at": "2020-11-07T16:01:13.843Z",
+      "external_assistance": "Without external support",
+      "details": {},
+      "status": "Started",
+      "data_status": "Incomplete",
+      "location_as_string_reference": "",
+      "reference": "",
+      "location_point": "SRID=4326;POINT (-31.42521733823666 -62.08662876137694)",
+      "finalized_at": null,
+      "domain_config": 1,
+      "incident_type": 1,
+      "history_date": "2020-11-07T16:01:13.846Z",
+      "history_change_reason": null,
+      "history_type": "+",
+      "history_user": null
+    }
+  },
+  {
+    "model": "incident.historicalincident",
+    "pk": 27,
+    "fields": {
+      "id": 35,
+      "created_at": "2020-11-09T22:57:03.950Z",
+      "updated_at": "2020-11-09T22:57:03.950Z",
+      "external_assistance": "Without external support",
+      "details": {},
+      "status": "Started",
+      "data_status": "Incomplete",
+      "location_as_string_reference": "",
+      "reference": "",
+      "location_point": "SRID=4326;POINT (-31.4236214593913 -62.09109875717773)",
+      "finalized_at": null,
+      "domain_config": 1,
+      "incident_type": 3,
+      "history_date": "2020-11-09T22:57:03.972Z",
+      "history_change_reason": null,
+      "history_type": "+",
+      "history_user": null
+    }
+  },
+  {
+    "model": "incident.historicalincident",
+    "pk": 28,
+    "fields": {
+      "id": 3,
+      "created_at": "2020-10-22T22:52:12.018Z",
+      "updated_at": "2020-11-10T13:48:31.905Z",
+      "external_assistance": "With external support",
+      "details": {},
+      "status": "Started",
+      "data_status": "Incomplete",
+      "location_as_string_reference": "Aspen, CO, USA",
+      "reference": "",
+      "location_point": "SRID=4326;POINT (39.1910983 -106.8175387)",
+      "finalized_at": null,
+      "domain_config": 1,
+      "incident_type": 3,
+      "history_date": "2020-11-10T13:48:31.948Z",
+      "history_change_reason": null,
+      "history_type": "~",
+      "history_user": null
+    }
+  },
+  {
+    "model": "incident.historicalincident",
+    "pk": 29,
+    "fields": {
+      "id": 1,
+      "created_at": "2020-10-18T22:19:35.428Z",
+      "updated_at": "2020-11-10T13:48:38.051Z",
+      "external_assistance": "With external support",
+      "details": {},
+      "status": "Started",
+      "data_status": "Incomplete",
+      "location_as_string_reference": "string",
+      "reference": "",
+      "location_point": "SRID=4326;POINT (-62.11000442504883 -31.4209727624279)",
+      "finalized_at": null,
+      "domain_config": 1,
+      "incident_type": 1,
+      "history_date": "2020-11-10T13:48:38.056Z",
+      "history_change_reason": null,
+      "history_type": "~",
+      "history_user": null
+    }
+  },
+  {
+    "model": "incident.historicalincident",
+    "pk": 30,
+    "fields": {
+      "id": 17,
+      "created_at": "2020-10-25T21:37:43.155Z",
+      "updated_at": "2020-11-10T13:48:41.917Z",
+      "external_assistance": "With external support",
+      "details": {},
+      "status": "Started",
+      "data_status": "Incomplete",
+      "location_as_string_reference": "Plaza C\u00edvica de Pro, Los Olivos, Peru",
+      "reference": "",
+      "location_point": "SRID=4326;POINT (-11.9351224 -77.0767018)",
+      "finalized_at": null,
+      "domain_config": 1,
+      "incident_type": 3,
+      "history_date": "2020-11-10T13:48:41.921Z",
+      "history_change_reason": null,
+      "history_type": "~",
+      "history_user": null
+    }
+  },
+  {
+    "model": "incident.historicalincident",
+    "pk": 31,
+    "fields": {
+      "id": 1,
+      "created_at": "2020-10-18T22:19:35.428Z",
+      "updated_at": "2020-11-10T14:02:21.752Z",
+      "external_assistance": "Without external support",
+      "details": {},
+      "status": "Started",
+      "data_status": "Incomplete",
+      "location_as_string_reference": "string",
+      "reference": "",
+      "location_point": "SRID=4326;POINT (-62.11000442504883 -31.4209727624279)",
+      "finalized_at": null,
+      "domain_config": 1,
+      "incident_type": 1,
+      "history_date": "2020-11-10T14:02:21.756Z",
+      "history_change_reason": null,
+      "history_type": "~",
+      "history_user": null
+    }
+  },
+  {
+    "model": "incident.historicalincident",
+    "pk": 32,
+    "fields": {
+      "id": 3,
+      "created_at": "2020-10-22T22:52:12.018Z",
+      "updated_at": "2020-11-10T14:02:26.315Z",
+      "external_assistance": "Without external support",
+      "details": {},
+      "status": "Started",
+      "data_status": "Incomplete",
+      "location_as_string_reference": "Aspen, CO, USA",
+      "reference": "",
+      "location_point": "SRID=4326;POINT (39.1910983 -106.8175387)",
+      "finalized_at": null,
+      "domain_config": 1,
+      "incident_type": 3,
+      "history_date": "2020-11-10T14:02:26.318Z",
+      "history_change_reason": null,
+      "history_type": "~",
+      "history_user": null
+    }
+  },
+  {
+    "model": "incident.historicalincident",
+    "pk": 33,
+    "fields": {
+      "id": 17,
+      "created_at": "2020-10-25T21:37:43.155Z",
+      "updated_at": "2020-11-10T14:02:34.898Z",
+      "external_assistance": "Without external support",
+      "details": {},
+      "status": "Started",
+      "data_status": "Incomplete",
+      "location_as_string_reference": "Plaza C\u00edvica de Pro, Los Olivos, Peru",
+      "reference": "",
+      "location_point": "SRID=4326;POINT (-11.9351224 -77.0767018)",
+      "finalized_at": null,
+      "domain_config": 1,
+      "incident_type": 3,
+      "history_date": "2020-11-10T14:02:34.903Z",
+      "history_change_reason": null,
+      "history_type": "~",
+      "history_user": null
+    }
+  },
+  {
+    "model": "incident.historicalincident",
+    "pk": 34,
+    "fields": {
+      "id": 18,
+      "created_at": "2020-10-25T21:39:36.428Z",
+      "updated_at": "2020-11-10T14:40:35.128Z",
+      "external_assistance": "With external support",
+      "details": {},
+      "status": "Started",
+      "data_status": "Incomplete",
+      "location_as_string_reference": "Plaza C\u00edvica de Pro, Los Olivos, Peru",
+      "reference": "",
+      "location_point": "SRID=4326;POINT (-11.9351224 -77.0767018)",
+      "finalized_at": null,
+      "domain_config": 1,
+      "incident_type": 3,
+      "history_date": "2020-11-10T14:40:35.140Z",
+      "history_change_reason": null,
+      "history_type": "~",
+      "history_user": null
+    }
+  },
+  {
+    "model": "incident.historicalincident",
+    "pk": 35,
+    "fields": {
+      "id": 16,
+      "created_at": "2020-10-25T21:37:28.147Z",
+      "updated_at": "2020-11-10T14:40:44.403Z",
+      "external_assistance": "With external support",
+      "details": {},
+      "status": "Started",
+      "data_status": "Incomplete",
+      "location_as_string_reference": "Plaza C\u00edvica de Pro, Los Olivos, Peru",
+      "reference": "",
+      "location_point": "SRID=4326;POINT (-11.9351224 -77.0767018)",
+      "finalized_at": null,
+      "domain_config": 1,
+      "incident_type": 3,
+      "history_date": "2020-11-10T14:40:44.413Z",
+      "history_change_reason": null,
+      "history_type": "~",
+      "history_user": null
+    }
+  },
+  {
+    "model": "incident.historicalincident",
+    "pk": 36,
+    "fields": {
+      "id": 31,
+      "created_at": "2020-10-27T00:03:04.731Z",
+      "updated_at": "2020-11-10T14:42:33.843Z",
+      "external_assistance": "With external support",
+      "details": {},
+      "status": "Started",
+      "data_status": "Incomplete",
+      "location_as_string_reference": "Utnoor, Telangana, India",
+      "reference": "",
+      "location_point": "SRID=4326;POINT (19.3718044 78.7787889)",
+      "finalized_at": null,
+      "domain_config": 1,
+      "incident_type": 1,
+      "history_date": "2020-11-10T14:42:33.846Z",
+      "history_change_reason": null,
+      "history_type": "~",
+      "history_user": null
+    }
+  },
+  {
+    "model": "incident.historicalincident",
+    "pk": 37,
+    "fields": {
+      "id": 2,
+      "created_at": "2020-10-18T22:20:51.492Z",
+      "updated_at": "2020-11-10T14:43:37.941Z",
+      "external_assistance": "With external support",
+      "details": {},
+      "status": "Started",
+      "data_status": "Incomplete",
+      "location_as_string_reference": "string",
+      "reference": "",
+      "location_point": "SRID=4326;POINT (-62.11000442504883 -31.4209727624279)",
+      "finalized_at": null,
+      "domain_config": 1,
+      "incident_type": 2,
+      "history_date": "2020-11-10T14:43:37.947Z",
+      "history_change_reason": null,
+      "history_type": "~",
+      "history_user": null
+    }
+  },
+  {
+    "model": "incident.historicalincident",
+    "pk": 38,
+    "fields": {
+      "id": 3,
+      "created_at": "2020-10-22T22:52:12.018Z",
+      "updated_at": "2020-11-10T14:44:15.217Z",
+      "external_assistance": "With external support",
+      "details": {},
+      "status": "Started",
+      "data_status": "Incomplete",
+      "location_as_string_reference": "Aspen, CO, USA",
+      "reference": "",
+      "location_point": "SRID=4326;POINT (39.1910983 -106.8175387)",
+      "finalized_at": null,
+      "domain_config": 1,
+      "incident_type": 3,
+      "history_date": "2020-11-10T14:44:15.221Z",
+      "history_change_reason": null,
+      "history_type": "~",
+      "history_user": null
+    }
+  },
+  {
+    "model": "incident.historicalincident",
+    "pk": 39,
+    "fields": {
+      "id": 16,
+      "created_at": "2020-10-25T21:37:28.147Z",
+      "updated_at": "2020-11-10T16:08:52.343Z",
+      "external_assistance": "Without external support",
+      "details": {},
+      "status": "Started",
+      "data_status": "Incomplete",
+      "location_as_string_reference": "Plaza C\u00edvica de Pro, Los Olivos, Peru",
+      "reference": "",
+      "location_point": "SRID=4326;POINT (-11.9351224 -77.0767018)",
+      "finalized_at": null,
+      "domain_config": 1,
+      "incident_type": 3,
+      "history_date": "2020-11-10T16:08:52.350Z",
+      "history_change_reason": null,
+      "history_type": "~",
+      "history_user": null
+    }
+  },
+  {
+    "model": "incident.historicalincident",
+    "pk": 40,
+    "fields": {
+      "id": 31,
+      "created_at": "2020-10-27T00:03:04.731Z",
+      "updated_at": "2020-11-10T16:09:07.739Z",
+      "external_assistance": "Without external support",
+      "details": {},
+      "status": "Started",
+      "data_status": "Incomplete",
+      "location_as_string_reference": "Utnoor, Telangana, India",
+      "reference": "",
+      "location_point": "SRID=4326;POINT (19.3718044 78.7787889)",
+      "finalized_at": null,
+      "domain_config": 1,
+      "incident_type": 1,
+      "history_date": "2020-11-10T16:09:07.744Z",
+      "history_change_reason": null,
+      "history_type": "~",
+      "history_user": null
+    }
+  },
+  {
+    "model": "incident.historicalincident",
+    "pk": 41,
+    "fields": {
+      "id": 29,
+      "created_at": "2020-10-26T22:27:36.349Z",
+      "updated_at": "2020-11-10T16:09:53.858Z",
+      "external_assistance": "With external support",
+      "details": {},
+      "status": "Started",
+      "data_status": "Incomplete",
+      "location_as_string_reference": "UTN Facultad Regional de San Francisco, Avenida de la Universidad, San Francisco, C\u00f3rdoba, Argentina",
+      "reference": "",
+      "location_point": "SRID=4326;POINT (-31.4207983 -62.11050599999999)",
+      "finalized_at": null,
+      "domain_config": 1,
+      "incident_type": 1,
+      "history_date": "2020-11-10T16:09:53.863Z",
+      "history_change_reason": null,
+      "history_type": "~",
+      "history_user": null
+    }
+  },
+  {
+    "model": "incident.historicalincident",
+    "pk": 42,
+    "fields": {
+      "id": 30,
+      "created_at": "2020-10-26T22:27:51.916Z",
+      "updated_at": "2020-11-10T16:10:34.058Z",
+      "external_assistance": "With external support",
+      "details": {},
+      "status": "Started",
+      "data_status": "Incomplete",
+      "location_as_string_reference": "UTN Facultad Regional de San Francisco, Avenida de la Universidad, San Francisco, C\u00f3rdoba, Argentina",
+      "reference": "",
+      "location_point": "SRID=4326;POINT (-31.4207983 -62.11050599999999)",
+      "finalized_at": null,
+      "domain_config": 1,
+      "incident_type": 1,
+      "history_date": "2020-11-10T16:10:34.064Z",
+      "history_change_reason": null,
+      "history_type": "~",
+      "history_user": null
+    }
+  },
+  {
+    "model": "incident.historicalincident",
+    "pk": 43,
+    "fields": {
+      "id": 36,
+      "created_at": "2020-11-10T16:40:22.913Z",
+      "updated_at": "2020-11-10T16:40:22.913Z",
+      "external_assistance": "Without external support",
+      "details": {},
+      "status": "Started",
+      "data_status": "Incomplete",
+      "location_as_string_reference": "",
+      "reference": "prueba 2.1",
+      "location_point": "SRID=4326;POINT (-31.42676131010007 -62.07567679092409)",
+      "finalized_at": null,
+      "domain_config": 1,
+      "incident_type": 1,
+      "history_date": "2020-11-10T16:40:22.934Z",
+      "history_change_reason": null,
+      "history_type": "+",
+      "history_user": null
+    }
+  },
+  {
+    "model": "incident.historicalincident",
+    "pk": 44,
+    "fields": {
+      "id": 37,
+      "created_at": "2020-11-10T16:53:49.685Z",
+      "updated_at": "2020-11-10T16:53:49.685Z",
+      "external_assistance": "Without external support",
+      "details": {},
+      "status": "Started",
+      "data_status": "Incomplete",
+      "location_as_string_reference": "",
+      "reference": "prueba 2.2",
+      "location_point": "SRID=4326;POINT (-31.42471056885885 -62.08597647354128)",
+      "finalized_at": null,
+      "domain_config": 1,
+      "incident_type": 1,
+      "history_date": "2020-11-10T16:53:49.690Z",
+      "history_change_reason": null,
+      "history_type": "+",
+      "history_user": null
+    }
+  },
+  {
+    "model": "incident.historicalincident",
+    "pk": 45,
+    "fields": {
+      "id": 38,
+      "created_at": "2020-11-10T16:57:48.722Z",
+      "updated_at": "2020-11-10T16:57:48.722Z",
+      "external_assistance": "With external support",
+      "details": {},
+      "status": "Started",
+      "data_status": "Incomplete",
+      "location_as_string_reference": "",
+      "reference": "prueba 2.3",
+      "location_point": "SRID=4326;POINT (-31.42451156443676 -62.07677928987427)",
+      "finalized_at": null,
+      "domain_config": 1,
+      "incident_type": 3,
+      "history_date": "2020-11-10T16:57:48.726Z",
+      "history_change_reason": null,
+      "history_type": "+",
+      "history_user": null
+    }
+  },
+  {
+    "model": "incident.historicalincident",
+    "pk": 46,
+    "fields": {
+      "id": 39,
+      "created_at": "2020-11-10T17:43:52.634Z",
+      "updated_at": "2020-11-10T17:43:52.634Z",
+      "external_assistance": "Without external support",
+      "details": {},
+      "status": "Started",
+      "data_status": "Incomplete",
+      "location_as_string_reference": "",
+      "reference": "prueba 2.3",
+      "location_point": "SRID=4326;POINT (-31.43469868948571 -62.10608129521484)",
+      "finalized_at": null,
+      "domain_config": 1,
+      "incident_type": 1,
+      "history_date": "2020-11-10T17:43:52.645Z",
+      "history_change_reason": null,
+      "history_type": "+",
+      "history_user": null
+    }
+  },
+  {
+    "model": "incident.historicalincident",
+    "pk": 47,
+    "fields": {
+      "id": 40,
+      "created_at": "2020-11-10T17:44:41.708Z",
+      "updated_at": "2020-11-10T17:44:41.708Z",
+      "external_assistance": "With external support",
+      "details": {},
+      "status": "Started",
+      "data_status": "Incomplete",
+      "location_as_string_reference": "Plaza General Maroto, Madrid, Espa\u00f1a",
+      "reference": "prueba 4",
+      "location_point": "SRID=4326;POINT (40.39361280000001 -3.6980457)",
+      "finalized_at": null,
+      "domain_config": 1,
+      "incident_type": 3,
+      "history_date": "2020-11-10T17:44:41.711Z",
+      "history_change_reason": null,
+      "history_type": "+",
+      "history_user": null
+    }
+  },
+  {
+    "model": "incident.historicalincident",
+    "pk": 48,
+    "fields": {
+      "id": 41,
+      "created_at": "2020-11-11T23:50:14.565Z",
+      "updated_at": "2020-11-11T23:50:14.566Z",
+      "external_assistance": "With external support",
+      "details": {},
+      "status": "Started",
+      "data_status": "Incomplete",
+      "location_as_string_reference": "",
+      "reference": "plaza velez sarfield prueba 12 1313",
+      "location_point": "SRID=4326;POINT (-31.41778498569858 -62.06480066650389)",
+      "finalized_at": null,
+      "domain_config": 1,
+      "incident_type": 3,
+      "history_date": "2020-11-11T23:50:14.572Z",
+      "history_change_reason": null,
+      "history_type": "+",
+      "history_user": null
+    }
+  },
+  {
+    "model": "incident.historicalincident",
+    "pk": 49,
+    "fields": {
+      "id": 42,
+      "created_at": "2020-11-11T23:51:26.240Z",
+      "updated_at": "2020-11-11T23:51:26.240Z",
+      "external_assistance": "Without external support",
+      "details": {},
+      "status": "Started",
+      "data_status": "Incomplete",
+      "location_as_string_reference": "",
+      "reference": "prueba 2.0",
+      "location_point": "SRID=4326;POINT (-31.42574436522099 -62.09113567252197)",
+      "finalized_at": null,
+      "domain_config": 1,
+      "incident_type": 2,
+      "history_date": "2020-11-11T23:51:26.243Z",
+      "history_change_reason": null,
+      "history_type": "+",
+      "history_user": null
+    }
+  },
+  {
+    "model": "incident.historicalincident",
+    "pk": 50,
+    "fields": {
+      "id": 43,
+      "created_at": "2020-11-11T23:54:04.642Z",
+      "updated_at": "2020-11-11T23:54:04.642Z",
+      "external_assistance": "Without external support",
+      "details": {},
+      "status": "Started",
+      "data_status": "Incomplete",
+      "location_as_string_reference": "\u00c1rea 51, Nevada, EE. UU.",
+      "reference": "plaza velez sarfield prueba 12",
+      "location_point": "SRID=4326;POINT (37.2430548 -115.7930198)",
+      "finalized_at": null,
+      "domain_config": 1,
+      "incident_type": 3,
+      "history_date": "2020-11-11T23:54:04.658Z",
+      "history_change_reason": null,
+      "history_type": "+",
+      "history_user": null
+    }
+  },
+  {
+    "model": "incident.historicalincident",
+    "pk": 51,
+    "fields": {
+      "id": 44,
+      "created_at": "2020-11-11T23:54:38.587Z",
+      "updated_at": "2020-11-11T23:54:38.587Z",
+      "external_assistance": "With external support",
+      "details": {},
+      "status": "Started",
+      "data_status": "Incomplete",
+      "location_as_string_reference": "Honey Pot Hill Orchards, Boon Road, Stow, Massachusetts, EE. UU.",
+      "reference": "problemas de luz",
+      "location_point": "SRID=4326;POINT (42.41163419999999 -71.51387059999999)",
+      "finalized_at": null,
+      "domain_config": 1,
+      "incident_type": 1,
+      "history_date": "2020-11-11T23:54:38.590Z",
+      "history_change_reason": null,
+      "history_type": "+",
+      "history_user": null
+    }
+  },
+  {
+    "model": "incident.historicalincident",
+    "pk": 52,
+    "fields": {
+      "id": 45,
+      "created_at": "2020-11-12T00:00:13.281Z",
+      "updated_at": "2020-11-12T00:00:13.281Z",
+      "external_assistance": "Without external support",
+      "details": {},
+      "status": "Started",
+      "data_status": "Incomplete",
+      "location_as_string_reference": "Indonesia - Papua New Guinea Border, Pap\u00faa Nueva Guinea",
+      "reference": "prueba final?",
+      "location_point": "SRID=4326;POINT (-2.6081276 141.0013139)",
+      "finalized_at": null,
+      "domain_config": 1,
+      "incident_type": 3,
+      "history_date": "2020-11-12T00:00:13.285Z",
+      "history_change_reason": null,
+      "history_type": "+",
+      "history_user": null
+    }
+  },
+  {
+    "model": "incident.historicalincident",
+    "pk": 53,
+    "fields": {
+      "id": 46,
+      "created_at": "2020-11-12T00:00:58.357Z",
+      "updated_at": "2020-11-12T00:00:58.357Z",
+      "external_assistance": "With external support",
+      "details": {},
+      "status": "Started",
+      "data_status": "Incomplete",
+      "location_as_string_reference": "Papantla, Ver., M\u00e9xico",
+      "reference": "prueba 40",
+      "location_point": "SRID=4326;POINT (20.4566709 -97.31561309999999)",
+      "finalized_at": null,
+      "domain_config": 1,
+      "incident_type": 2,
+      "history_date": "2020-11-12T00:00:58.359Z",
+      "history_change_reason": null,
+      "history_type": "+",
+      "history_user": null
+    }
+  },
+  {
+    "model": "incident.historicalincident",
+    "pk": 54,
+    "fields": {
+      "id": 12,
+      "created_at": "2020-10-25T21:14:40.694Z",
+      "updated_at": "2020-11-12T00:04:43.104Z",
+      "external_assistance": "With external support",
+      "details": {},
+      "status": "Started",
+      "data_status": "Incomplete",
+      "location_as_string_reference": "",
+      "reference": "",
+      "location_point": "SRID=4326;POINT (-31.426470454823 -62.11048776031392)",
+      "finalized_at": null,
+      "domain_config": 1,
+      "incident_type": 3,
+      "history_date": "2020-11-12T00:04:43.108Z",
+      "history_change_reason": null,
+      "history_type": "~",
+      "history_user": null
+    }
+  },
+  {
+    "model": "incident.historicalincident",
+    "pk": 55,
+    "fields": {
+      "id": 40,
+      "created_at": "2020-11-10T17:44:41.708Z",
+      "updated_at": "2020-11-12T17:44:03.268Z",
+      "external_assistance": "With external support",
+      "details": {},
+      "status": "Canceled",
+      "data_status": "Incomplete",
+      "location_as_string_reference": "Plaza General Maroto, Madrid, Espa\u00f1a",
+      "reference": "prueba 4",
+      "location_point": "SRID=4326;POINT (40.39361280000001 -3.6980457)",
+      "finalized_at": null,
+      "domain_config": 1,
+      "incident_type": 3,
+      "history_date": "2020-11-12T17:44:03.273Z",
+      "history_change_reason": null,
+      "history_type": "~",
+      "history_user": null
+    }
+  },
+  {
+    "model": "incident.historicalincident",
+    "pk": 56,
+    "fields": {
+      "id": 13,
+      "created_at": "2020-10-25T21:35:21.981Z",
+      "updated_at": "2020-11-12T18:24:25.904Z",
+      "external_assistance": "Without external support",
+      "details": {},
+      "status": "Finalized",
+      "data_status": "Incomplete",
+      "location_as_string_reference": "",
+      "reference": "",
+      "location_point": "SRID=4326;POINT (-31.42643383472339 -62.11054784153391)",
+      "finalized_at": null,
+      "domain_config": 1,
+      "incident_type": 2,
+      "history_date": "2020-11-12T18:24:25.907Z",
+      "history_change_reason": null,
+      "history_type": "~",
+      "history_user": null
+    }
+  },
+  {
+    "model": "incident.historicalincident",
+    "pk": 57,
+    "fields": {
+      "id": 45,
+      "created_at": "2020-11-12T00:00:13.281Z",
+      "updated_at": "2020-11-14T14:18:46.861Z",
+      "external_assistance": "Without external support",
+      "details": {},
+      "status": "Canceled",
+      "data_status": "Incomplete",
+      "location_as_string_reference": "Indonesia - Papua New Guinea Border, Pap\u00faa Nueva Guinea",
+      "reference": "prueba final?",
+      "location_point": "SRID=4326;POINT (-2.6081276 141.0013139)",
+      "finalized_at": null,
+      "domain_config": 1,
+      "incident_type": 3,
+      "history_date": "2020-11-14T14:18:46.881Z",
+      "history_change_reason": null,
+      "history_type": "~",
+      "history_user": null
+    }
+  },
+  {
+    "model": "incident.historicalincident",
+    "pk": 58,
+    "fields": {
+      "id": 14,
+      "created_at": "2020-10-25T21:36:36.888Z",
+      "updated_at": "2020-11-14T14:19:29.426Z",
+      "external_assistance": "Without external support",
+      "details": {},
+      "status": "Canceled",
+      "data_status": "Incomplete",
+      "location_as_string_reference": "",
+      "reference": "",
+      "location_point": "SRID=4326;POINT (-31.42643383472339 -62.11046201084544)",
+      "finalized_at": null,
+      "domain_config": 1,
+      "incident_type": 2,
+      "history_date": "2020-11-14T14:19:29.430Z",
+      "history_change_reason": null,
+      "history_type": "~",
+      "history_user": null
+    }
+  },
+  {
+    "model": "incident.historicalincident",
+    "pk": 59,
+    "fields": {
+      "id": 31,
+      "created_at": "2020-10-27T00:03:04.731Z",
+      "updated_at": "2020-11-14T14:30:00.728Z",
+      "external_assistance": "Without external support",
+      "details": {},
+      "status": "Finalized",
+      "data_status": "Incomplete",
+      "location_as_string_reference": "Utnoor, Telangana, India",
+      "reference": "",
+      "location_point": "SRID=4326;POINT (19.3718044 78.7787889)",
+      "finalized_at": null,
+      "domain_config": 1,
+      "incident_type": 1,
+      "history_date": "2020-11-14T14:30:00.736Z",
+      "history_change_reason": null,
+      "history_type": "~",
+      "history_user": null
+    }
+  },
+  {
+    "model": "incident.historicalincident",
+    "pk": 60,
+    "fields": {
+      "id": 43,
+      "created_at": "2020-11-11T23:54:04.642Z",
+      "updated_at": "2020-11-14T14:30:23.330Z",
+      "external_assistance": "Without external support",
+      "details": {},
+      "status": "Canceled",
+      "data_status": "Incomplete",
+      "location_as_string_reference": "\u00c1rea 51, Nevada, EE. UU.",
+      "reference": "plaza velez sarfield prueba 12",
+      "location_point": "SRID=4326;POINT (37.2430548 -115.7930198)",
+      "finalized_at": null,
+      "domain_config": 1,
+      "incident_type": 3,
+      "history_date": "2020-11-14T14:30:23.337Z",
+      "history_change_reason": null,
+      "history_type": "~",
+      "history_user": null
+    }
+  }
+]

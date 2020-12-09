@@ -1,4 +1,5 @@
 import os
+from datetime import timedelta
 from os.path import join
 import environ
 from distutils.util import strtobool
@@ -258,6 +259,20 @@ class Common(Configuration):
     }
 
     JWT_AUTH_COOKIE = 'jwt-auth'
+
+    SIMPLE_JWT = {
+        'ACCESS_TOKEN_LIFETIME': timedelta(days=1),
+        'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
+        'ROTATE_REFRESH_TOKENS': False,
+        'BLACKLIST_AFTER_ROTATION': True,
+        'UPDATE_LAST_LOGIN': False,
+
+        'ALGORITHM': 'HS256',
+        'SIGNING_KEY': SECRET_KEY,
+        'VERIFYING_KEY': None,
+        'AUDIENCE': None,
+        'ISSUER': None,
+    }
 
     SWAGGER_SETTINGS = {
         'SECURITY_DEFINITIONS': {
