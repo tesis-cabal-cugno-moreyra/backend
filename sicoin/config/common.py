@@ -79,6 +79,7 @@ class Common(Configuration):
     ]
     CORS_ALLOWED_ORIGIN_REGEXES = [
         r"^https://tesis-cabal-cugno-moreyra-pr-\d+\.onrender\.com$",
+        r"^http://192\.168\.\d+\.\d+:808[01]$",
     ]
     ROOT_URLCONF = 'sicoin.urls'
     SECRET_KEY = env('DJANGO_SECRET_KEY')
