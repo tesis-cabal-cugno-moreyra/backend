@@ -136,18 +136,15 @@ class SupervisorProfileCreateUpdateListViewSet(mixins.CreateModelMixin,
         return Response(serializer.data)
 
 
-class ResourceProfileRetrieveDestroyViewSet(mixins.RetrieveModelMixin,
-                                            mixins.DestroyModelMixin,
-                                            viewsets.GenericViewSet):
-    queryset = ResourceProfile.objects.all()
-    serializer_class = serializers.ListRetrieveResourceProfileSerializer
-    permission_classes = (AllowAny,)
-
-
-class ResourceProfileUpdateViewSet(mixins.UpdateModelMixin, viewsets.GenericViewSet):
+class ResourceProfileUpdateDestroyViewSet(mixins.UpdateModelMixin, mixins.DestroyModelMixin, viewsets.GenericViewSet):
     queryset = ResourceProfile.objects.all()
     serializer_class = serializers.UpdateResourceProfileSerializer
     permission_classes = (AllowAny,)
+
+    def retrieve(self, request, *args, **kwargs):
+        instance = self.get_object()
+        serializer = serializers.ListRetrieveResourceProfileSerializer(instance)
+        return Response(serializer.data)
 
 
 class ResourceFilter(django_filters.FilterSet):
@@ -162,7 +159,7 @@ class ResourceFilter(django_filters.FilterSet):
         exclude = ['user', 'type', 'domain']
 
 
-class ResourceProfileCreateListViewSet(mixins.CreateModelMixin, viewsets.GenericViewSet):
+class ResourceProfileCreateRetrieveListViewSet(mixins.CreateModelMixin, viewsets.GenericViewSet):
     queryset = ResourceProfile.objects.all()
     serializer_class = serializers.CreateResourceProfileSerializer
     permission_classes = (AllowAny,)
