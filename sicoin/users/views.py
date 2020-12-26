@@ -18,17 +18,13 @@ from . import serializers
 from django.core.cache import cache
 
 
-class UserRetrieveUpdateViewSet(mixins.RetrieveModelMixin,
-                                mixins.UpdateModelMixin,
-                                viewsets.GenericViewSet):
+class UserRetrieveUpdateViewSet(mixins.RetrieveModelMixin, mixins.UpdateModelMixin, viewsets.GenericViewSet):
     queryset = User.objects.all()
     serializer_class = serializers.UserSerializer
     permission_classes = (IsUserOrReadOnly,)
 
 
-class UserCreateListViewSet(mixins.CreateModelMixin,
-                            mixins.ListModelMixin,
-                            viewsets.GenericViewSet):
+class UserCreateListViewSet(mixins.CreateModelMixin, viewsets.GenericViewSet):
     queryset = User.objects.all()
     serializer_class = serializers.CreateUserSerializer
     permission_classes = (AllowAny,)
@@ -45,33 +41,19 @@ class UserCreateListViewSet(mixins.CreateModelMixin,
         return Response(serializer.data)
 
 
-class AdminProfileViewSet(mixins.RetrieveModelMixin,
-                          mixins.UpdateModelMixin,
-                          mixins.DestroyModelMixin,
-                          viewsets.GenericViewSet):
+class AdminProfileRetrieveUpdateDestroyViewSet(mixins.RetrieveModelMixin, mixins.UpdateModelMixin,
+                                               mixins.DestroyModelMixin, viewsets.GenericViewSet):
     queryset = AdminProfile.objects.all()
-    serializer_class = serializers.ListRetrieveAdminProfileSerializer
+    serializer_class = serializers.CreateUpdateAdminProfileSerializer
     permission_classes = (AllowAny,)
 
-    def update(self, request, *args, **kwargs):
-        partial = kwargs.pop('partial', False)
+    def retrieve(self, request, *args, **kwargs):
         instance = self.get_object()
-        serializer = serializers.CreateUpdateAdminProfileSerializer(instance, data=request.data,
-                                                                    partial=partial)
-        serializer.is_valid(raise_exception=True)
-        self.perform_update(serializer)
-
-        if getattr(instance, '_prefetched_objects_cache', None):
-            # If 'prefetch_related' has been applied to a queryset, we need to
-            # forcibly invalidate the prefetch cache on the instance.
-            instance._prefetched_objects_cache = {}
-
+        serializer = serializers.ListRetrieveAdminProfileSerializer(instance)
         return Response(serializer.data)
 
 
-class AdminProfileCreateViewSet(mixins.CreateModelMixin,
-                                mixins.ListModelMixin,
-                                viewsets.GenericViewSet):
+class AdminProfileCreateListViewSet(mixins.CreateModelMixin, viewsets.GenericViewSet):
     queryset = AdminProfile.objects.all()
     serializer_class = serializers.CreateUpdateAdminProfileSerializer
     permission_classes = (AllowAny,)
@@ -91,32 +73,20 @@ class AdminProfileCreateViewSet(mixins.CreateModelMixin,
         return Response(serializer.data)
 
 
-class SupervisorProfileViewSet(mixins.RetrieveModelMixin,
-                               mixins.UpdateModelMixin,
-                               mixins.DestroyModelMixin,
-                               viewsets.GenericViewSet):
+class SupervisorProfileRetrieveUpdateDestroyViewSet(mixins.UpdateModelMixin,
+                                                    mixins.DestroyModelMixin,
+                                                    viewsets.GenericViewSet):
     queryset = SupervisorProfile.objects.all()
-    serializer_class = serializers.ListRetrieveSupervisorProfileSerializer
+    serializer_class = serializers.CreateUpdateSupervisorProfileSerializer
     permission_classes = (AllowAny,)
 
-    def update(self, request, *args, **kwargs):
-        partial = kwargs.pop('partial', False)
+    def retrieve(self, request, *args, **kwargs):
         instance = self.get_object()
-        serializer = serializers.CreateUpdateSupervisorProfileSerializer(instance, data=request.data,
-                                                                         partial=partial)
-        serializer.is_valid(raise_exception=True)
-        self.perform_update(serializer)
-
-        if getattr(instance, '_prefetched_objects_cache', None):
-            # If 'prefetch_related' has been applied to a queryset, we need to
-            # forcibly invalidate the prefetch cache on the instance.
-            instance._prefetched_objects_cache = {}
-
+        serializer = serializers.ListRetrieveSupervisorProfileSerializer(instance)
         return Response(serializer.data)
 
 
-class SupervisorProfileCreateUpdateListViewSet(mixins.CreateModelMixin,
-                                               viewsets.GenericViewSet):
+class SupervisorProfileCreateUpdateListViewSet(mixins.CreateModelMixin, viewsets.GenericViewSet):
     queryset = SupervisorProfile.objects.all()
     serializer_class = serializers.CreateUpdateSupervisorProfileSerializer
     permission_classes = (AllowAny,)
@@ -136,7 +106,8 @@ class SupervisorProfileCreateUpdateListViewSet(mixins.CreateModelMixin,
         return Response(serializer.data)
 
 
-class ResourceProfileUpdateDestroyViewSet(mixins.UpdateModelMixin, mixins.DestroyModelMixin, viewsets.GenericViewSet):
+class ResourceProfileRetrieveUpdateDestroyViewSet(mixins.UpdateModelMixin, mixins.DestroyModelMixin,
+                                                  viewsets.GenericViewSet):
     queryset = ResourceProfile.objects.all()
     serializer_class = serializers.UpdateResourceProfileSerializer
     permission_classes = (AllowAny,)
