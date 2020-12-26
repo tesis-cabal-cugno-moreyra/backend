@@ -4,7 +4,7 @@ from django.contrib.auth.hashers import check_password
 from nose.tools import eq_, ok_
 from .factories import UserFactory
 from ..serializers import CreateUserSerializer, CreateUpdateSupervisorProfileSerializer, \
-    CreateUpdateAdminProfileSerializer, CreateUpdateResourceProfileSerializer
+    CreateUpdateAdminProfileSerializer, CreateResourceProfileSerializer
 from ...domain_config.models import DomainConfig, SupervisorAlias, ResourceType
 
 
@@ -210,11 +210,11 @@ class TestCreateResourceProfileSerializer(TestCase):
         self.type.save()
 
     def test_serializer_with_empty_data(self):
-        serializer = CreateUpdateResourceProfileSerializer(data={})
+        serializer = CreateResourceProfileSerializer(data={})
         eq_(serializer.is_valid(), False)
 
     def test_serializer_with_valid_data(self):
-        serializer = CreateUpdateResourceProfileSerializer(data={
+        serializer = CreateResourceProfileSerializer(data={
             'domain_code': self.domain.domain_code,
             'domain_name': self.domain.domain_name,
             'user': self.user.id,
@@ -223,7 +223,7 @@ class TestCreateResourceProfileSerializer(TestCase):
         eq_(serializer.is_valid(), True)
 
     def test_serializer_with_non_existent_user(self):
-        serializer = CreateUpdateResourceProfileSerializer(data={
+        serializer = CreateResourceProfileSerializer(data={
             'domain_code': self.domain.domain_code,
             'domain_name': self.domain.domain_name,
             'user': '',
@@ -233,7 +233,7 @@ class TestCreateResourceProfileSerializer(TestCase):
         eq_(serializer.is_valid(), False)
 
     def test_serializer_with_invalid_code(self):
-        serializer = CreateUpdateResourceProfileSerializer(data={
+        serializer = CreateResourceProfileSerializer(data={
             'domain_code': 'asdasdasd',
             'domain_name': self.domain.domain_name,
             'user': '',
@@ -243,7 +243,7 @@ class TestCreateResourceProfileSerializer(TestCase):
         eq_(serializer.is_valid(), False)
 
     def test_serializer_with_user_with_already_created_profile(self):
-        serializer = CreateUpdateResourceProfileSerializer(data={
+        serializer = CreateResourceProfileSerializer(data={
             'domain_code': self.domain.domain_code,
             'domain_name': self.domain.domain_name,
             'user': self.user.id,
@@ -253,7 +253,7 @@ class TestCreateResourceProfileSerializer(TestCase):
         eq_(serializer.is_valid(), True)
         serializer.save()
 
-        serializer2 = CreateUpdateResourceProfileSerializer(data={
+        serializer2 = CreateResourceProfileSerializer(data={
             'domain_code': self.domain.domain_code,
             'domain_name': self.domain.domain_name,
             'user': self.user.id,
@@ -263,7 +263,7 @@ class TestCreateResourceProfileSerializer(TestCase):
         eq_(serializer2.is_valid(), False)
 
     def test_serializer_with_non_existent_domain(self):
-        serializer = CreateUpdateResourceProfileSerializer(data={
+        serializer = CreateResourceProfileSerializer(data={
             'domain_code': self.domain.domain_code,
             'domain_name': 'asdasdasd',
             'user': self.user.id,
@@ -273,7 +273,7 @@ class TestCreateResourceProfileSerializer(TestCase):
         eq_(serializer.is_valid(), False)
 
     def test_serializer_with_non_existent_alias(self):
-        serializer = CreateUpdateResourceProfileSerializer(data={
+        serializer = CreateResourceProfileSerializer(data={
             'domain_code': self.domain.domain_code,
             'domain_name': self.domain.domain_name,
             'user': self.user.id,
