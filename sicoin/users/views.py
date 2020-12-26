@@ -137,27 +137,17 @@ class SupervisorProfileCreateUpdateListViewSet(mixins.CreateModelMixin,
 
 
 class ResourceProfileRetrieveDestroyViewSet(mixins.RetrieveModelMixin,
-                                            mixins.UpdateModelMixin,
                                             mixins.DestroyModelMixin,
                                             viewsets.GenericViewSet):
     queryset = ResourceProfile.objects.all()
     serializer_class = serializers.ListRetrieveResourceProfileSerializer
     permission_classes = (AllowAny,)
 
-    def update(self, request, *args, **kwargs):
-        partial = kwargs.pop('partial', False)
-        instance = self.get_object()
-        serializer = serializers.CreateUpdateResourceProfileSerializer(instance, data=request.data,
-                                                                       partial=partial)
-        serializer.is_valid(raise_exception=True)
-        self.perform_update(serializer)
 
-        if getattr(instance, '_prefetched_objects_cache', None):
-            # If 'prefetch_related' has been applied to a queryset, we need to
-            # forcibly invalidate the prefetch cache on the instance.
-            instance._prefetched_objects_cache = {}
-
-        return Response(serializer.data)
+class ResourceProfileUpdateViewSet(mixins.UpdateModelMixin, viewsets.GenericViewSet):
+    queryset = ResourceProfile.objects.all()
+    serializer_class = serializers.UpdateResourceProfileSerializer
+    permission_classes = (AllowAny,)
 
 
 class ResourceFilter(django_filters.FilterSet):
@@ -172,11 +162,9 @@ class ResourceFilter(django_filters.FilterSet):
         exclude = ['user', 'type', 'domain']
 
 
-class ResourceProfileCreateUpdateViewSet(mixins.CreateModelMixin,
-                                         mixins.ListModelMixin,
-                                         viewsets.GenericViewSet):
+class ResourceProfileCreateListViewSet(mixins.CreateModelMixin, viewsets.GenericViewSet):
     queryset = ResourceProfile.objects.all()
-    serializer_class = serializers.CreateUpdateResourceProfileSerializer
+    serializer_class = serializers.CreateResourceProfileSerializer
     permission_classes = (AllowAny,)
     filter_backends = (filters.DjangoFilterBackend,)
     filterset_class = ResourceFilter
