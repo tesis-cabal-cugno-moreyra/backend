@@ -4,6 +4,7 @@ from django.conf import settings
 from django.dispatch import receiver
 from django.contrib.auth.models import AbstractUser
 from django.db.models.signals import post_save
+from fcm_django.models import FCMDevice
 from rest_framework.authtoken.models import Token
 from sicoin.domain_config.models import DomainConfig, SupervisorAlias, ResourceType
 from sicoin.users.enums import ValidRoles
@@ -47,6 +48,7 @@ class ResourceProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.PROTECT)
     type = models.ForeignKey(ResourceType, on_delete=models.PROTECT)
     domain = models.ForeignKey(DomainConfig, on_delete=models.PROTECT)
+    device = models.OneToOneField(FCMDevice, on_delete=models.PROTECT, null=True, blank=True)
 
     @property
     def role(self):

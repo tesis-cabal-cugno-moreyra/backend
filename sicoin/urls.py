@@ -19,7 +19,7 @@ from rest_framework import permissions
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
 
-from .users.views import ActivateUserView, DeactivateUserView
+from .users.views import ActivateUserView, DeactivateUserView, CreateOrUpdateResourceProfileDeviceData
 
 router = DefaultRouter()
 router.register(r'users', views.UserCreateListViewSet)
@@ -67,6 +67,8 @@ urlpatterns = [
     path('api/v1/incidents/<int:incident_id>/resources/<int:resource_id>/track-point/', CreateTrackPoint.as_view()),
     path('api/v1/incidents/<int:incident_id>/track-points/', GetTrackPointsFromIncident.as_view()),
 
+    path('api/v1/resources/<int:resource_id>/create-or-update-device/',
+         CreateOrUpdateResourceProfileDeviceData.as_view()),
     path('api/v1/users/<uuid:user_id>/activate/', ActivateUserView.as_view()),
     path('api/v1/users/<uuid:user_id>/deactivate/', DeactivateUserView.as_view()),
     re_path(r'^rest-auth/', include('dj_rest_auth.urls')),

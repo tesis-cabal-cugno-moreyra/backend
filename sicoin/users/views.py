@@ -5,6 +5,8 @@ from django.contrib.auth.hashers import make_password
 from django.http import HttpResponse
 from django_filters import rest_framework as filters
 from drf_yasg.utils import swagger_auto_schema
+from fcm_django.api.rest_framework import FCMDeviceSerializer
+from fcm_django.models import FCMDevice
 from rest_framework import viewsets, mixins, status
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
@@ -13,6 +15,7 @@ from rest_framework.views import APIView
 from rest_framework_simplejwt.tokens import RefreshToken
 
 from .models import User, AdminProfile, ResourceProfile, SupervisorProfile
+from .notify_resource_user import notify_resource_user_activation, notify_resource_user_deactivation
 from .permissions import IsUserOrReadOnly
 from . import serializers
 from django.core.cache import cache
@@ -181,6 +184,18 @@ class ChangeUserStatusUserView(APIView):
                                 status=status.HTTP_400_BAD_REQUEST)
 
         user.is_active = self.get_user_is_active_change_to()
+        if user.is_active and user.resourceprofile:
+            notify_resource_user_activation(user.resourceprofile)
+        elif not user.is_active and user.resourceprofile:
+            notify_resource_user_deactivation(user.resourceprofile)
+        elif user.is_active and not user.resourceprofile:
+            # Activated user that is NOT a resource
+            pass
+        elif not user.is_active and not user.resourceprofile:
+            # Deactivated user that is NOT a resource
+            pass
+        else:
+            raise Exception(f'User {user} could not be notified')
         user.save()
         return HttpResponse(json.dumps({'message': 'Changed user status successfully'}))
 
@@ -196,6 +211,34 @@ class ActivateUserView(ChangeUserStatusUserView):
 class DeactivateUserView(ChangeUserStatusUserView):
     def get_user_is_active_change_to(self):
         return False
+
+
+class CreateOrUpdateResourceProfileDeviceData(APIView):
+    @swagger_auto_schema(operation_description="Creates or updates resource profile device data, Only Resource user",
+                         request_body=FCMDeviceSerializer,
+                         responses={200: "{'message': 'Device data for resource with id {RESOURCE_ID} "
+                                         "was saved successfully'}",
+                                    400: "{'message': 'Resource id invalid or empty'},"
+                                         "{'message': 'Error creating or updating resource device id'}"})
+    def post(self, request, resource_id):
+        if not resource_id:
+            return HttpResponse(json.dumps({'message': 'Resource id invalid or empty'}),
+                                status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            resource = ResourceProfile.objects.get(id=resource_id)
+        except ResourceProfile.DoesNotExist:
+            return HttpResponse(json.dumps({'message': 'Error creating or updating resource device id'}),
+                                status=status.HTTP_400_BAD_REQUEST)
+
+        fcm_device_serializer = FCMDeviceSerializer(data=request.data)
+        if fcm_device_serializer.is_valid(raise_exception=True):
+            fcm_device_serializer.save()
+            resource.device = fcm_device_serializer.instance
+            resource.save()
+            return HttpResponse(json.dumps({'message': f'Device data for resource with id '
+                                                       f'{resource_id} was saved successfully'}),
+                                status=status.HTTP_200_OK)
 
 
 class GoogleView(APIView):
