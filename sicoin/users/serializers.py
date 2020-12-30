@@ -11,6 +11,13 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
+        fields = ('id', 'email', 'username', 'first_name', 'last_name', 'is_active')
+        read_only_fields = ('username', )
+
+
+class UserDetailsAfterLoginSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
         fields = ('id', 'email', 'username', 'first_name', 'last_name', 'is_active', 'resourceprofile', 'adminprofile',
                   'supervisorprofile')
         read_only_fields = ('username', )
