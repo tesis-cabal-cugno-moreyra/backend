@@ -15,7 +15,6 @@ from rest_framework_simplejwt.tokens import RefreshToken
 
 from .models import User, AdminProfile, ResourceProfile, SupervisorProfile
 from .notify_resource_user import notify_resource_user_activation, notify_resource_user_deactivation
-from .permissions import IsUserOrReadOnly
 from . import serializers
 from django.core.cache import cache
 
@@ -23,7 +22,7 @@ from django.core.cache import cache
 class UserRetrieveUpdateViewSet(mixins.RetrieveModelMixin, mixins.UpdateModelMixin, viewsets.GenericViewSet):
     queryset = User.objects.all()
     serializer_class = serializers.UserSerializer
-    permission_classes = (IsUserOrReadOnly,)
+    permission_classes = (AllowAny,)
 
 
 class UserCreateListViewSet(mixins.CreateModelMixin, viewsets.GenericViewSet):
