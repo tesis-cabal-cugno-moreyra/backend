@@ -263,6 +263,7 @@ class Common(Configuration):
 
     REST_AUTH_SERIALIZERS = {
         'JWT_TOKEN_CLAIMS_SERIALIZER': 'sicoin.users.serializers.CustomTokenObtainPairSerializer',
+        'USER_DETAILS_SERIALIZER': 'sicoin.users.serializers.UserSerializer'
     }
 
     JWT_AUTH_COOKIE = 'jwt-auth'

@@ -6,7 +6,6 @@ from django.http import HttpResponse
 from django_filters import rest_framework as filters
 from drf_yasg.utils import swagger_auto_schema
 from fcm_django.api.rest_framework import FCMDeviceSerializer
-from fcm_django.models import FCMDevice
 from rest_framework import viewsets, mixins, status
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
