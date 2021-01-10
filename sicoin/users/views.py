@@ -14,7 +14,7 @@ from rest_framework.views import APIView
 from rest_framework_simplejwt.tokens import RefreshToken
 
 from .models import User, AdminProfile, ResourceProfile, SupervisorProfile
-from .notify_resource_user import notify_resource_user_activation, notify_resource_user_deactivation
+from .notify_user_manager import UserStatusChangeNotificationManager
 from . import serializers
 from django.core.cache import cache
 
@@ -182,18 +182,8 @@ class ChangeUserStatusUserView(APIView):
                                 status=status.HTTP_400_BAD_REQUEST)
 
         user.is_active = self.get_user_is_active_change_to()
-        if user.is_active and user.resourceprofile:
-            notify_resource_user_activation(user.resourceprofile)
-        elif not user.is_active and user.resourceprofile:
-            notify_resource_user_deactivation(user.resourceprofile)
-        elif user.is_active and not user.resourceprofile:
-            # Activated user that is NOT a resource
-            pass
-        elif not user.is_active and not user.resourceprofile:
-            # Deactivated user that is NOT a resource
-            pass
-        else:
-            raise Exception(f'User {user} could not be notified')
+        user_notification_manager = UserStatusChangeNotificationManager(user)
+        user_notification_manager.notify_user_status_change()
         user.save()
         return HttpResponse(json.dumps({'message': 'Changed user status successfully'}))
 

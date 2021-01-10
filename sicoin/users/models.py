@@ -58,6 +58,18 @@ class ResourceProfile(models.Model):
         return f"username: {self.user.username}, domain: {self.domain.domain_name}, type: Resource, " \
                f"resource type: {self.type.name}"
 
+    def notify_resource_user_activation(self):
+        title = 'Usuario activado!'
+        body = f'Tu usuario, para el dominio {self.domain.domain_name} ha sido activado.'
+        if self.device:
+            self.device.send_message(title=title, body=body)
+
+    def notify_resource_user_deactivation(self):
+        title = 'Usuario desactivado!'
+        body = f'Tu usuario, para el dominio {self.domain.domain_name} ha sido desactivado.'
+        if self.device:
+            self.device.send_message(title=title, body=body)
+
 
 @receiver(post_save, sender=settings.AUTH_USER_MODEL)
 def create_auth_token(sender, instance=None, created=False, **kwargs):
