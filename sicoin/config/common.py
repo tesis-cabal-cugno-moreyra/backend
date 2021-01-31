@@ -41,6 +41,7 @@ class Common(Configuration):
         'django_filters',            # for filtering rest endpoints
         'encrypted_fields',
         'simple_history',
+        "fcm_django",
 
         # Your apps
         'sicoin.users',
@@ -93,6 +94,11 @@ class Common(Configuration):
                 "hosts": [env('REDIS_URL')],
             },
         },
+    }
+
+    FCM_DJANGO_SETTINGS = {
+        "FCM_SERVER_KEY": env('FCM_API_KEY'),
+        "ONE_DEVICE_PER_USER": True,
     }
 
     # Email
@@ -257,6 +263,7 @@ class Common(Configuration):
 
     REST_AUTH_SERIALIZERS = {
         'JWT_TOKEN_CLAIMS_SERIALIZER': 'sicoin.users.serializers.CustomTokenObtainPairSerializer',
+        'USER_DETAILS_SERIALIZER': 'sicoin.users.serializers.UserDetailsAfterLoginSerializer'
     }
 
     JWT_AUTH_COOKIE = 'jwt-auth'

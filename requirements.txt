@@ -16,6 +16,7 @@ django-redis==4.5.0
 django-environ==0.4.5
 django-material-admin==1.7.8
 django-simple-history==2.11.0
+fcm-django
 jsonschema
 
 # For the persistence stores
@@ -30,6 +31,7 @@ django_unique_upload==0.2.1
 djangorestframework==3.11.0
 djangorestframework-gis==0.16
 djangorestframework-simplejwt==4.4.0
+PyJWT==1.7.1
 Markdown==3.2.2
 django-filter==2.3.0
 
