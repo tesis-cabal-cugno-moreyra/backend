@@ -46,6 +46,7 @@ schema_view = get_schema_view(
 
 urlpatterns = [
     path('chat/', include('chat.urls')),
+    path('wsdebug/', include('sicoin.wsdebug.urls')),
     path('admin/', admin.site.urls),
     path('api/v1/', include(router.urls)),
     path('api/v1/domain-config/', DomainConfigAPIView.as_view()),

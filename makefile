@@ -37,6 +37,9 @@ heroku-ssh:
 heroku-logs:
 	heroku logs --tail -a $(HEROKU_APP)
 
+django-seed-db:
+	docker-compose exec web python manage.py loaddata fixtures/prod_dump.json
+
 django-makemigrations:
 	docker-compose exec web python manage.py makemigrations
 	make docker-compose-web-change-files-ownership
@@ -61,3 +64,8 @@ ci-run-tests:
 	docker-compose exec -T web flake8 .
 	docker-compose exec -T web python wait_for_postgres.py
 	docker-compose exec -T web ./manage.py test
+
+## Shortcuts
+
+dk-up: docker-compose-up-d
+dk-web-out: docker-compose-get-web-output

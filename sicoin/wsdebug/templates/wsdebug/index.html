@@ -1,0 +1,28 @@
+<!-- chat/templates/chat/index.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title>Incident</title>
+</head>
+<body>
+    <h2>What incident would you like to join?</h2>
+    <p><-- In the future, list STARTED incidents --></p>
+    <input id="incident-id-input" type="text" size="100"><br>
+    <input id="incident-id-submit" type="button" value="Enter">
+
+    <script>
+        document.querySelector('#incident-id-input').focus();
+        document.querySelector('#incident-id-input').onkeyup = function(e) {
+            if (e.keyCode === 13) {  // enter, return
+                document.querySelector('#incident-id-submit').click();
+            }
+        };
+
+        document.querySelector('#incident-id-submit').onclick = function(e) {
+            var incidentId = document.querySelector('#incident-id-input').value;
+            window.location.pathname = '/wsdebug/' + incidentId + '/';
+        };
+    </script>
+</body>
+</html>
