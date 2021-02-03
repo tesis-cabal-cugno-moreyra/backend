@@ -48,6 +48,7 @@ class Common(Configuration):
         'sicoin.domain_config',
         'sicoin.incident',
         'sicoin.geolocation',
+        'sicoin.wsdebug',
         'chat',
         'drf_yasg',
 
