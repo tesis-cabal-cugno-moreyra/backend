@@ -16,7 +16,7 @@
         const incidentId = JSON.parse(document.getElementById('incident-id').textContent);
 
         const incidentSocket = new WebSocket(
-            'ws://'
+            'wss://'
             + window.location.host
             + '/ws/incident/' +
             incidentId +
