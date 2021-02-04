@@ -15,8 +15,7 @@ class AvailableIncidentTypes(str, Enum, metaclass=MetaEnum):
 
 
 class IncidentConsumer(AsyncWebsocketConsumer):
-    @database_sync_to_async
-    def _generate_incident_data(self, index):
+    def _generate_tp_data(self, index):
         return {
             "location": {
                 "type": "Point",
@@ -54,6 +53,45 @@ class IncidentConsumer(AsyncWebsocketConsumer):
             }
         }
 
+    def _generate_mp_data(self, index):
+        return {
+            "location": {
+                "type": "Point",
+                "coordinates": [
+                    -31.425117 + index / 10000,
+                    -62.086124 + index / 10000
+                ]
+            },
+            "collected_at": "2020-11-26T21:19:55.953Z",
+            "internal_type": "TrackPoint",
+            "resource_id": {
+                "id": 11,
+                "user": {
+                    "id": "f196f272-c272-4def-b149-6d0fac71ea14",
+                    "email": "carlioss@carlioss.com",
+                    "username": "ldiaz",
+                    "first_name": "Laura",
+                    "last_name": "Díaz",
+                    "is_active": True
+                },
+                "domain": {
+                    "id": 1,
+                    "created_at": "2020-09-28T00:26:36+0000",
+                    "updated_at": "2020-11-05T14:44:44+0000",
+                    "domain_name": "DominioPersonalizado",
+                    "admin_alias": "Administrador"
+                },
+                "type": {
+                    "id": 1,
+                    "created_at": "2020-09-28T00:26:36+0000",
+                    "updated_at": "2020-09-28T00:26:36+0000",
+                    "name": "Bombero",
+                    "domain_config": 1
+                }
+            },
+            "comment": "string"
+        }
+
     async def connect(self):
         self.incident_id = self.scope['url_route']['kwargs']['incident_id']
         # Assert existing incident
@@ -70,7 +108,11 @@ class IncidentConsumer(AsyncWebsocketConsumer):
 
         for i in range(1, 10000):
             # FIXME: How are we going to dump dates?
-            await self.send(json.dumps(await self._generate_incident_data(index=i)))
+            await self.send(
+                json.dumps({
+                    'type': AvailableIncidentTypes.TRACK_POINT,
+                    'data': self._generate_tp_data(i)
+                }))
             await asyncio.sleep(5)
 
     async def receive(self, text_data=None, bytes_data=None):
