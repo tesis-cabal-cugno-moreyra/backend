@@ -6,6 +6,7 @@ from channels.db import database_sync_to_async
 from channels.generic.websocket import AsyncWebsocketConsumer
 from django.conf import settings
 
+from sicoin.incident.models import Incident
 from sicoin.utils import MetaEnum
 
 
@@ -15,6 +16,10 @@ class AvailableIncidentTypes(str, Enum, metaclass=MetaEnum):
 
 
 class IncidentConsumer(AsyncWebsocketConsumer):
+    @database_sync_to_async
+    def _get_incident(self) -> Incident:
+        return Incident.objects.get(id=self.incident_id)
+
     def _generate_tp_data(self, index):
         return {
             "location": {
@@ -96,6 +101,9 @@ class IncidentConsumer(AsyncWebsocketConsumer):
         self.incident_id = self.scope['url_route']['kwargs']['incident_id']
         # Assert existing incident
 
+        if not self._get_incident().status_is_started:
+            await self.send({"close": True})
+
         # Join incident group
         await self.channel_layer.group_add(
             self.incident_id,
@@ -108,11 +116,18 @@ class IncidentConsumer(AsyncWebsocketConsumer):
 
         for i in range(1, 10000):
             # FIXME: How are we going to dump dates?
-            await self.send(
-                json.dumps({
-                    'type': AvailableIncidentTypes.TRACK_POINT,
-                    'data': self._generate_tp_data(i)
-                }))
+            if (i % 2) == 0:
+                await self.send(
+                    json.dumps({
+                        'type': AvailableIncidentTypes.TRACK_POINT,
+                        'data': self._generate_tp_data(i)
+                    }))
+            else:
+                await self.send(
+                    json.dumps({
+                        'type': AvailableIncidentTypes.MAP_POINT,
+                        'data': self._generate_mp_data(i)
+                    }))
             await asyncio.sleep(5)
 
     async def receive(self, text_data=None, bytes_data=None):

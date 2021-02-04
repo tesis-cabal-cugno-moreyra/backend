@@ -57,6 +57,18 @@ class Incident(BaseModel):
     finalized_at = models.DateTimeField(null=True, blank=True)
     cancelled_at = models.DateTimeField(null=True, blank=True)
 
+    @property
+    def status_is_started(self):
+        return self.status == self.INCIDENT_STATUS_STARTED
+
+    @property
+    def status_is_cancelled(self):
+        return self.status == self.INCIDENT_STATUS_CANCELED
+
+    @property
+    def status_is_finalized(self):
+        return self.status == self.INCIDENT_STATUS_FINALIZED
+
     def __str__(self):
         return f"Incident ({self.id}): type: {self.incident_type.name}, " \
                f"created: {self.created_at}, " \

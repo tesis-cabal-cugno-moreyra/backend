@@ -4,6 +4,7 @@ from rest_framework_gis.fields import GeometryField
 from sicoin.geolocation.models import MapPoint, TrackPoint
 from sicoin.incident.models import Incident, IncidentResource
 from sicoin.users.models import ResourceProfile
+from sicoin.users.serializers import ListRetrieveResourceProfileSerializer
 
 
 class BasePointSerializer(serializers.Serializer):
@@ -63,7 +64,7 @@ class MapPointSerializer(BasePointSerializer):
             'location': GeometryField().to_representation(instance.location),
             'collected_at': instance.time_created,
             'internal_type': 'MapPoint',  # We use this field for future usage on WS
-            'resource_id': instance.incident_resource.resource_id,
+            'resource': ListRetrieveResourceProfileSerializer().to_representation(instance.incident_resource.resource),
             'comment': instance.description_text
         }
 
@@ -87,5 +88,5 @@ class TrackPointSerializer(BasePointSerializer):
             'location': GeometryField().to_representation(instance.location),
             'collected_at': instance.time_created,
             'internal_type': 'TrackPoint',  # We use this field for future usage on WS
-            'resource_id': instance.incident_resource.resource_id
+            'resource': ListRetrieveResourceProfileSerializer().to_representation(instance.incident_resource.resource),
         }
