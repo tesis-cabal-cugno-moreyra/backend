@@ -31,7 +31,7 @@ class IncidentConsumer(AsyncWebsocketConsumer):
             },
             "collected_at": "2020-11-26T21:19:55.953Z",
             "internal_type": "MapPoint",
-            "resource_id": {
+            "resource": {
                 "id": 11,
                 "user": {
                     "id": "f196f272-c272-4def-b149-6d0fac71ea14",
@@ -69,7 +69,7 @@ class IncidentConsumer(AsyncWebsocketConsumer):
             },
             "collected_at": "2020-11-26T21:19:55.953Z",
             "internal_type": "TrackPoint",
-            "resource_id": {
+            "resource": {
                 "id": 11,
                 "user": {
                     "id": "f196f272-c272-4def-b149-6d0fac71ea14",
@@ -101,8 +101,8 @@ class IncidentConsumer(AsyncWebsocketConsumer):
         self.incident_id = self.scope['url_route']['kwargs']['incident_id']
         # Assert existing incident
 
-        if not self._get_incident().status_is_started:
-            await self.send({"close": True})
+        # if not self._get_incident().status_is_started:
+        #    await self.send({"close": True})
 
         # Join incident group
         await self.channel_layer.group_add(
