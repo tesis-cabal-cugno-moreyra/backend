@@ -136,6 +136,7 @@ class IncidentStatusFinalizeAPIView(ChangeIncidentStatusAPIView):
 
     def make_changes_to_incident_according_to_status_change(self, incident: Incident) -> Incident:
         incident.finalized_at = datetime.now()
+        incident.incidentresource_set.all().update(exited_from_incident_at=datetime.now())
         return incident
 
 
@@ -152,6 +153,7 @@ class IncidentStatusCancelAPIView(ChangeIncidentStatusAPIView):
 
     def make_changes_to_incident_according_to_status_change(self, incident: Incident) -> Incident:
         incident.cancelled_at = datetime.now()
+        incident.incidentresource_set.all().update(exited_from_incident_at=datetime.now())
         return incident
 
 
@@ -238,9 +240,9 @@ class AddIncidentResourceToIncidentAPIView(APIView):
                                 status=status.HTTP_400_BAD_REQUEST)
 
         incident_resource = IncidentResource.objects.get(incident=incident, resource=resource)
-        incident_resource.delete()
+        incident_resource.exited_from_incident_at = datetime.now()
 
-        return HttpResponse(json.dumps({'message': 'IncidentResource successfully deleted'}))
+        return HttpResponse(json.dumps({'message': 'IncidentResource successfully updated'}))
 
 
 class IncidentResourceFilter(django_filters.FilterSet):

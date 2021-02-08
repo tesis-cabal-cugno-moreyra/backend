@@ -8,20 +8,37 @@
 <body>
     <h2>What incident would you like to join?</h2>
     <p><-- In the future, list STARTED incidents --></p>
-    <input id="incident-id-input" type="text" size="100"><br>
+    <section id="incidents-section"></section>
     <input id="incident-id-submit" type="button" value="Enter">
 
     <script>
-        document.querySelector('#incident-id-input').focus();
-        document.querySelector('#incident-id-input').onkeyup = function(e) {
-            if (e.keyCode === 13) {  // enter, return
-                document.querySelector('#incident-id-submit').click();
+        const webSocketProtocol = () => {
+            if (window.location.protocol === 'http:') {
+                return 'ws:'
+            } else if (window.location.protocol === 'https:') {
+                return 'wss:'
+            } else {
+                console.error(`protocol ${window.location.protocol} not supported`)
+            }
+        }
+
+        const incidentListSocket = new WebSocket( `${webSocketProtocol()}//${window.location.host}/ws/incident/`);
+
+        incidentListSocket.onmessage = function(e) {
+            console.log(e.data);
+            const parsedIncidents = JSON.parse(e.data);
+            for(let incident of parsedIncidents.incident_list) {
+              var newDiv = document.createElement("div");
+              var newContent = document.createTextNode(JSON.stringify(incident));
+              newDiv.appendChild(newContent)
+                newDiv.style="border-style: solid;"
+              var currentDiv = document.getElementById("incidents-section");
+              document.body.insertBefore(newDiv, currentDiv);
             }
         };
 
         document.querySelector('#incident-id-submit').onclick = function(e) {
-            var incidentId = document.querySelector('#incident-id-input').value;
-            window.location.pathname = '/wsdebug/' + incidentId + '/';
+            window.location.pathname = '/wsdebug/1/';
         };
     </script>
 </body>

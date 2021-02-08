@@ -13,15 +13,18 @@
     <input id="track-point-submit" type="button" value="Send TP">
     {{ incident_id|json_script:"incident-id" }}
     <script>
+       const webSocketProtocol = () => {
+            if (window.location.protocol === 'http:') {
+                return 'ws:'
+            } else if (window.location.protocol === 'https:') {
+                return 'wss:'
+            } else {
+                console.error(`protocol ${window.location.protocol} not supported`)
+            }
+        }
         const incidentId = JSON.parse(document.getElementById('incident-id').textContent);
 
-        const incidentSocket = new WebSocket(
-            'wss://'
-            + window.location.host
-            + '/ws/incident/' +
-            incidentId +
-            '/'
-        );
+        const incidentSocket = new WebSocket( `${webSocketProtocol()}//${window.location.host}/ws/incident/${incidentId}/`);
 
         incidentSocket.onmessage = function(e) {
             document.querySelector('#incident-log').value += (e.data + '\n\'\n\'\n\'\n');

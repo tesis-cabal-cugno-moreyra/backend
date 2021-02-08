@@ -2,11 +2,16 @@ import asyncio
 import json
 from enum import Enum
 
+import channels
+from asgiref.sync import async_to_sync
 from channels.db import database_sync_to_async
 from channels.generic.websocket import AsyncWebsocketConsumer
 from django.conf import settings
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 from sicoin.incident.models import Incident
+from sicoin.incident.serializers import ListIncidentSerializer
 from sicoin.utils import MetaEnum
 
 
@@ -166,85 +171,43 @@ class IncidentConsumer(AsyncWebsocketConsumer):
         }))
 
 
-# Data could be as follows:
-"""
-VALIDATE DATA IN FE
-Resource Data:
+class IncidentListConsumer(AsyncWebsocketConsumer):
+    @database_sync_to_async
+    def _get_incidents_status_created(self) -> ListIncidentSerializer:
+        return ListIncidentSerializer(Incident.started_incidents.all(), many=True).data
 
-{
-  "id": 11,
-  "user": {
-    "id": "f196f272-c272-4def-b149-6d0fac71ea14",
-    "email": "carlioss@carlioss.com",
-    "username": "ldiaz",
-    "first_name": "Laura",
-    "last_name": "Díaz",
-    "is_active": true
-  },
-  "domain": {
-    "id": 1,
-    "created_at": "2020-09-28T00:26:36+0000",
-    "updated_at": "2020-11-05T14:44:44+0000",
-    "domain_name": "DominioPersonalizado",
-    "admin_alias": "Administrador"
-  },
-  "type": {
-    "id": 1,
-    "created_at": "2020-09-28T00:26:36+0000",
-    "updated_at": "2020-09-28T00:26:36+0000",
-    "name": "Bombero",
-    "domain_config": 1
-  }
-}
-[
-    {
-        "location": {
-            "type": "Point",
-            "coordinates": [
-                -31.425117,
-                -62.086124
-            ]
-        },
-        "collected_at": "2020-11-26T21:19:55.953Z",
-        "internal_type": "MapPoint",
-        "resource_id": {
-              "id": 11,
-              "user": {
-                "id": "f196f272-c272-4def-b149-6d0fac71ea14",
-                "email": "carlioss@carlioss.com",
-                "username": "ldiaz",
-                "first_name": "Laura",
-                "last_name": "Díaz",
-                "is_active": true
-              },
-              "domain": {
-                "id": 1,
-                "created_at": "2020-09-28T00:26:36+0000",
-                "updated_at": "2020-11-05T14:44:44+0000",
-                "domain_name": "DominioPersonalizado",
-                "admin_alias": "Administrador"
-              },
-              "type": {
-                "id": 1,
-                "created_at": "2020-09-28T00:26:36+0000",
-                "updated_at": "2020-09-28T00:26:36+0000",
-                "name": "Bombero",
-                "domain_config": 1
-              }
+    async def connect(self):
+        await self.channel_layer.group_add(
+            'incident_list',
+            self.channel_name
+        )
+        await self.accept()
+        # Note: This could be a lot better, in terms of performance. Maybe, if we:
+        # 1. retrieve via GET the list of incidents, and
+        # 2. Send data only from the created incident
+        # This would work a lot better, as we should not seek for the whole list of incidents every time.
+        # Also, if we delete an incident from the shown list, we may send the incident id, and delete it in
+        # the app's incident list, if needed.
+        await self.channel_layer.group_send(
+            'incident_list',
+            {
+                'type': 'update_incident_list'
+            }
+        )
+
+    async def update_incident_list(self, event):
+        await self.send(text_data=json.dumps({
+            'incident_list': (await self._get_incidents_status_created())
+        }))
+
+
+@receiver(post_save, sender=Incident)
+def update_incident_list_on_new_incident(sender: Incident, **kwargs):
+    # If needed: Create and send messages, related with the sender, and according to status
+    channel_layer = channels.layers.get_channel_layer()
+    async_to_sync(channel_layer.group_send)(
+        'incident_list',
+        {
+            'type': 'update_incident_list'
         }
-    },
-    {
-        "location": {
-            "type": "Point",
-            "coordinates": [
-                -31.42512,
-                -62.0862
-            ]
-        },
-        "collected_at": "2020-11-26T21:20:18.039Z",
-        "internal_type": "MapPoint",
-        "resource_id": 9,
-        "comment": "string" Only for MP
-    }
-]
-"""
+    )
