@@ -5,6 +5,7 @@ from django.contrib.auth.hashers import make_password
 from django.http import HttpResponse
 from django_filters import rest_framework as filters
 from drf_yasg.utils import swagger_auto_schema
+from fcm_django.api.rest_framework import FCMDeviceSerializer
 from rest_framework import viewsets, mixins, status
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
@@ -13,22 +14,18 @@ from rest_framework.views import APIView
 from rest_framework_simplejwt.tokens import RefreshToken
 
 from .models import User, AdminProfile, ResourceProfile, SupervisorProfile
-from .permissions import IsUserOrReadOnly
+from .notify_user_manager import UserStatusChangeNotificationManager
 from . import serializers
 from django.core.cache import cache
 
 
-class UserRetrieveUpdateViewSet(mixins.RetrieveModelMixin,
-                                mixins.UpdateModelMixin,
-                                viewsets.GenericViewSet):
+class UserRetrieveUpdateViewSet(mixins.RetrieveModelMixin, mixins.UpdateModelMixin, viewsets.GenericViewSet):
     queryset = User.objects.all()
     serializer_class = serializers.UserSerializer
-    permission_classes = (IsUserOrReadOnly,)
+    permission_classes = (AllowAny,)
 
 
-class UserCreateListViewSet(mixins.CreateModelMixin,
-                            mixins.ListModelMixin,
-                            viewsets.GenericViewSet):
+class UserCreateListViewSet(mixins.CreateModelMixin, viewsets.GenericViewSet):
     queryset = User.objects.all()
     serializer_class = serializers.CreateUserSerializer
     permission_classes = (AllowAny,)
@@ -45,33 +42,19 @@ class UserCreateListViewSet(mixins.CreateModelMixin,
         return Response(serializer.data)
 
 
-class AdminProfileViewSet(mixins.RetrieveModelMixin,
-                          mixins.UpdateModelMixin,
-                          mixins.DestroyModelMixin,
-                          viewsets.GenericViewSet):
+class AdminProfileRetrieveUpdateDestroyViewSet(mixins.RetrieveModelMixin, mixins.UpdateModelMixin,
+                                               mixins.DestroyModelMixin, viewsets.GenericViewSet):
     queryset = AdminProfile.objects.all()
-    serializer_class = serializers.ListRetrieveAdminProfileSerializer
+    serializer_class = serializers.CreateUpdateAdminProfileSerializer
     permission_classes = (AllowAny,)
 
-    def update(self, request, *args, **kwargs):
-        partial = kwargs.pop('partial', False)
+    def retrieve(self, request, *args, **kwargs):
         instance = self.get_object()
-        serializer = serializers.CreateUpdateAdminProfileSerializer(instance, data=request.data,
-                                                                    partial=partial)
-        serializer.is_valid(raise_exception=True)
-        self.perform_update(serializer)
-
-        if getattr(instance, '_prefetched_objects_cache', None):
-            # If 'prefetch_related' has been applied to a queryset, we need to
-            # forcibly invalidate the prefetch cache on the instance.
-            instance._prefetched_objects_cache = {}
-
+        serializer = serializers.ListRetrieveAdminProfileSerializer(instance)
         return Response(serializer.data)
 
 
-class AdminProfileCreateViewSet(mixins.CreateModelMixin,
-                                mixins.ListModelMixin,
-                                viewsets.GenericViewSet):
+class AdminProfileCreateListViewSet(mixins.CreateModelMixin, viewsets.GenericViewSet):
     queryset = AdminProfile.objects.all()
     serializer_class = serializers.CreateUpdateAdminProfileSerializer
     permission_classes = (AllowAny,)
@@ -91,32 +74,20 @@ class AdminProfileCreateViewSet(mixins.CreateModelMixin,
         return Response(serializer.data)
 
 
-class SupervisorProfileViewSet(mixins.RetrieveModelMixin,
-                               mixins.UpdateModelMixin,
-                               mixins.DestroyModelMixin,
-                               viewsets.GenericViewSet):
+class SupervisorProfileRetrieveUpdateDestroyViewSet(mixins.UpdateModelMixin,
+                                                    mixins.DestroyModelMixin,
+                                                    viewsets.GenericViewSet):
     queryset = SupervisorProfile.objects.all()
-    serializer_class = serializers.ListRetrieveSupervisorProfileSerializer
+    serializer_class = serializers.CreateUpdateSupervisorProfileSerializer
     permission_classes = (AllowAny,)
 
-    def update(self, request, *args, **kwargs):
-        partial = kwargs.pop('partial', False)
+    def retrieve(self, request, *args, **kwargs):
         instance = self.get_object()
-        serializer = serializers.CreateUpdateSupervisorProfileSerializer(instance, data=request.data,
-                                                                         partial=partial)
-        serializer.is_valid(raise_exception=True)
-        self.perform_update(serializer)
-
-        if getattr(instance, '_prefetched_objects_cache', None):
-            # If 'prefetch_related' has been applied to a queryset, we need to
-            # forcibly invalidate the prefetch cache on the instance.
-            instance._prefetched_objects_cache = {}
-
+        serializer = serializers.ListRetrieveSupervisorProfileSerializer(instance)
         return Response(serializer.data)
 
 
-class SupervisorProfileCreateUpdateListViewSet(mixins.CreateModelMixin,
-                                               viewsets.GenericViewSet):
+class SupervisorProfileCreateUpdateListViewSet(mixins.CreateModelMixin, viewsets.GenericViewSet):
     queryset = SupervisorProfile.objects.all()
     serializer_class = serializers.CreateUpdateSupervisorProfileSerializer
     permission_classes = (AllowAny,)
@@ -136,27 +107,15 @@ class SupervisorProfileCreateUpdateListViewSet(mixins.CreateModelMixin,
         return Response(serializer.data)
 
 
-class ResourceProfileRetrieveDestroyViewSet(mixins.RetrieveModelMixin,
-                                            mixins.UpdateModelMixin,
-                                            mixins.DestroyModelMixin,
-                                            viewsets.GenericViewSet):
+class ResourceProfileRetrieveUpdateDestroyViewSet(mixins.UpdateModelMixin, mixins.DestroyModelMixin,
+                                                  viewsets.GenericViewSet):
     queryset = ResourceProfile.objects.all()
-    serializer_class = serializers.ListRetrieveResourceProfileSerializer
+    serializer_class = serializers.UpdateResourceProfileSerializer
     permission_classes = (AllowAny,)
 
-    def update(self, request, *args, **kwargs):
-        partial = kwargs.pop('partial', False)
+    def retrieve(self, request, *args, **kwargs):
         instance = self.get_object()
-        serializer = serializers.CreateUpdateResourceProfileSerializer(instance, data=request.data,
-                                                                       partial=partial)
-        serializer.is_valid(raise_exception=True)
-        self.perform_update(serializer)
-
-        if getattr(instance, '_prefetched_objects_cache', None):
-            # If 'prefetch_related' has been applied to a queryset, we need to
-            # forcibly invalidate the prefetch cache on the instance.
-            instance._prefetched_objects_cache = {}
-
+        serializer = serializers.ListRetrieveResourceProfileSerializer(instance)
         return Response(serializer.data)
 
 
@@ -172,11 +131,9 @@ class ResourceFilter(django_filters.FilterSet):
         exclude = ['user', 'type', 'domain']
 
 
-class ResourceProfileCreateUpdateViewSet(mixins.CreateModelMixin,
-                                         mixins.ListModelMixin,
-                                         viewsets.GenericViewSet):
+class ResourceProfileCreateRetrieveListViewSet(mixins.CreateModelMixin, viewsets.GenericViewSet):
     queryset = ResourceProfile.objects.all()
-    serializer_class = serializers.CreateUpdateResourceProfileSerializer
+    serializer_class = serializers.CreateResourceProfileSerializer
     permission_classes = (AllowAny,)
     filter_backends = (filters.DjangoFilterBackend,)
     filterset_class = ResourceFilter
@@ -225,6 +182,8 @@ class ChangeUserStatusUserView(APIView):
                                 status=status.HTTP_400_BAD_REQUEST)
 
         user.is_active = self.get_user_is_active_change_to()
+        user_notification_manager = UserStatusChangeNotificationManager(user)
+        user_notification_manager.notify_user_status_change()
         user.save()
         return HttpResponse(json.dumps({'message': 'Changed user status successfully'}))
 
@@ -240,6 +199,34 @@ class ActivateUserView(ChangeUserStatusUserView):
 class DeactivateUserView(ChangeUserStatusUserView):
     def get_user_is_active_change_to(self):
         return False
+
+
+class CreateOrUpdateResourceProfileDeviceData(APIView):
+    @swagger_auto_schema(operation_description="Creates or updates resource profile device data, Only Resource user",
+                         request_body=FCMDeviceSerializer,
+                         responses={200: "{'message': 'Device data for resource with id {RESOURCE_ID} "
+                                         "was saved successfully'}",
+                                    400: "{'message': 'Resource id invalid or empty'},"
+                                         "{'message': 'Error creating or updating resource device id'}"})
+    def post(self, request, resource_id):
+        if not resource_id:
+            return HttpResponse(json.dumps({'message': 'Resource id invalid or empty'}),
+                                status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            resource = ResourceProfile.objects.get(id=resource_id)
+        except ResourceProfile.DoesNotExist:
+            return HttpResponse(json.dumps({'message': 'Error creating or updating resource device id'}),
+                                status=status.HTTP_400_BAD_REQUEST)
+
+        fcm_device_serializer = FCMDeviceSerializer(data=request.data)
+        if fcm_device_serializer.is_valid(raise_exception=True):
+            fcm_device_serializer.save()
+            resource.device = fcm_device_serializer.instance
+            resource.save()
+            return HttpResponse(json.dumps({'message': f'Device data for resource with id '
+                                                       f'{resource_id} was saved successfully'}),
+                                status=status.HTTP_200_OK)
 
 
 class GoogleView(APIView):

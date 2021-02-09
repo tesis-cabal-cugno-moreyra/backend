@@ -15,6 +15,15 @@ class UserSerializer(serializers.ModelSerializer):
         read_only_fields = ('username', )
 
 
+class UserDetailsAfterLoginSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ('id', 'email', 'username', 'first_name', 'last_name', 'is_active', 'resourceprofile', 'adminprofile',
+                  'supervisorprofile')
+        read_only_fields = ('username', )
+        depth = 1
+
+
 class CreateUserSerializer(serializers.ModelSerializer):
     domain_code = serializers.CharField(write_only=True)
 
@@ -187,7 +196,63 @@ class ListRetrieveSupervisorProfileSerializer(serializers.ModelSerializer):
         depth = 1
 
 
-class CreateUpdateResourceProfileSerializer(serializers.Serializer):
+class UpdateResourceProfileSerializer(serializers.Serializer):
+    domain_name = serializers.CharField(max_length=255)
+    type = serializers.CharField(max_length=255)
+
+    def validate(self, data):
+        import ipdb
+        ipdb.set_trace()
+
+        request = self.context.get('request')
+        if not request:
+            raise serializers.ValidationError("No request in current serializer context")
+
+        user = request.user
+        if not user.is_active:
+            raise serializers.ValidationError(f"User {user} is not active")
+
+        if not user.resourceprofile:
+            raise serializers.ValidationError(f"User {user} has not a related resource profile")
+
+        if not self.instance.id == user.resourceprofile.id:
+            raise serializers.ValidationError(f"User {user} is trying to modify another user's profile. Profile "
+                                              f"id should be {user.resourceprofile.id}, it is {self.instance.id}")
+
+        try:
+            DomainConfig.objects.get(domain_name=data.get('domain_name'))
+        except DomainConfig.DoesNotExist:
+            raise serializers.ValidationError(f"Domain {data.get('domain_name')} does not exists")
+
+        try:
+            ResourceType.objects.get(name__iexact=data.get('type'),
+                                     domain_config__domain_name=data.get('domain_name'))
+        except ResourceType.DoesNotExist:
+            raise serializers.ValidationError(f"ResourceType {data.get('type')} for domain "
+                                              f"{data.get('domain_name')} does not exist")
+
+        return data
+
+    def update(self, instance, validated_data):
+        instance.domain = DomainConfig.objects.get(domain_name=validated_data.get('domain_name'))
+        instance.type = ResourceType.objects.get(name__iexact=validated_data['type'],
+                                                 domain_config__domain_name=validated_data['domain_name'])
+        instance.save()
+        return instance
+
+    def to_representation(self, instance: ResourceProfile):
+        return {
+            'id': instance.id,
+            'user': instance.user.id,
+            'domain': instance.domain.domain_name,
+            'type': instance.type.name
+        }
+
+    class Meta:
+        fields = ('id', 'user', 'domain_name', 'type', 'domain_code')
+
+
+class CreateResourceProfileSerializer(serializers.Serializer):
     domain_code = serializers.CharField(max_length=255)
     user = serializers.UUIDField(read_only=False)
     domain_name = serializers.CharField(max_length=255)
@@ -233,14 +298,6 @@ class CreateUpdateResourceProfileSerializer(serializers.Serializer):
         )
         resource_profile.save()
         return resource_profile
-
-    def update(self, instance, validated_data):
-        instance.user_id = validated_data.get('user')
-        instance.domain = DomainConfig.objects.get(domain_name=validated_data.get('domain_name'))
-        instance.type = ResourceType.objects.get(name__iexact=validated_data['type'],
-                                                 domain_config__domain_name=validated_data['domain_name'])
-        instance.save()
-        return instance
 
     def to_representation(self, instance: ResourceProfile):
         return {
