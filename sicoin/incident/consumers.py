@@ -2,16 +2,11 @@ import asyncio
 import json
 from enum import Enum
 
-import channels
-from asgiref.sync import async_to_sync
 from channels.db import database_sync_to_async
 from channels.generic.websocket import AsyncWebsocketConsumer
 from django.conf import settings
-from django.db.models.signals import post_save
-from django.dispatch import receiver
 
 from sicoin.incident.models import Incident
-from sicoin.incident.serializers import ListIncidentSerializer
 from sicoin.utils import MetaEnum
 
 
