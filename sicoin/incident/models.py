@@ -92,6 +92,11 @@ class IncidentResource(BaseModel):
     def __str__(self):
         return f"Incident Resource ({self.id})"
 
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=['incident', 'resource'], name="Unique incident resource relation")
+        ]
+
 
 class IncidentSupervisor(BaseModel):
     incident = models.ForeignKey("Incident", on_delete=models.PROTECT)
