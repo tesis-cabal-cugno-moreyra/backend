@@ -309,7 +309,7 @@ class Common(Configuration):
         }
     }
 
-    INCIDENT_WS_DATA_GENERATION = True
+    INCIDENT_WS_DATA_GENERATION = False
 
     MATERIAL_ADMIN_SITE = {
         'HEADER': 'SICOIN Internal Administration',  # Admin site header
