@@ -29,10 +29,12 @@ class SupervisorAlias(BaseModel):
 
 class ResourceType(BaseModel):
     name = models.CharField(max_length=255)
+    is_able_to_contain_resources = models.BooleanField(default=False)
     domain_config = models.ForeignKey('DomainConfig', on_delete=models.PROTECT)
 
     def __str__(self):
-        return f"ResourceType ({self.id}): name: {self.name}, domain: {self.domain_config.domain_name}"
+        return f"ResourceType ({self.id}): name: {self.name}, domain: {self.domain_config.domain_name}, " \
+               f"contains resources: {self.is_able_to_contain_resources}"
 
     class Meta:
         constraints = [

@@ -125,6 +125,7 @@ class ResourceFilter(django_filters.FilterSet):
     user__last_name = django_filters.CharFilter(lookup_expr='iexact')
     user__is_active = django_filters.CharFilter(lookup_expr='iexact')
     type__name = django_filters.CharFilter(lookup_expr='iexact')
+    type__is_able_to_contain_resources = django_filters.BooleanFilter(lookup_expr='isnull')
 
     class Meta:
         model = ResourceProfile
