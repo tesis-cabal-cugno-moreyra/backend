@@ -5,7 +5,7 @@ import django_filters
 from django.http import HttpResponse
 from django_filters import rest_framework as filters
 from drf_yasg.utils import swagger_auto_schema
-from rest_framework import status, mixins, viewsets
+from rest_framework import status, mixins, viewsets, generics
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
@@ -268,6 +268,8 @@ class IncidentResourceFilter(django_filters.FilterSet):
     resource__user__last_name = django_filters.CharFilter(lookup_expr='iexact')
     resource__user__is_active = django_filters.CharFilter(lookup_expr='iexact')
     resource__type__name = django_filters.CharFilter(lookup_expr='iexact')
+    exited_from_incident_no_date = django_filters.BooleanFilter(field_name='exited_from_incident_at',
+                                                                lookup_expr='isnull')
 
     class Meta:
         model = IncidentResource
@@ -306,3 +308,13 @@ class IncidentResourceViewSet(GenericViewSet):
 
         serializer = self.get_serializer(incident_resources, many=True)
         return Response(serializer.data)
+
+
+class IncidentResourceFromResourceListView(generics.ListAPIView):
+    permission_classes = (AllowAny,)
+    serializer_class = IncidentResourceSerializer
+    filter_backends = (filters.DjangoFilterBackend,)
+    filterset_class = IncidentResourceFilter
+
+    def get_queryset(self):
+        return IncidentResource.objects.filter(resource_id=self.kwargs['resource_id'])
