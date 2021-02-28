@@ -178,9 +178,11 @@ class AddIncidentResourceToIncidentAPIView(APIView):
     permission_classes = (AllowAny,)
 
     @swagger_auto_schema(operation_description="Create incident resource",
-                         responses={200: "{'message': 'IncidentResource successfully created'}",
+                         responses={200: "{'message': 'IncidentResource successfully created'},"
+                                         "{'message': 'IncidentResource successfully recreated from closed'}",
                                     400: "{'message': 'Incident is not at Created state'},"
-                                         "{'message': 'User resource is not active'}",
+                                         "{'message': 'User resource is not active'},"
+                                         "{'message': 'User resource already joined to this Incident'}",
                                     404: "{'message': 'Incident not found'},"
                                          "{'message': 'Resource not found'}"}, )
     def post(self, request, incident_id, resource_id):
@@ -203,6 +205,20 @@ class AddIncidentResourceToIncidentAPIView(APIView):
         if not resource.user.is_active:
             return HttpResponse(json.dumps({'message': 'User resource is not active'}),
                                 status=status.HTTP_400_BAD_REQUEST)
+
+        existent_incident_resources = IncidentResource.objects.filter(resource_id=resource_id, incident_id=incident_id)
+
+        if len(existent_incident_resources):
+            # As resource and incident are unique together inside all instances of IncidentResource, we can grab
+            # the first element of the query
+            existent_incident_resource: IncidentResource = existent_incident_resources.all()[0]
+            if existent_incident_resource.exited_from_incident_at is not None:  # CHECK THIS
+                existent_incident_resource.exited_from_incident_at = None
+                existent_incident_resource.save()
+                return HttpResponse(json.dumps({'message': 'IncidentResource successfully recreated from closed'}))
+            else:
+                return HttpResponse(json.dumps({'message': 'User resource already joined to this Incident'}),
+                                    status=status.HTTP_400_BAD_REQUEST)
 
         incident_resource = IncidentResource()
 
@@ -241,6 +257,7 @@ class AddIncidentResourceToIncidentAPIView(APIView):
 
         incident_resource = IncidentResource.objects.get(incident=incident, resource=resource)
         incident_resource.exited_from_incident_at = datetime.now()
+        incident_resource.save()
 
         return HttpResponse(json.dumps({'message': 'IncidentResource successfully updated'}))
 
