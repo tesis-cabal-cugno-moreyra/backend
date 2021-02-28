@@ -1,0 +1,74 @@
+<!-- incident/templates/incident/room.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title>incident Room</title>
+</head>
+<body>
+    <textarea id="incident-log" cols="100" rows="20"></textarea><br>
+    <input id="incident-message-input" type="text" size="100"><br>
+    <input id="incident-message-submit" type="button" value="Send">
+    <input id="map-point-submit" type="button" value="Send MP">
+    <input id="track-point-submit" type="button" value="Send TP">
+    {{ incident_id|json_script:"incident-id" }}
+    <script>
+       const webSocketProtocol = () => {
+            if (window.location.protocol === 'http:') {
+                return 'ws:'
+            } else if (window.location.protocol === 'https:') {
+                return 'wss:'
+            } else {
+                console.error(`protocol ${window.location.protocol} not supported`)
+            }
+        }
+        const incidentId = JSON.parse(document.getElementById('incident-id').textContent);
+
+        const incidentSocket = new WebSocket( `${webSocketProtocol()}//${window.location.host}/ws/incident/${incidentId}/`);
+
+        incidentSocket.onmessage = function(e) {
+            document.querySelector('#incident-log').value += (e.data + '\n\'\n\'\n\'\n');
+            console.log(e.data);
+        };
+
+        incidentSocket.onclose = function(e) {
+            console.error('incident socket closed unexpectedly');
+        };
+
+        document.querySelector('#incident-message-input').focus();
+        document.querySelector('#incident-message-input').onkeyup = function(e) {
+            if (e.keyCode === 13) {  // enter, return
+                document.querySelector('#incident-message-submit').click();
+            }
+        };
+
+        document.querySelector('#incident-message-submit').onclick = function(e) {
+            const messageInputDom = document.querySelector('#incident-message-input');
+            const message = messageInputDom.value;
+            incidentSocket.send(JSON.stringify({
+                'message': message
+            }));
+            messageInputDom.value = '';
+        };
+        document.querySelector('#map-point-submit').onclick = function(e) {
+            incidentSocket.send(JSON.stringify({
+                'type': 'map_point',
+                'data': {
+                    'lat': '12',
+                    'long': '23',
+                    'message': 'asdasdjhkaskjfhg'
+                }
+            }));
+        };
+        document.querySelector('#track-point-submit').onclick = function(e) {
+            incidentSocket.send(JSON.stringify({
+                'type': 'track_point',
+                'data': {
+                    'lat': '12',
+                    'long': '23'
+                }
+            }));
+        };
+    </script>
+</body>
+</html>

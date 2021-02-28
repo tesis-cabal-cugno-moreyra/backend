@@ -48,6 +48,7 @@ class Common(Configuration):
         'sicoin.domain_config',
         'sicoin.incident',
         'sicoin.geolocation',
+        'sicoin.wsdebug',
         'chat',
         'drf_yasg',
 
@@ -307,6 +308,8 @@ class Common(Configuration):
             }
         }
     }
+
+    INCIDENT_WS_DATA_GENERATION = False
 
     MATERIAL_ADMIN_SITE = {
         'HEADER': 'SICOIN Internal Administration',  # Admin site header
