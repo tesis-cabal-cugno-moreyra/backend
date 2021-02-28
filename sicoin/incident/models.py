@@ -17,6 +17,11 @@ class BaseModel(models.Model):
         abstract = True
 
 
+class StartedIncidentManager(models.Manager):
+    def get_queryset(self):
+        return super().get_queryset().filter(status=Incident.INCIDENT_STATUS_STARTED)
+
+
 class Incident(BaseModel):
     INCIDENT_STATUS_STARTED = "Started"
     INCIDENT_STATUS_CANCELED = "Canceled"
@@ -57,6 +62,21 @@ class Incident(BaseModel):
     finalized_at = models.DateTimeField(null=True, blank=True)
     cancelled_at = models.DateTimeField(null=True, blank=True)
 
+    @property
+    def status_is_started(self):
+        return self.status == self.INCIDENT_STATUS_STARTED
+
+    @property
+    def status_is_cancelled(self):
+        return self.status == self.INCIDENT_STATUS_CANCELED
+
+    @property
+    def status_is_finalized(self):
+        return self.status == self.INCIDENT_STATUS_FINALIZED
+
+    objects = models.Manager()  # FIXME: Refactor to incidents or all_incidents
+    started_incidents = StartedIncidentManager()
+
     def __str__(self):
         return f"Incident ({self.id}): type: {self.incident_type.name}, " \
                f"created: {self.created_at}, " \
@@ -66,10 +86,16 @@ class Incident(BaseModel):
 class IncidentResource(BaseModel):
     incident = models.ForeignKey("Incident", on_delete=models.PROTECT)
     resource = models.ForeignKey(ResourceProfile, on_delete=models.PROTECT)
+    exited_from_incident_at = models.DateTimeField(null=True, blank=True)
     # Validate uniqueness: Incident and resource MUST be related only once
 
     def __str__(self):
         return f"Incident Resource ({self.id})"
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=['incident', 'resource'], name="Unique incident resource relation")
+        ]
 
 
 class IncidentSupervisor(BaseModel):

@@ -11,7 +11,7 @@ from .geolocation.views import GetMapPointsFromIncident, CreateMapPoint, CreateT
 from .incident.views import AddIncidentResourceToIncidentAPIView, IncidentCreateListViewSet, \
     ValidateIncidentDetailsAPIView, IncidentAssistanceWithExternalSupportAPIView, \
     IncidentAssistanceWithoutExternalSupportAPIView, IncidentStatusFinalizeAPIView, \
-    IncidentStatusCancelAPIView, IncidentResourceViewSet
+    IncidentStatusCancelAPIView, IncidentResourceViewSet, IncidentResourceFromResourceListView
 from .users import views
 from .domain_config.views import DomainConfigAPIView, GenerateNewDomainCodeAPIView,\
     GetCurrentDomainCodeAPIView, CheckCurrentDomainCodeAPIView
@@ -46,6 +46,7 @@ schema_view = get_schema_view(
 
 urlpatterns = [
     path('chat/', include('chat.urls')),
+    path('wsdebug/', include('sicoin.wsdebug.urls')),
     path('admin/', admin.site.urls),
     path('api/v1/', include(router.urls)),
     path('api/v1/domain-config/', DomainConfigAPIView.as_view()),
@@ -69,6 +70,7 @@ urlpatterns = [
 
     path('api/v1/resources/<int:resource_id>/create-or-update-device/',
          CreateOrUpdateResourceProfileDeviceData.as_view()),
+    path('api/v1/resources/<int:resource_id>/incidents/', IncidentResourceFromResourceListView.as_view()),
     path('api/v1/users/<uuid:user_id>/activate/', ActivateUserView.as_view()),
     path('api/v1/users/<uuid:user_id>/deactivate/', DeactivateUserView.as_view()),
     re_path(r'^rest-auth/', include('dj_rest_auth.urls')),

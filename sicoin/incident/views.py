@@ -5,7 +5,7 @@ import django_filters
 from django.http import HttpResponse
 from django_filters import rest_framework as filters
 from drf_yasg.utils import swagger_auto_schema
-from rest_framework import status, mixins, viewsets
+from rest_framework import status, mixins, viewsets, generics
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
@@ -136,6 +136,7 @@ class IncidentStatusFinalizeAPIView(ChangeIncidentStatusAPIView):
 
     def make_changes_to_incident_according_to_status_change(self, incident: Incident) -> Incident:
         incident.finalized_at = datetime.now()
+        incident.incidentresource_set.all().update(exited_from_incident_at=datetime.now())
         return incident
 
 
@@ -152,6 +153,7 @@ class IncidentStatusCancelAPIView(ChangeIncidentStatusAPIView):
 
     def make_changes_to_incident_according_to_status_change(self, incident: Incident) -> Incident:
         incident.cancelled_at = datetime.now()
+        incident.incidentresource_set.all().update(exited_from_incident_at=datetime.now())
         return incident
 
 
@@ -176,9 +178,11 @@ class AddIncidentResourceToIncidentAPIView(APIView):
     permission_classes = (AllowAny,)
 
     @swagger_auto_schema(operation_description="Create incident resource",
-                         responses={200: "{'message': 'IncidentResource successfully created'}",
+                         responses={200: "{'message': 'IncidentResource successfully created'},"
+                                         "{'message': 'IncidentResource successfully recreated from closed'}",
                                     400: "{'message': 'Incident is not at Created state'},"
-                                         "{'message': 'User resource is not active'}",
+                                         "{'message': 'User resource is not active'},"
+                                         "{'message': 'User resource already joined to this Incident'}",
                                     404: "{'message': 'Incident not found'},"
                                          "{'message': 'Resource not found'}"}, )
     def post(self, request, incident_id, resource_id):
@@ -201,6 +205,20 @@ class AddIncidentResourceToIncidentAPIView(APIView):
         if not resource.user.is_active:
             return HttpResponse(json.dumps({'message': 'User resource is not active'}),
                                 status=status.HTTP_400_BAD_REQUEST)
+
+        existent_incident_resources = IncidentResource.objects.filter(resource_id=resource_id, incident_id=incident_id)
+
+        if len(existent_incident_resources):
+            # As resource and incident are unique together inside all instances of IncidentResource, we can grab
+            # the first element of the query
+            existent_incident_resource: IncidentResource = existent_incident_resources.all()[0]
+            if existent_incident_resource.exited_from_incident_at is not None:  # CHECK THIS
+                existent_incident_resource.exited_from_incident_at = None
+                existent_incident_resource.save()
+                return HttpResponse(json.dumps({'message': 'IncidentResource successfully recreated from closed'}))
+            else:
+                return HttpResponse(json.dumps({'message': 'User resource already joined to this Incident'}),
+                                    status=status.HTTP_400_BAD_REQUEST)
 
         incident_resource = IncidentResource()
 
@@ -238,9 +256,10 @@ class AddIncidentResourceToIncidentAPIView(APIView):
                                 status=status.HTTP_400_BAD_REQUEST)
 
         incident_resource = IncidentResource.objects.get(incident=incident, resource=resource)
-        incident_resource.delete()
+        incident_resource.exited_from_incident_at = datetime.now()
+        incident_resource.save()
 
-        return HttpResponse(json.dumps({'message': 'IncidentResource successfully deleted'}))
+        return HttpResponse(json.dumps({'message': 'IncidentResource successfully updated'}))
 
 
 class IncidentResourceFilter(django_filters.FilterSet):
@@ -249,6 +268,8 @@ class IncidentResourceFilter(django_filters.FilterSet):
     resource__user__last_name = django_filters.CharFilter(lookup_expr='iexact')
     resource__user__is_active = django_filters.CharFilter(lookup_expr='iexact')
     resource__type__name = django_filters.CharFilter(lookup_expr='iexact')
+    exited_from_incident_no_date = django_filters.BooleanFilter(field_name='exited_from_incident_at',
+                                                                lookup_expr='isnull')
 
     class Meta:
         model = IncidentResource
@@ -287,3 +308,13 @@ class IncidentResourceViewSet(GenericViewSet):
 
         serializer = self.get_serializer(incident_resources, many=True)
         return Response(serializer.data)
+
+
+class IncidentResourceFromResourceListView(generics.ListAPIView):
+    permission_classes = (AllowAny,)
+    serializer_class = IncidentResourceSerializer
+    filter_backends = (filters.DjangoFilterBackend,)
+    filterset_class = IncidentResourceFilter
+
+    def get_queryset(self):
+        return IncidentResource.objects.filter(resource_id=self.kwargs['resource_id'])
