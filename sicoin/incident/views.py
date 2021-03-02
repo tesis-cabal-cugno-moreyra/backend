@@ -268,6 +268,7 @@ class IncidentResourceFilter(django_filters.FilterSet):
     resource__user__last_name = django_filters.CharFilter(lookup_expr='iexact')
     resource__user__is_active = django_filters.CharFilter(lookup_expr='iexact')
     resource__type__name = django_filters.CharFilter(lookup_expr='iexact')
+    incident__status = django_filters.CharFilter(lookup_expr='iexact')
     exited_from_incident_no_date = django_filters.BooleanFilter(field_name='exited_from_incident_at',
                                                                 lookup_expr='isnull')
 
