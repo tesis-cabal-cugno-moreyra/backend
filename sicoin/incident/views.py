@@ -178,55 +178,48 @@ class AddIncidentResourceToIncidentAPIView(APIView):
     permission_classes = (AllowAny,)
 
     @swagger_auto_schema(operation_description="Create incident resource",
-                         responses={200: "{'message': 'IncidentResource successfully created'},"
-                                         "{'message': 'IncidentResource successfully recreated from closed'}",
-                                    400: "{'message': 'Incident is not at Created state'},"
-                                         "{'message': 'User resource is not active'},"
-                                         "{'message': 'User resource already joined to this Incident'}",
-                                    404: "{'message': 'Incident not found'},"
-                                         "{'message': 'Resource not found'}"}, )
+                         request_body=serializers.CreateUpdateIncidentResourceSerializer,
+                         responses={200: "{'message': 'IncidentResource successfully created'}",
+                                    400: "{'incident_id': 'Incident is not at Created state'},"
+                                         "{'resource_id': 'User resource is not active'},"
+                                         "{'resource_id': 'User resource already joined to this Incident'},"
+                                         "{'non_field_error': 'Resource of type Container cannot have a related instance of container resource!},"  # noqa 
+                                         "{'container_resource_id': 'Container resource must be able to contain resources'}",  # noqa
+                                    404: "{'incident_id': 'Incident with id: {incident_id} does not exist'},"
+                                         "{'container_resource_id': 'Container resource not found'},"
+                                         "{'resource_id': 'Resource not found'}"}, )
     def post(self, request, incident_id, resource_id):
-        try:
-            incident = models.Incident.objects.get(id=incident_id)
-        except models.Incident.DoesNotExist:
-            return HttpResponse(json.dumps({'message': 'Incident not found'}),
-                                status=status.HTTP_404_NOT_FOUND)
+        serializer_context_data = {
+            'incident_id': incident_id,
+            'resource_id': resource_id
+        }
 
-        if incident.status != incident.INCIDENT_STATUS_STARTED:
-            return HttpResponse(json.dumps({'message': 'Incident is not at Created state'}),
-                                status=status.HTTP_400_BAD_REQUEST)
+        serializer = serializers.CreateUpdateIncidentResourceSerializer(data=request.data,
+                                                                        context=serializer_context_data)
+        if serializer.is_valid(raise_exception=True):
+            return HttpResponse(json.dumps({'message': 'IncidentResource successfully created'}))
 
-        try:
-            resource = ResourceProfile.objects.get(id=resource_id)
-        except ResourceProfile.DoesNotExist:
-            return HttpResponse(json.dumps({'message': 'Resource not found'}),
-                                status=status.HTTP_404_NOT_FOUND)
+    @swagger_auto_schema(operation_description="Update incident resource",
+                         request_body=serializers.CreateUpdateIncidentResourceSerializer,
+                         responses={200: "{'message': 'IncidentResource successfully created'}",
+                                    400: "{'incident_id': 'Incident is not at Created state'},"
+                                         "{'resource_id': 'User resource is not active'},"
+                                         "{'resource_id': 'User resource already joined to this Incident'},"
+                                         "{'non_field_error': 'Resource of type Container cannot have a related instance of container resource!},"  # noqa 
+                                         "{'container_resource_id': 'Container resource must be able to contain resources'}",  # noqa
+                                    404: "{'incident_id': 'Incident with id: {incident_id} does not exist'},"
+                                         "{'container_resource_id': 'Container resource not found'},"
+                                         "{'resource_id': 'Resource not found'}"}, )
+    def put(self, request, incident_id, resource_id):
+        serializer_context_data = {
+            'incident_id': incident_id,
+            'resource_id': resource_id
+        }
 
-        if not resource.user.is_active:
-            return HttpResponse(json.dumps({'message': 'User resource is not active'}),
-                                status=status.HTTP_400_BAD_REQUEST)
-
-        existent_incident_resources = IncidentResource.objects.filter(resource_id=resource_id, incident_id=incident_id)
-
-        if len(existent_incident_resources):
-            # As resource and incident are unique together inside all instances of IncidentResource, we can grab
-            # the first element of the query
-            existent_incident_resource: IncidentResource = existent_incident_resources.all()[0]
-            if existent_incident_resource.exited_from_incident_at is not None:  # CHECK THIS
-                existent_incident_resource.exited_from_incident_at = None
-                existent_incident_resource.save()
-                return HttpResponse(json.dumps({'message': 'IncidentResource successfully recreated from closed'}))
-            else:
-                return HttpResponse(json.dumps({'message': 'User resource already joined to this Incident'}),
-                                    status=status.HTTP_400_BAD_REQUEST)
-
-        incident_resource = IncidentResource()
-
-        incident_resource.incident = incident
-        incident_resource.resource = resource
-        incident_resource.save()
-
-        return HttpResponse(json.dumps({'message': 'IncidentResource successfully created'}))
+        serializer = serializers.CreateUpdateIncidentResourceSerializer(data=request.data,
+                                                                        context=serializer_context_data)
+        if serializer.is_valid(raise_exception=True):
+            return HttpResponse(json.dumps({'message': 'IncidentResource successfully updated'}))
 
     @swagger_auto_schema(operation_description="Delete incident resource",
                          responses={200: "{'message': 'IncidentResource successfully deleted'}",

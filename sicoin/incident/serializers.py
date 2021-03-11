@@ -1,11 +1,13 @@
-from rest_framework import serializers
+from rest_framework import serializers, status
 from rest_framework_gis.fields import GeometryField
 
 from sicoin.domain_config.models import DomainConfig, IncidentType
 from sicoin.domain_config.serializers import DomainFromDatabaseSerializer
-from sicoin.incident.models import Incident, IncidentResource
+from sicoin.incident.models import Incident, IncidentResource, IncidentResourceContainerMustBeAbleToContainResources, \
+    IncidentResourceForContainersCannotHaveAContainerRelatedException
 from jsonschema import validate, ValidationError
 
+from sicoin.users.models import ResourceProfile
 from sicoin.users.serializers import ListRetrieveResourceProfileSerializer
 
 
@@ -111,7 +113,95 @@ class ValidateIncidentDetailsSerializer(serializers.Serializer):
 class IncidentResourceSerializer(serializers.ModelSerializer):
     incident = CreateIncidentSerializer()
     resource = ListRetrieveResourceProfileSerializer()
+    container_resource = ListRetrieveResourceProfileSerializer()
 
     class Meta:
         model = IncidentResource
         fields = '__all__'
+
+
+class CreateUpdateIncidentResourceSerializer(serializers.Serializer):
+    container_resource_id = serializers.IntegerField()
+
+    def _get_incident_resource_validated(self, incident_id, resource_id):
+        try:
+            incident = Incident.objects.get(id=incident_id)
+        except Incident.DoesNotExist:
+            raise serializers.ValidationError(
+                {'incident_id': f"Incident with id: {incident_id} does not exist"},
+                code=status.HTTP_404_NOT_FOUND
+            )
+
+        if incident.status != incident.INCIDENT_STATUS_STARTED:
+            raise serializers.ValidationError({'incident_id': 'Incident is not at Created state'},
+                                              code=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            resource = ResourceProfile.objects.get(id=resource_id)
+        except ResourceProfile.DoesNotExist:
+            raise serializers.ValidationError({'resource_id': 'Resource not found'}, code=status.HTTP_404_NOT_FOUND)
+
+        if not resource.user.is_active:
+            raise serializers.ValidationError({'resource_id': 'User resource is not active'},
+                                              code=status.HTTP_400_BAD_REQUEST)
+
+    def validate_container_resource_id(self, value):
+        # Validate needed data, to raise exceptions on validation time, previous to save() being called
+        self._get_incident_resource_validated(self.context['incident_id'], self.context['resource_id'])
+
+        container_resource_id = value
+        if container_resource_id:
+            try:
+                ResourceProfile.objects.get(id=container_resource_id)
+            except ResourceProfile.DoesNotExist:
+                raise serializers.ValidationError({'container_resource_id': 'Container resource not found'},
+                                                  code=status.HTTP_404_NOT_FOUND)
+        return container_resource_id
+
+    def _add_container_resource_if_retrieved(self, incident_resource: IncidentResource) -> IncidentResource:
+        if self.validated_data['container_resource_id']:
+            try:
+                incident_resource.container_resource = ResourceProfile.objects.get(
+                    id=self.validated_data['container_resource_id']
+                )
+            except ResourceProfile.DoesNotExist:
+                raise serializers.ValidationError({'container_resource_id': 'Container resource not found'},
+                                                  code=status.HTTP_404_NOT_FOUND)
+            # Instead of checking out for the resource corresponding to the vehicle, we generate
+            # the IncidentResource here. CHECK THIS!!
+            IncidentResource.objects.get_or_create(incident_id=self.validated_data['incident_id'],
+                                                   resource_id=self.validated_data['container_resource_id'])
+
+        return incident_resource
+
+    def _reset_incident_resource_if_rejoining(self, incident_resource: IncidentResource) -> IncidentResource:
+        existent_incident_resources = IncidentResource.objects.filter(self.validated_data['incident_id'],
+                                                                      self.validated_data['resource_id'])
+        if len(existent_incident_resources):
+            assert incident_resource.id == existent_incident_resources.all()[0]
+            if incident_resource.exited_from_incident_at is not None:  # CHECK THIS
+                incident_resource.exited_from_incident_at = None
+            else:
+                raise serializers.ValidationError({'resource_id': 'User resource already joined to this Incident'},
+                                                  code=status.HTTP_400_BAD_REQUEST)
+        return incident_resource
+
+    def save(self, **kwargs):
+        incident_resource = self._get_incident_resource_validated(self.validated_data['incident_id'],
+                                                                  self.validated_data['resource_id'])
+
+        incident_resource = self._add_container_resource_if_retrieved(incident_resource)
+        incident_resource = self._reset_incident_resource_if_rejoining(incident_resource)
+
+        try:
+            incident_resource.save()
+        except IncidentResourceForContainersCannotHaveAContainerRelatedException:
+            raise serializers.ValidationError({'non_field_error': 'Resource of type Container cannot have a related '
+                                                                  'instance of container resource!'},
+                                              code=status.HTTP_400_BAD_REQUEST)
+        except IncidentResourceContainerMustBeAbleToContainResources:
+            raise serializers.ValidationError({'container_resource_id': 'Container resource must be able to contain '
+                                                                        'resources'},
+                                              code=status.HTTP_400_BAD_REQUEST)
+
+        return incident_resource
