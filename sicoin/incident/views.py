@@ -197,6 +197,7 @@ class AddIncidentResourceToIncidentAPIView(APIView):
         serializer = serializers.CreateUpdateIncidentResourceSerializer(data=request.data,
                                                                         context=serializer_context_data)
         if serializer.is_valid(raise_exception=True):
+            serializer.save()
             return HttpResponse(json.dumps({'message': 'IncidentResource successfully created'}))
 
     @swagger_auto_schema(operation_description="Update incident resource",
@@ -219,6 +220,7 @@ class AddIncidentResourceToIncidentAPIView(APIView):
         serializer = serializers.CreateUpdateIncidentResourceSerializer(data=request.data,
                                                                         context=serializer_context_data)
         if serializer.is_valid(raise_exception=True):
+            serializer.save()
             return HttpResponse(json.dumps({'message': 'IncidentResource successfully updated'}))
 
     @swagger_auto_schema(operation_description="Delete incident resource",
