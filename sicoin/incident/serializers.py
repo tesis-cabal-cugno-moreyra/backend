@@ -175,8 +175,8 @@ class CreateUpdateIncidentResourceSerializer(serializers.Serializer):
         return incident_resource
 
     def _reset_incident_resource_if_rejoining(self, incident_resource: IncidentResource) -> IncidentResource:
-        existent_incident_resources = IncidentResource.objects.filter(self.context['incident_id'],
-                                                                      self.context['resource_id'])
+        existent_incident_resources = IncidentResource.objects.filter(incident_id=self.context['incident_id'],
+                                                                      resource_id=self.context['resource_id'])
         if len(existent_incident_resources):
             assert incident_resource.id == existent_incident_resources.all()[0]
             if incident_resource.exited_from_incident_at is not None:  # CHECK THIS
