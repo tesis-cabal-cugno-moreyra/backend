@@ -159,7 +159,7 @@ class CreateUpdateIncidentResourceSerializer(serializers.Serializer):
         return attrs
 
     def _add_container_resource_if_retrieved(self, incident_resource: IncidentResource) -> IncidentResource:
-        if self.validated_data['container_resource_id']:
+        if self.validated_data.get('container_resource_id'):
             try:
                 incident_resource.container_resource = ResourceProfile.objects.get(
                     id=self.validated_data['container_resource_id']
