@@ -149,7 +149,7 @@ class CreateUpdateIncidentResourceSerializer(serializers.Serializer):
         # Validate needed data, to raise exceptions on validation time, previous to save() being called
         self._get_incident_resource_validated(self.context['incident_id'], self.context['resource_id'])
 
-        container_resource_id = attrs['container_resource_id']
+        container_resource_id = attrs.get('container_resource_id')
         if container_resource_id:
             try:
                 ResourceProfile.objects.get(id=container_resource_id)
