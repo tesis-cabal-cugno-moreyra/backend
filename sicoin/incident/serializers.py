@@ -123,7 +123,7 @@ class IncidentResourceSerializer(serializers.ModelSerializer):
 class CreateUpdateIncidentResourceSerializer(serializers.Serializer):
     container_resource_id = serializers.IntegerField(required=False)
 
-    def _get_incident_resource_validated(self, incident_id, resource_id):
+    def _incident_and_resource_validation(self, incident_id, resource_id):
         try:
             incident = Incident.objects.get(id=incident_id)
         except Incident.DoesNotExist:
@@ -147,7 +147,7 @@ class CreateUpdateIncidentResourceSerializer(serializers.Serializer):
 
     def validate(self, attrs):
         # Validate needed data, to raise exceptions on validation time, previous to save() being called
-        self._get_incident_resource_validated(self.context['incident_id'], self.context['resource_id'])
+        self._incident_and_resource_validation(self.context['incident_id'], self.context['resource_id'])
 
         container_resource_id = attrs.get('container_resource_id')
         if container_resource_id:
@@ -170,7 +170,7 @@ class CreateUpdateIncidentResourceSerializer(serializers.Serializer):
             # Instead of checking out for the resource corresponding to the vehicle, we generate
             # the IncidentResource here. CHECK THIS!!
             IncidentResource.objects.get_or_create(incident_id=self.context['incident_id'],
-                                                   resource_id=self.context['container_resource_id'])
+                                                   resource_id=self.validated_data['container_resource_id'])
 
         return incident_resource
 
@@ -178,20 +178,22 @@ class CreateUpdateIncidentResourceSerializer(serializers.Serializer):
         existent_incident_resources = IncidentResource.objects.filter(incident_id=self.context['incident_id'],
                                                                       resource_id=self.context['resource_id'])
         if len(existent_incident_resources):
-            assert incident_resource.id == existent_incident_resources.all()[0]
+            assert incident_resource.id == existent_incident_resources.all()[0].id
             if incident_resource.exited_from_incident_at is not None:  # CHECK THIS
                 incident_resource.exited_from_incident_at = None
-            else:
-                raise serializers.ValidationError({'resource_id': 'User resource already joined to this Incident'},
-                                                  code=status.HTTP_400_BAD_REQUEST)
         return incident_resource
 
     def save(self, **kwargs):
-        incident_resource = self._get_incident_resource_validated(self.context['incident_id'],
-                                                                  self.context['resource_id'])
-
+        try:
+            incident_resource = IncidentResource.objects.get(incident_id=self.context['incident_id'],
+                                                             resource_id=self.context['resource_id'])
+        except IncidentResource.DoesNotExist:
+            incident_resource = IncidentResource(incident_id=self.context['incident_id'],
+                                                 resource_id=self.context['resource_id'])
         incident_resource = self._add_container_resource_if_retrieved(incident_resource)
+        assert incident_resource is not None
         incident_resource = self._reset_incident_resource_if_rejoining(incident_resource)
+        assert incident_resource is not None
 
         try:
             incident_resource.save()
