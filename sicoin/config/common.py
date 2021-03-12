@@ -77,6 +77,7 @@ class Common(Configuration):
     CORS_ALLOWED_ORIGINS = [
         "http://localhost:8080",
         "http://localhost:8081",
+        "http://localhost",
         "https://tesis-cabal-cugno-moreyra.onrender.com",
     ]
     CORS_ALLOWED_ORIGIN_REGEXES = [
