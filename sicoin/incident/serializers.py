@@ -156,7 +156,7 @@ class CreateUpdateIncidentResourceSerializer(serializers.Serializer):
             except ResourceProfile.DoesNotExist:
                 raise serializers.ValidationError({'container_resource_id': 'Container resource not found'},
                                                   code=status.HTTP_404_NOT_FOUND)
-        return container_resource_id
+        return attrs
 
     def _add_container_resource_if_retrieved(self, incident_resource: IncidentResource) -> IncidentResource:
         if self.validated_data['container_resource_id']:
