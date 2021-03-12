@@ -145,11 +145,11 @@ class CreateUpdateIncidentResourceSerializer(serializers.Serializer):
             raise serializers.ValidationError({'resource_id': 'User resource is not active'},
                                               code=status.HTTP_400_BAD_REQUEST)
 
-    def validate_container_resource_id(self, value):
+    def validate(self, attrs):
         # Validate needed data, to raise exceptions on validation time, previous to save() being called
         self._get_incident_resource_validated(self.context['incident_id'], self.context['resource_id'])
 
-        container_resource_id = value
+        container_resource_id = attrs['container_resource_id']
         if container_resource_id:
             try:
                 ResourceProfile.objects.get(id=container_resource_id)
