@@ -19,9 +19,21 @@ from . import serializers
 from django.core.cache import cache
 
 
-class UserRetrieveUpdateViewSet(mixins.RetrieveModelMixin, mixins.UpdateModelMixin, viewsets.GenericViewSet):
+class UserRetrieveUpdateViewSet(mixins.UpdateModelMixin, viewsets.GenericViewSet):
     queryset = User.objects.all()
     serializer_class = serializers.UserSerializer
+    permission_classes = (AllowAny,)
+
+    def retrieve(self, request, *args, **kwargs):
+        instance = self.get_object()
+        self.serializer_class = serializers.UserDetailsAfterLoginSerializer
+        serializer = self.get_serializer(instance)
+        return Response(serializer.data)
+
+
+class UserRetrieveViewSet(mixins.RetrieveModelMixin, viewsets.GenericViewSet):
+    queryset = User.objects.all()
+    serializer_class = serializers.UserDetailsAfterLoginSerializer
     permission_classes = (AllowAny,)
 
 
@@ -35,10 +47,10 @@ class UserCreateListViewSet(mixins.CreateModelMixin, viewsets.GenericViewSet):
 
         page = self.paginate_queryset(queryset)
         if page is not None:
-            serializer = serializers.UserSerializer(page, many=True)
+            serializer = serializers.UserDetailsAfterLoginSerializer(page, many=True)
             return self.get_paginated_response(serializer.data)
 
-        serializer = serializers.UserSerializer(queryset, many=True)
+        serializer = serializers.UserDetailsAfterLoginSerializer(queryset, many=True)
         return Response(serializer.data)
 
 
