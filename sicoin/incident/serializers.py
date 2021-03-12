@@ -121,7 +121,7 @@ class IncidentResourceSerializer(serializers.ModelSerializer):
 
 
 class CreateUpdateIncidentResourceSerializer(serializers.Serializer):
-    container_resource_id = serializers.IntegerField()
+    container_resource_id = serializers.IntegerField(required=False)
 
     def _get_incident_resource_validated(self, incident_id, resource_id):
         try:
