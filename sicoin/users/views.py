@@ -41,6 +41,9 @@ class UserCreateListViewSet(mixins.CreateModelMixin, viewsets.GenericViewSet):
     queryset = User.objects.all()
     serializer_class = serializers.CreateUserSerializer
     permission_classes = (AllowAny,)
+    filter_backends = (filters.DjangoFilterBackend,)
+    filterset_fields = ('username', 'first_name',
+                        'last_name', 'is_active')
 
     def list(self, request, *args, **kwargs):
         queryset = self.filter_queryset(self.get_queryset())
