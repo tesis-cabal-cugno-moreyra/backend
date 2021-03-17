@@ -2,6 +2,7 @@ import django_filters
 import requests
 from django.contrib.auth.base_user import BaseUserManager
 from django.contrib.auth.hashers import make_password
+from django.db.models import ProtectedError
 from django.http import HttpResponse
 from django_filters import rest_framework as filters
 from drf_yasg.utils import swagger_auto_schema
@@ -17,6 +18,14 @@ from .models import User, AdminProfile, ResourceProfile, SupervisorProfile
 from .notify_user_manager import UserStatusChangeNotificationManager
 from . import serializers
 from django.core.cache import cache
+
+
+class DestroyWitProtectedCatchMixin(mixins.DestroyModelMixin):
+    def destroy(self, request, *args, **kwargs):
+        try:
+            super().destroy(request, args, kwargs)
+        except ProtectedError:
+            Response(status=status.HTTP_400_BAD_REQUEST)
 
 
 class UserRetrieveUpdateViewSet(mixins.UpdateModelMixin, viewsets.GenericViewSet):
@@ -58,7 +67,7 @@ class UserCreateListViewSet(mixins.CreateModelMixin, viewsets.GenericViewSet):
 
 
 class AdminProfileRetrieveUpdateDestroyViewSet(mixins.RetrieveModelMixin, mixins.UpdateModelMixin,
-                                               mixins.DestroyModelMixin, viewsets.GenericViewSet):
+                                               DestroyWitProtectedCatchMixin, viewsets.GenericViewSet):
     queryset = AdminProfile.objects.all()
     serializer_class = serializers.CreateUpdateAdminProfileSerializer
     permission_classes = (AllowAny,)
@@ -90,7 +99,7 @@ class AdminProfileCreateListViewSet(mixins.CreateModelMixin, viewsets.GenericVie
 
 
 class SupervisorProfileRetrieveUpdateDestroyViewSet(mixins.UpdateModelMixin,
-                                                    mixins.DestroyModelMixin,
+                                                    DestroyWitProtectedCatchMixin,
                                                     viewsets.GenericViewSet):
     queryset = SupervisorProfile.objects.all()
     serializer_class = serializers.CreateUpdateSupervisorProfileSerializer
@@ -122,7 +131,7 @@ class SupervisorProfileCreateUpdateListViewSet(mixins.CreateModelMixin, viewsets
         return Response(serializer.data)
 
 
-class ResourceProfileRetrieveUpdateDestroyViewSet(mixins.UpdateModelMixin, mixins.DestroyModelMixin,
+class ResourceProfileRetrieveUpdateDestroyViewSet(mixins.UpdateModelMixin, DestroyWitProtectedCatchMixin,
                                                   viewsets.GenericViewSet):
     queryset = ResourceProfile.objects.all()
     serializer_class = serializers.UpdateResourceProfileSerializer
