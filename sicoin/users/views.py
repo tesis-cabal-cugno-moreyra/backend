@@ -23,9 +23,9 @@ from django.core.cache import cache
 class DestroyWitProtectedCatchMixin(mixins.DestroyModelMixin):
     def destroy(self, request, *args, **kwargs):
         try:
-            super().destroy(request, args, kwargs)
+            return super().destroy(request, args, kwargs)
         except ProtectedError:
-            Response(status=status.HTTP_400_BAD_REQUEST)
+            return Response(status=status.HTTP_400_BAD_REQUEST)
 
 
 class UserRetrieveUpdateViewSet(mixins.UpdateModelMixin, viewsets.GenericViewSet):
