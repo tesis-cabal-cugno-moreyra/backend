@@ -8,6 +8,7 @@ from sicoin.incident.models import Incident, IncidentResource, IncidentResourceC
 from jsonschema import validate, ValidationError
 
 from sicoin.users.models import ResourceProfile
+from sicoin.users.notify_user_manager import IncidentCreationNotificationManager
 from sicoin.users.serializers import ListRetrieveResourceProfileSerializer
 
 
@@ -53,6 +54,10 @@ class CreateIncidentSerializer(serializers.Serializer):
         incident.location_point = validated_data.get('location_point')
         incident.reference = validated_data.get('reference')
         incident.save()
+
+        incident_creation_notification_manager = IncidentCreationNotificationManager(incident)
+        incident_creation_notification_manager.notify_incident_creation()
+
         return incident
 
     def to_representation(self, instance: Incident):
