@@ -227,6 +227,8 @@ class DeactivateUserView(ChangeUserStatusUserView):
 
 
 class CreateOrUpdateResourceProfileDeviceData(APIView):
+    permission_classes = (AllowAny,)
+
     @swagger_auto_schema(operation_description="Creates or updates resource profile device data, Only Resource user",
                          request_body=FCMDeviceSerializer,
                          responses={200: "{'message': 'Device data for resource with id {RESOURCE_ID} "
@@ -244,7 +246,7 @@ class CreateOrUpdateResourceProfileDeviceData(APIView):
             return HttpResponse(json.dumps({'message': 'Error creating or updating resource device id'}),
                                 status=status.HTTP_400_BAD_REQUEST)
 
-        fcm_device_serializer = FCMDeviceSerializer(data=request.data)
+        fcm_device_serializer = FCMDeviceSerializer(data=request.data, context={'request': request})
         if fcm_device_serializer.is_valid(raise_exception=True):
             fcm_device_serializer.save()
             resource.device = fcm_device_serializer.instance
