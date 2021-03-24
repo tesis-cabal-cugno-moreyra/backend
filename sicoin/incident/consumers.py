@@ -6,6 +6,7 @@ from channels.db import database_sync_to_async
 from channels.generic.websocket import AsyncWebsocketConsumer
 from django.conf import settings
 
+from sicoin.geolocation.serializers import MapPointSerializer, TrackPointSerializer
 from sicoin.incident.models import Incident
 from sicoin.utils import MetaEnum
 
@@ -20,81 +21,69 @@ class IncidentConsumer(AsyncWebsocketConsumer):
     def _get_incident(self) -> Incident:
         return Incident.objects.get(id=self.incident_id)
 
+    @database_sync_to_async
+    def _save_map_point(self, data):
+        assert data['incidentId'] == self.incident_id
+
+        map_point_serializer = MapPointSerializer(
+            data={
+                'location': {
+                    'type': 'Point',
+                    'coordinates': [data['lat'], data['lng']]
+                },
+                'comment': data['message'],
+                'time_created': data['timeCreated'],
+            },
+            context={
+                'incident_id': data['incidentId'],
+                'resource_id': data['resourceId']
+            }
+        )
+
+        if map_point_serializer.is_valid(raise_exception=True):
+            map_point = map_point_serializer.save()
+            return map_point_serializer.to_representation(map_point)
+
+    @database_sync_to_async
+    def _save_track_point(self, data):
+        assert data['incidentId'] == self.incident_id
+
+        track_point_serializer = TrackPointSerializer(
+            data={
+                'location': {
+                    'type': 'Point',
+                    'coordinates': [data['lat'], data['lng']]
+                },
+                'time_created': data['timeCreated'],
+            },
+            context={
+                'incident_id': data['incidentId'],
+                'resource_id': data['resourceId']
+            }
+        )
+
+        if track_point_serializer.is_valid(raise_exception=True):
+            track_point = track_point_serializer.save()
+            return track_point_serializer.to_representation(track_point)
+
     def _generate_tp_data(self, index):
         return {
-            "location": {
-                "type": "Point",
-                "coordinates": [
-                    -31.425117 + index / 10000,
-                    -62.086124 + index / 10000
-                ]
-            },
-            "collected_at": "2020-11-26T21:19:55.953Z",
-            "internal_type": "MapPoint",
-            "resource": {
-                "id": 11,
-                "user": {
-                    "id": "f196f272-c272-4def-b149-6d0fac71ea14",
-                    "email": "carlioss@carlioss.com",
-                    "username": "ldiaz",
-                    "first_name": "Laura",
-                    "last_name": "Díaz",
-                    "is_active": True
-                },
-                "domain": {
-                    "id": 1,
-                    "created_at": "2020-09-28T00:26:36+0000",
-                    "updated_at": "2020-11-05T14:44:44+0000",
-                    "domain_name": "DominioPersonalizado",
-                    "admin_alias": "Administrador"
-                },
-                "type": {
-                    "id": 1,
-                    "created_at": "2020-09-28T00:26:36+0000",
-                    "updated_at": "2020-09-28T00:26:36+0000",
-                    "name": "Bombero",
-                    "domain_config": 1
-                }
-            }
+            "lat": 37.4219284,
+            "lng": -122.0840116,
+            "message": "Probando websocket 0",
+            "incidentId": 1,
+            "resourceId": 1,
+            "timeCreated": "2021-03-24T22:12:27.469Z"
         }
 
     def _generate_mp_data(self, index):
         return {
-            "location": {
-                "type": "Point",
-                "coordinates": [
-                    -31.425117 + index / 10000,
-                    -62.086124 + index / 10000
-                ]
-            },
-            "collected_at": "2020-11-26T21:19:55.953Z",
-            "internal_type": "TrackPoint",
-            "resource": {
-                "id": 11,
-                "user": {
-                    "id": "f196f272-c272-4def-b149-6d0fac71ea14",
-                    "email": "carlioss@carlioss.com",
-                    "username": "ldiaz",
-                    "first_name": "Laura",
-                    "last_name": "Díaz",
-                    "is_active": True
-                },
-                "domain": {
-                    "id": 1,
-                    "created_at": "2020-09-28T00:26:36+0000",
-                    "updated_at": "2020-11-05T14:44:44+0000",
-                    "domain_name": "DominioPersonalizado",
-                    "admin_alias": "Administrador"
-                },
-                "type": {
-                    "id": 1,
-                    "created_at": "2020-09-28T00:26:36+0000",
-                    "updated_at": "2020-09-28T00:26:36+0000",
-                    "name": "Bombero",
-                    "domain_config": 1
-                }
-            },
-            "comment": "string"
+            "lat": 37.4219284,
+            "lng": -122.0840116,
+            "message": "Probando websocket 0",
+            "incidentId": 1,
+            "resourceId": 1,
+            "timeCreated": "2021-03-24T22:12:27.469Z"
         }
 
     async def connect(self):
@@ -148,19 +137,21 @@ class IncidentConsumer(AsyncWebsocketConsumer):
     async def map_point(self, event):
         data = event['data']
         # Validate data here
+        map_point_repr = self._save_map_point(data)
 
         # Send message to WebSocket
         await self.send(text_data=json.dumps({
             'incident_type': AvailableIncidentTypes.MAP_POINT,
-            'data': data
+            'data': map_point_repr
         }))
 
     async def track_point(self, event):
         data = event['data']
         # Validate data here
+        track_point_repr = self._save_track_point(data)
 
         # Send message to WebSocket
         await self.send(text_data=json.dumps({
             'incident_type': AvailableIncidentTypes.MAP_POINT,
-            'data': data
+            'data': track_point_repr
         }))

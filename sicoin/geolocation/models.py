@@ -6,7 +6,7 @@ from sicoin.incident.models import Incident, IncidentResource
 
 class BasePointInTime(models.Model):
     location = models.PointField(default=Point(0.0, 0.0))
-    time_created = models.DateTimeField(auto_now_add=True)
+    time_created = models.DateTimeField()
 
     class Meta:
         abstract = True
