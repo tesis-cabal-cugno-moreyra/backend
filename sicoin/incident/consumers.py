@@ -23,7 +23,7 @@ class IncidentConsumer(AsyncWebsocketConsumer):
 
     @database_sync_to_async
     def _save_map_point(self, data):
-        assert data['incidentId'] == self.incident_id
+        assert int(data['incidentId']) == int(self.incident_id)
 
         map_point_serializer = MapPointSerializer(
             data={
@@ -46,7 +46,7 @@ class IncidentConsumer(AsyncWebsocketConsumer):
 
     @database_sync_to_async
     def _save_track_point(self, data):
-        assert data['incidentId'] == self.incident_id
+        assert int(data['incidentId']) == int(self.incident_id)
 
         track_point_serializer = TrackPointSerializer(
             data={
@@ -137,7 +137,7 @@ class IncidentConsumer(AsyncWebsocketConsumer):
     async def map_point(self, event):
         data = event['data']
         # Validate data here
-        map_point_repr = self._save_map_point(data)
+        map_point_repr = await self._save_map_point(data)
 
         # Send message to WebSocket
         await self.send(text_data=json.dumps({
@@ -148,7 +148,7 @@ class IncidentConsumer(AsyncWebsocketConsumer):
     async def track_point(self, event):
         data = event['data']
         # Validate data here
-        track_point_repr = self._save_track_point(data)
+        track_point_repr = await self._save_track_point(data)
 
         # Send message to WebSocket
         await self.send(text_data=json.dumps({

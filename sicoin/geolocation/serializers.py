@@ -64,7 +64,7 @@ class MapPointSerializer(BasePointSerializer):
     def to_representation(self, instance: MapPoint):
         return {
             'location': GeometryField().to_representation(instance.location),
-            'collected_at': instance.time_created,
+            'collected_at': instance.time_created.isoformat(),
             'internal_type': 'MapPoint',  # We use this field for future usage on WS
             'resource': ListRetrieveResourceProfileSerializer().to_representation(instance.incident_resource.resource),
             'comment': instance.description_text
@@ -90,7 +90,7 @@ class TrackPointSerializer(BasePointSerializer):
     def to_representation(self, instance: TrackPoint):
         return {
             'location': GeometryField().to_representation(instance.location),
-            'collected_at': instance.time_created,
+            'collected_at': instance.time_created.isoformat(),
             'internal_type': 'TrackPoint',  # We use this field for future usage on WS
             'resource': ListRetrieveResourceProfileSerializer().to_representation(instance.incident_resource.resource),
         }
