@@ -76,6 +76,7 @@ urlpatterns = [
     re_path(r'^rest-auth/', include('dj_rest_auth.urls')),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     path('hello/', views.HelloView.as_view()),
+    path('logging/', views.LoggingView.as_view()),
 
     # ^^ FIXME: Separate urls along all apps
     path('api-auth/google-login/', views.GoogleView.as_view()),

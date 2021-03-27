@@ -1,3 +1,5 @@
+import logging
+
 import django_filters
 import requests
 from django.contrib.auth.base_user import BaseUserManager
@@ -182,6 +184,14 @@ class HelloView(APIView):
         cache.set("key", "Hello from redis cache!", timeout=None)
         content = {'message': cache.get("key")}
         return HttpResponse(json.dumps(content))
+
+
+class LoggingView(APIView):
+    permission_classes = (AllowAny,)
+
+    def post(self, request):
+        logging.info(request.data)
+        return HttpResponse(json.dumps(request.data))
 
 
 class ChangeUserStatusUserView(APIView):
