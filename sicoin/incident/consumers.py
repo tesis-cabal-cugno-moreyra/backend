@@ -152,6 +152,6 @@ class IncidentConsumer(AsyncWebsocketConsumer):
 
         # Send message to WebSocket
         await self.send(text_data=json.dumps({
-            'incident_type': AvailableIncidentTypes.MAP_POINT,
+            'incident_type': AvailableIncidentTypes.TRACK_POINT,
             'data': track_point_repr
         }))
