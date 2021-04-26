@@ -36,7 +36,8 @@
       "created_at": "2020-10-08T00:51:08.456Z",
       "updated_at": "2020-10-08T00:51:08.470Z",
       "name": "Bombero",
-      "domain_config": 1
+      "domain_config": 1,
+      "is_able_to_contain_resources": false
     }
   },
   {
@@ -46,7 +47,8 @@
       "created_at": "2020-10-08T00:51:08.480Z",
       "updated_at": "2020-10-08T00:51:08.480Z",
       "name": "Canino",
-      "domain_config": 1
+      "domain_config": 1,
+      "is_able_to_contain_resources": false
     }
   },
   {
@@ -175,10 +177,12 @@
                 ],
                 "resourceTypes": [
                   {
-                    "name": "Bombero"
+                    "name": "Bombero",
+                    "isAbleToContainResources": false
                   },
                   {
-                    "name": "Canino"
+                    "name": "Canino",
+                    "isAbleToContainResources": false
                   }
                 ],
                 "detailsSchema": {}
@@ -197,7 +201,8 @@
                 ],
                 "resourceTypes": [
                   {
-                    "name": "Bombero"
+                    "name": "Bombero",
+                    "isAbleToContainResources": false
                   }
                 ],
                 "detailsSchema": {}

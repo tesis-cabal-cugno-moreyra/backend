@@ -40,7 +40,8 @@ class DomainDictGenerator:
 
     def _incident_type_resource_type_to_dict(self, incident_type_resource: models.IncidentTypeResource):
         return {
-            "name": incident_type_resource.resource_type.name
+            "isAbleToContainResources": incident_type_resource.resource_type.is_able_to_contain_resources,
+            "name": incident_type_resource.resource_type.name,
         }
 
     def _map_point_description_to_dict(self, map_point_description: models.MapPointDescription):

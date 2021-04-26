@@ -14,6 +14,7 @@ class DomainSerializer(serializers.Serializer):
 
 class ResourceTypeSerializer(DomainSerializer):
     name = serializers.CharField(max_length=200)
+    isAbleToContainResources = serializers.BooleanField(default=False)
 
 
 class SupervisorAliasSerializer(DomainSerializer):
@@ -62,6 +63,7 @@ class IncidentAbstractionSerializer(DomainSerializer):
                 for resource_type in incident_type.get('resourceTypes'):
                     resource_instance = models.ResourceType.objects.update_or_create(**{
                         'name': resource_type.get('name'),
+                        'is_able_to_contain_resources': resource_type.get('isAbleToContainResources'),
                         'domain_config': domain
                     })
                     models.IncidentTypeResource.objects.update_or_create(**{

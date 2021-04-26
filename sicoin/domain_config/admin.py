@@ -9,7 +9,7 @@ class SupervisorAliasAdmin(admin.ModelAdmin):
 
 @admin.register(models.ResourceType)
 class ResourceTypeAdmin(admin.ModelAdmin):
-    list_display = ("id", "name")
+    list_display = ("id", "name", "is_able_to_contain_resources")
 
 
 @admin.register(models.MapPointDescription)

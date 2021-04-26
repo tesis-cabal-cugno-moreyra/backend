@@ -8,6 +8,14 @@ from sicoin.domain_config.models import DomainConfig, IncidentType
 from sicoin.users.models import ResourceProfile, SupervisorProfile
 
 
+class IncidentResourceForContainersCannotHaveAContainerRelatedException(BaseException):
+    pass
+
+
+class IncidentResourceContainerMustBeAbleToContainResources(BaseException):
+    pass
+
+
 class BaseModel(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -85,12 +93,25 @@ class Incident(BaseModel):
 
 class IncidentResource(BaseModel):
     incident = models.ForeignKey("Incident", on_delete=models.PROTECT)
-    resource = models.ForeignKey(ResourceProfile, on_delete=models.PROTECT)
+    resource = models.ForeignKey(ResourceProfile, related_name="incident_resource", on_delete=models.PROTECT)
+    container_resource = models.ForeignKey(ResourceProfile, related_name="incident_resource_as_container",
+                                           on_delete=models.PROTECT, blank=True, null=True)
     exited_from_incident_at = models.DateTimeField(null=True, blank=True)
-    # Validate uniqueness: Incident and resource MUST be related only once
 
     def __str__(self):
         return f"Incident Resource ({self.id})"
+
+    def save(self, force_insert=False, force_update=False, using=None,
+             update_fields=None):
+        if self.resource.type.is_able_to_contain_resources and self.container_resource:
+            raise IncidentResourceForContainersCannotHaveAContainerRelatedException()
+
+        if self.container_resource and not self.container_resource.type.is_able_to_contain_resources:
+            raise IncidentResourceContainerMustBeAbleToContainResources()
+
+        # CHECK FOR OTHER FAILURE CONDITIONS
+
+        super().save(force_insert, force_update, using, update_fields)
 
     class Meta:
         constraints = [
