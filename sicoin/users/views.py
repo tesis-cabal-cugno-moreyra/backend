@@ -1,7 +1,10 @@
+import logging
+
 import django_filters
 import requests
 from django.contrib.auth.base_user import BaseUserManager
 from django.contrib.auth.hashers import make_password
+from django.db.models import ProtectedError
 from django.http import HttpResponse
 from django_filters import rest_framework as filters
 from drf_yasg.utils import swagger_auto_schema
@@ -19,9 +22,29 @@ from . import serializers
 from django.core.cache import cache
 
 
-class UserRetrieveUpdateViewSet(mixins.RetrieveModelMixin, mixins.UpdateModelMixin, viewsets.GenericViewSet):
+class DestroyWitProtectedCatchMixin(mixins.DestroyModelMixin):
+    def destroy(self, request, *args, **kwargs):
+        try:
+            return super().destroy(request, args, kwargs)
+        except ProtectedError:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+
+
+class UserRetrieveUpdateViewSet(mixins.UpdateModelMixin, viewsets.GenericViewSet):
     queryset = User.objects.all()
     serializer_class = serializers.UserSerializer
+    permission_classes = (AllowAny,)
+
+    def retrieve(self, request, *args, **kwargs):
+        instance = self.get_object()
+        self.serializer_class = serializers.UserDetailsAfterLoginSerializer
+        serializer = self.get_serializer(instance)
+        return Response(serializer.data)
+
+
+class UserRetrieveViewSet(mixins.RetrieveModelMixin, viewsets.GenericViewSet):
+    queryset = User.objects.all()
+    serializer_class = serializers.UserDetailsAfterLoginSerializer
     permission_classes = (AllowAny,)
 
 
@@ -29,21 +52,24 @@ class UserCreateListViewSet(mixins.CreateModelMixin, viewsets.GenericViewSet):
     queryset = User.objects.all()
     serializer_class = serializers.CreateUserSerializer
     permission_classes = (AllowAny,)
+    filter_backends = (filters.DjangoFilterBackend,)
+    filterset_fields = ('username', 'first_name',
+                        'last_name', 'is_active')
 
     def list(self, request, *args, **kwargs):
         queryset = self.filter_queryset(self.get_queryset())
 
         page = self.paginate_queryset(queryset)
         if page is not None:
-            serializer = serializers.UserSerializer(page, many=True)
+            serializer = serializers.UserDetailsAfterLoginSerializer(page, many=True)
             return self.get_paginated_response(serializer.data)
 
-        serializer = serializers.UserSerializer(queryset, many=True)
+        serializer = serializers.UserDetailsAfterLoginSerializer(queryset, many=True)
         return Response(serializer.data)
 
 
 class AdminProfileRetrieveUpdateDestroyViewSet(mixins.RetrieveModelMixin, mixins.UpdateModelMixin,
-                                               mixins.DestroyModelMixin, viewsets.GenericViewSet):
+                                               DestroyWitProtectedCatchMixin, viewsets.GenericViewSet):
     queryset = AdminProfile.objects.all()
     serializer_class = serializers.CreateUpdateAdminProfileSerializer
     permission_classes = (AllowAny,)
@@ -75,7 +101,7 @@ class AdminProfileCreateListViewSet(mixins.CreateModelMixin, viewsets.GenericVie
 
 
 class SupervisorProfileRetrieveUpdateDestroyViewSet(mixins.UpdateModelMixin,
-                                                    mixins.DestroyModelMixin,
+                                                    DestroyWitProtectedCatchMixin,
                                                     viewsets.GenericViewSet):
     queryset = SupervisorProfile.objects.all()
     serializer_class = serializers.CreateUpdateSupervisorProfileSerializer
@@ -107,7 +133,7 @@ class SupervisorProfileCreateUpdateListViewSet(mixins.CreateModelMixin, viewsets
         return Response(serializer.data)
 
 
-class ResourceProfileRetrieveUpdateDestroyViewSet(mixins.UpdateModelMixin, mixins.DestroyModelMixin,
+class ResourceProfileRetrieveUpdateDestroyViewSet(mixins.UpdateModelMixin, DestroyWitProtectedCatchMixin,
                                                   viewsets.GenericViewSet):
     queryset = ResourceProfile.objects.all()
     serializer_class = serializers.UpdateResourceProfileSerializer
@@ -125,6 +151,7 @@ class ResourceFilter(django_filters.FilterSet):
     user__last_name = django_filters.CharFilter(lookup_expr='iexact')
     user__is_active = django_filters.CharFilter(lookup_expr='iexact')
     type__name = django_filters.CharFilter(lookup_expr='iexact')
+    type__is_able_to_contain_resources = django_filters.BooleanFilter(lookup_expr='isnull')
 
     class Meta:
         model = ResourceProfile
@@ -157,6 +184,14 @@ class HelloView(APIView):
         cache.set("key", "Hello from redis cache!", timeout=None)
         content = {'message': cache.get("key")}
         return HttpResponse(json.dumps(content))
+
+
+class LoggingView(APIView):
+    permission_classes = (AllowAny,)
+
+    def post(self, request):
+        logging.info(request.data)
+        return HttpResponse(json.dumps(request.data))
 
 
 class ChangeUserStatusUserView(APIView):
@@ -202,6 +237,8 @@ class DeactivateUserView(ChangeUserStatusUserView):
 
 
 class CreateOrUpdateResourceProfileDeviceData(APIView):
+    permission_classes = (AllowAny,)
+
     @swagger_auto_schema(operation_description="Creates or updates resource profile device data, Only Resource user",
                          request_body=FCMDeviceSerializer,
                          responses={200: "{'message': 'Device data for resource with id {RESOURCE_ID} "
@@ -219,7 +256,7 @@ class CreateOrUpdateResourceProfileDeviceData(APIView):
             return HttpResponse(json.dumps({'message': 'Error creating or updating resource device id'}),
                                 status=status.HTTP_400_BAD_REQUEST)
 
-        fcm_device_serializer = FCMDeviceSerializer(data=request.data)
+        fcm_device_serializer = FCMDeviceSerializer(data=request.data, context={'request': request})
         if fcm_device_serializer.is_valid(raise_exception=True):
             fcm_device_serializer.save()
             resource.device = fcm_device_serializer.instance

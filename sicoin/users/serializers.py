@@ -201,9 +201,6 @@ class UpdateResourceProfileSerializer(serializers.Serializer):
     type = serializers.CharField(max_length=255)
 
     def validate(self, data):
-        import ipdb
-        ipdb.set_trace()
-
         request = self.context.get('request')
         if not request:
             raise serializers.ValidationError("No request in current serializer context")

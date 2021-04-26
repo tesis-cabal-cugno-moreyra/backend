@@ -46,7 +46,8 @@ class BasePointSerializer(serializers.Serializer):
 class MapPointSerializer(BasePointSerializer):
     location = GeometryField()
     comment = serializers.CharField(max_length=255)
-    # resource_id and incident_id could be ignored, as they should be part of the endpoint
+    time_created = serializers.DateTimeField()
+    # resource_id and incident_id could be ignored, as they should be part of the context
 
     def create(self, validated_data):
         map_point = MapPoint()
@@ -56,13 +57,14 @@ class MapPointSerializer(BasePointSerializer):
             resource_id=self.context.get('resource_id'))
         map_point.description_text = validated_data.get('comment')
         map_point.location = validated_data.get('location')
+        map_point.time_created = validated_data.get('time_created')
         map_point.save()
         return map_point
 
     def to_representation(self, instance: MapPoint):
         return {
             'location': GeometryField().to_representation(instance.location),
-            'collected_at': instance.time_created,
+            'collected_at': instance.time_created.isoformat(),
             'internal_type': 'MapPoint',  # We use this field for future usage on WS
             'resource': ListRetrieveResourceProfileSerializer().to_representation(instance.incident_resource.resource),
             'comment': instance.description_text
@@ -71,7 +73,8 @@ class MapPointSerializer(BasePointSerializer):
 
 class TrackPointSerializer(BasePointSerializer):
     location = GeometryField()
-    # resource_id and incident_id could be ignored, as they should be part of the endpoint
+    time_created = serializers.DateTimeField()
+    # resource_id and incident_id could be ignored, as they should be part of the context
 
     def create(self, validated_data):
         track_point = TrackPoint()
@@ -80,13 +83,14 @@ class TrackPointSerializer(BasePointSerializer):
             incident_id=self.context.get('incident_id'),
             resource_id=self.context.get('resource_id'))
         track_point.location = validated_data.get('location')
+        track_point.time_created = validated_data.get('time_created')
         track_point.save()
         return track_point
 
     def to_representation(self, instance: TrackPoint):
         return {
             'location': GeometryField().to_representation(instance.location),
-            'collected_at': instance.time_created,
+            'collected_at': instance.time_created.isoformat(),
             'internal_type': 'TrackPoint',  # We use this field for future usage on WS
             'resource': ListRetrieveResourceProfileSerializer().to_representation(instance.incident_resource.resource),
         }
