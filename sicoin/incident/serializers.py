@@ -164,19 +164,21 @@ class CreateUpdateIncidentResourceSerializer(serializers.Serializer):
         return attrs
 
     def _add_container_resource_if_retrieved(self, incident_resource: IncidentResource) -> IncidentResource:
-        if self.validated_data.get('container_resource_id'):
-            try:
-                incident_resource.container_resource = ResourceProfile.objects.get(
-                    id=self.validated_data['container_resource_id']
-                )
-            except ResourceProfile.DoesNotExist:
-                raise serializers.ValidationError({'container_resource_id': 'Container resource not found'},
-                                                  code=status.HTTP_404_NOT_FOUND)
-            # Instead of checking out for the resource corresponding to the vehicle, we generate
-            # the IncidentResource here. CHECK THIS!!
-            IncidentResource.objects.get_or_create(incident_id=self.context['incident_id'],
-                                                   resource_id=self.validated_data['container_resource_id'])
+        if not self.validated_data.get('container_resource_id'):
+            incident_resource.container_resource = None
+            return incident_resource
 
+        try:
+            incident_resource.container_resource = ResourceProfile.objects.get(
+                id=self.validated_data['container_resource_id']
+            )
+        except ResourceProfile.DoesNotExist:
+            raise serializers.ValidationError({'container_resource_id': 'Container resource not found'},
+                                              code=status.HTTP_404_NOT_FOUND)
+        # Instead of checking out for the resource corresponding to the vehicle, we generate
+        # the IncidentResource here. CHECK THIS!!
+        IncidentResource.objects.get_or_create(incident_id=self.context['incident_id'],
+                                               resource_id=self.validated_data['container_resource_id'])
         return incident_resource
 
     def _reset_incident_resource_if_rejoining(self, incident_resource: IncidentResource) -> IncidentResource:

@@ -265,12 +265,13 @@ class IncidentResourceFilter(django_filters.FilterSet):
     resource__type__name = django_filters.CharFilter(lookup_expr='iexact')
     incident__status = django_filters.CharFilter(lookup_expr='iexact')
     resource__type__is_able_to_contain_resources = django_filters.BooleanFilter()
+    has_no_container_resource = django_filters.BooleanFilter(field_name='container_resource_id', lookup_expr='isnull')
     exited_from_incident_no_date = django_filters.BooleanFilter(field_name='exited_from_incident_at',
                                                                 lookup_expr='isnull')
 
     class Meta:
         model = IncidentResource
-        exclude = ['created_at', 'updated_at', 'incident', 'resource']
+        exclude = ['created_at', 'updated_at', 'incident', 'resource', 'container_resource']
 
 
 class LargeResultsSetPagination(PageNumberPagination):
