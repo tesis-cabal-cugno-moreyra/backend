@@ -50,6 +50,7 @@ class Common(Configuration):
         'encrypted_fields',
         'simple_history',
         "fcm_django",
+        "django_celery_beat",
 
         # Your apps
         'sicoin.users',

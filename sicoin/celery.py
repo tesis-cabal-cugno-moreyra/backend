@@ -31,6 +31,7 @@
 
 from __future__ import absolute_import
 
+import datetime
 import os
 
 from celery import Celery

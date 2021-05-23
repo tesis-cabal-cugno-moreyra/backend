@@ -20,6 +20,9 @@ build-and-deploy:
 container-ssh:
 	docker-compose exec web sh
 
+docker-compose-up:
+	docker-compose --env-file /dev/null -f docker-compose.yml up
+
 docker-compose-up-d:
 	docker-compose --env-file /dev/null -f docker-compose.yml up -d
 
@@ -71,5 +74,5 @@ ci-run-tests:
 
 ## Shortcuts
 
-dk-up: docker-compose-up-d
+dk-up: docker-compose-up
 dk-web-out: docker-compose-get-web-output

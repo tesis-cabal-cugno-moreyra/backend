@@ -21,6 +21,8 @@ from .notify_user_manager import UserStatusChangeNotificationManager
 from . import serializers
 from django.core.cache import cache
 
+from ..incident.models import IncidentResource
+
 
 class DestroyWitProtectedCatchMixin(mixins.DestroyModelMixin):
     def destroy(self, request, *args, **kwargs):

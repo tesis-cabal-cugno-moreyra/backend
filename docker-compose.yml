@@ -56,33 +56,35 @@ services:
     networks:
       SicoinNetwork:
         ipv4_address: 172.3.0.5
-  worker:
-    build:
-      context: .
-      dockerfile: docker/worker/Dockerfile.worker
-    command: >
-      sh -c "celery -A sicoin worker -l info"
-    volumes:
-      - ./:/code
-    depends_on:
-      - postgis
-      - redis
-    stdin_open: true
-    tty: true
-    networks:
-      SicoinNetwork:
-        ipv4_address: 172.3.0.6
+#  worker:
+#    build:
+#      context: .
+#      dockerfile: docker/worker/Dockerfile.worker
+#    command: >
+#      sh -c "celery -A sicoin worker -l info"
+#    volumes:
+#      - ./:/code
+#    depends_on:
+#      - postgis
+#      - redis
+#      - web
+#    stdin_open: true
+#    tty: true
+#    networks:
+#      SicoinNetwork:
+#        ipv4_address: 172.3.0.6
   worker-beat:
     build:
       context: .
       dockerfile: docker/worker-beat/Dockerfile.beat
     command: >
-      sh -c "celery -A sicoin worker --beat -l info"
+      sh -c "celery -A sicoin worker --beat -l info --scheduler django"
     volumes:
       - ./:/code
     depends_on:
       - postgis
       - redis
+      - web
     stdin_open: true
     tty: true
     networks:
