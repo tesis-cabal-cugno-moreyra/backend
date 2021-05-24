@@ -114,7 +114,7 @@ class IncidentStatsByTimeFilter:
 
     def get_incidents_assisted_quantity_last_6_months(self):
         incident_quantity_per_month = []
-        for month in list(islice(cycle(range(1, 13)), self.now.month + 5, self.now.month + 13)):
+        for month in list(islice(cycle(range(1, 13)), self.now.month + 5, self.now.month + 11)):
             incident_quantity_per_month.append(
                 Incident.objects.filter(created_at__month=month, incidentresource__resource_id=self.resource_id).count()
             )
@@ -122,7 +122,7 @@ class IncidentStatsByTimeFilter:
 
     def get_incidents_total_quantity_last_6_months(self):
         incident_quantity_per_month = []
-        for month in list(islice(cycle(range(1, 13)), self.now.month + 5, self.now.month + 13)):
+        for month in list(islice(cycle(range(1, 13)), self.now.month + 5, self.now.month + 11)):
             incident_quantity_per_month.append(
                 Incident.objects.filter(created_at__month=month).count()
             )
