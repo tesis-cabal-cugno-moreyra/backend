@@ -28,7 +28,6 @@ class Common(Configuration):
     CELERY_TASK_TRACK_STARTED = True
     CELERY_TASK_TIME_LIMIT = 30 * 60
 
-
     INSTALLED_APPS = (
         'material.admin',
         'material.admin.default',

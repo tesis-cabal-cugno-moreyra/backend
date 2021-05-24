@@ -31,16 +31,15 @@
 
 from __future__ import absolute_import
 
-import datetime
 import os
 
 from celery import Celery
 from django.conf import settings
 
+import configurations
+
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'sicoin.config')
 os.environ.setdefault('DJANGO_CONFIGURATION', 'Production')
-
-import configurations
 
 configurations.setup()
 

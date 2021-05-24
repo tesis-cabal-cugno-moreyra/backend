@@ -21,8 +21,6 @@ from .notify_user_manager import UserStatusChangeNotificationManager
 from . import serializers
 from django.core.cache import cache
 
-from ..incident.models import IncidentResource
-
 
 class DestroyWitProtectedCatchMixin(mixins.DestroyModelMixin):
     def destroy(self, request, *args, **kwargs):
@@ -157,7 +155,7 @@ class ResourceFilter(django_filters.FilterSet):
 
     class Meta:
         model = ResourceProfile
-        exclude = ['user', 'type', 'domain']
+        exclude = ['user', 'type', 'domain', 'stats_by_incident']
 
 
 class ResourceProfileCreateRetrieveListViewSet(mixins.CreateModelMixin, viewsets.GenericViewSet):

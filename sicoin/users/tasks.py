@@ -49,7 +49,7 @@ class IncidentStatsByTimeFilter:
 
     def get_week_array_starting_from_weekday(self):
         weekday = self.now.weekday()
-        assert 0 >= weekday >= 6, f"Weekday has to be between 0 and 6"
+        assert 0 >= weekday >= 6, f"Weekday with value {weekday} has to be between 0 and 6"
         days_of_week = [
             "Lunes",
             "Martes",
@@ -64,7 +64,7 @@ class IncidentStatsByTimeFilter:
     def get_incidents_assisted_quantity_last_week_by_day(self):
         a_week_ago = self.now - timedelta(days=7)
         today_weekday = self.now.weekday()
-        assert 0 >= today_weekday >= 6, f"Weekday has to be between 0 and 6"
+        assert 0 >= today_weekday >= 6, f"Weekday with value {today_weekday} has to be between 0 and 6"
         days_of_week = range(0, 7)
 
         filtered_incidents = []
@@ -78,13 +78,13 @@ class IncidentStatsByTimeFilter:
 
         assert len(filtered_incidents) == 7
         return filtered_incidents
-    
+
     def get_incidents_total_quantity_last_week_by_day(self):
         filtered_incidents = []
 
         a_week_ago = self.now - timedelta(days=7)
         today_weekday = self.now.weekday()
-        assert 0 >= today_weekday >= 6, f"Weekday has to be between 0 and 6"
+        assert 0 >= today_weekday >= 6, f"Weekday with value {today_weekday} has to be between 0 and 6"
         days_of_week = range(0, 7)
 
         for weekday in list(islice(cycle(days_of_week), today_weekday, 7 + today_weekday)):
@@ -96,29 +96,58 @@ class IncidentStatsByTimeFilter:
         return filtered_incidents
 
     def get_last_6_months_array(self):
-        return [  # Last 6 months
-            "Noviembre",
-            "Diciembre",
+        months = [
             "Enero",
             "Febrero",
             "Marzo",
-            "Abril"
+            "Abril",
+            "Mayo",
+            "Junio",
+            "Julio",
+            "Agosto",
+            "Septiembre",
+            "Octubre",
+            "Noviembre",
+            "Diciembre",
         ]
+        return list(islice(cycle(months), self.now.month + 5, self.now.month + 11))
 
     def get_incidents_assisted_quantity_last_6_months(self):
-        pass
+        incident_quantity_per_month = []
+        for month in list(islice(cycle(range(1, 13)), self.now.month + 5, self.now.month + 13)):
+            incident_quantity_per_month.append(
+                Incident.objects.filter(created_at__month=month, incidentresource__resource_id=self.resource_id).count()
+            )
+        return incident_quantity_per_month
 
     def get_incidents_total_quantity_last_6_months(self):
-        pass
+        incident_quantity_per_month = []
+        for month in list(islice(cycle(range(1, 13)), self.now.month + 5, self.now.month + 13)):
+            incident_quantity_per_month.append(
+                Incident.objects.filter(created_at__month=month).count()
+            )
+        return incident_quantity_per_month
 
     def get_years_array(self):
-        return ["2019", "2020", "2021"]
+        return list(range(Incident.objects.earliest('created_at').created_at.year, self.now.year + 1))
 
     def get_incidents_assisted_quantity_by_year(self):
-        pass
+        incident_quantity_per_year = []
+        for year in range(Incident.objects.earliest('created_at').created_at.year, self.now.year + 1):
+            incident_quantity_per_year.append(
+                Incident.objects.filter(created_at__year=year, incidentresource__resource_id=self.resource_id).count()
+            )
+
+        return incident_quantity_per_year
 
     def get_incidents_total_quantity_by_year(self):
-        pass
+        incident_quantity_per_year = []
+        for year in range(Incident.objects.earliest('created_at').created_at.year, self.now.year + 1):
+            incident_quantity_per_year.append(
+                Incident.objects.filter(created_at__year=year).count()
+            )
+
+        return incident_quantity_per_year
 
 
 @app.task(bind=True)
@@ -127,9 +156,9 @@ def calculate_and_save_incidents_from_resource_statistics(self):
         incident_type_stats_registry = IncidentTypeStatsFilterRegistry(resource_id=resource.id)
         for incident_type in IncidentType.objects.all():
             incident_type_stats_registry.add_incident_type_stats(incident_type=incident_type.name)
-    
+
         incident_by_time_stats_registry = IncidentStatsByTimeFilter(resource_id=resource.id)
-     
+
         resource.stats_by_incident = {
             "calculatedAt": datetime.utcnow().replace(tzinfo=timezone.utc).isoformat(),
             "barChartData": {
