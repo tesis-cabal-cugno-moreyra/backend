@@ -72,10 +72,10 @@ urlpatterns = [
     path('api/v1/resources/<int:resource_id>/create-or-update-device/',
          CreateOrUpdateResourceProfileDeviceData.as_view()),
     path('api/v1/resources/<int:resource_id>/incidents/', IncidentResourceFromResourceListView.as_view()),
+    path('api/v1/resources/<int:resource_id>/statistics/', StatisticsByResource.as_view()),
+
     path('api/v1/users/<uuid:user_id>/activate/', ActivateUserView.as_view()),
     path('api/v1/users/<uuid:user_id>/deactivate/', DeactivateUserView.as_view()),
-
-    path('api/v1/statistics/', StatisticsByResource.as_view()),
 
     re_path(r'^rest-auth/', include('dj_rest_auth.urls')),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
