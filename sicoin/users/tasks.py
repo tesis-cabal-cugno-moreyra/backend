@@ -15,31 +15,22 @@ class IncidentTypeStatsByResource:
     incident_assisted_quantity: int
 
 
-class IncidentTypeStatsFilterRegistry:
+class IncidentTypeStatsFilter:
     def __init__(self, resource_id: int):
         self.resource_id = resource_id
-
-    incident_type_stats = []
-
-    def add_incident_type_stats(self, incident_type: str):
-        self.incident_type_stats.append(
-            IncidentTypeStatsByResource(
-                incident_type=incident_type,
-                incident_quantity=Incident.objects.filter(incident_type__name=incident_type).count(),
-                incident_assisted_quantity=Incident.objects.filter(incident_type__name=incident_type,
-                                                                   incidentresource__resource_id=self.resource_id
-                                                                   ).count()
-            )
-        )
+        self.incident_types = IncidentType.objects.all().order_by('name')
 
     def get_incident_type_names(self):
-        return [incident_type_stat.incident_type for incident_type_stat in self.incident_type_stats]
+        return [incident_type.name for incident_type in self.incident_types]
 
     def get_incident_quantity(self):
-        return [incident_type_stat.incident_quantity for incident_type_stat in self.incident_type_stats]
+        return [Incident.objects.filter(incident_type__name=incident_type.name).count()
+                for incident_type in self.incident_types]
 
     def get_incident_assisted_quantity(self):
-        return [incident_type_stat.incident_assisted_quantity for incident_type_stat in self.incident_type_stats]
+        return [Incident.objects.filter(incident_type__name=incident_type.name,
+                                        incidentresource__resource_id=self.resource_id).count()
+                for incident_type in self.incident_types]
 
 
 class IncidentStatsByTimeFilter:
@@ -49,7 +40,7 @@ class IncidentStatsByTimeFilter:
 
     def get_week_array_starting_from_weekday(self):
         weekday = self.now.weekday()
-        assert 0 >= weekday >= 6, f"Weekday with value {weekday} has to be between 0 and 6"
+        assert 0 <= weekday <= 6, f"Weekday with value {weekday} has to be between 0 and 6"
         days_of_week = [
             "Lunes",
             "Martes",
@@ -64,7 +55,7 @@ class IncidentStatsByTimeFilter:
     def get_incidents_assisted_quantity_last_week_by_day(self):
         a_week_ago = self.now - timedelta(days=7)
         today_weekday = self.now.weekday()
-        assert 0 >= today_weekday >= 6, f"Weekday with value {today_weekday} has to be between 0 and 6"
+        assert 0 <= today_weekday <= 6, f"Weekday with value {today_weekday} has to be between 0 and 6"
         days_of_week = range(0, 7)
 
         filtered_incidents = []
@@ -84,7 +75,7 @@ class IncidentStatsByTimeFilter:
 
         a_week_ago = self.now - timedelta(days=7)
         today_weekday = self.now.weekday()
-        assert 0 >= today_weekday >= 6, f"Weekday with value {today_weekday} has to be between 0 and 6"
+        assert 0 <= today_weekday <= 6, f"Weekday with value {today_weekday} has to be between 0 and 6"
         days_of_week = range(0, 7)
 
         for weekday in list(islice(cycle(days_of_week), today_weekday, 7 + today_weekday)):
@@ -153,10 +144,7 @@ class IncidentStatsByTimeFilter:
 @app.task(bind=True)
 def calculate_and_save_incidents_from_resource_statistics(self):
     for resource in ResourceProfile.objects.all():
-        incident_type_stats_registry = IncidentTypeStatsFilterRegistry(resource_id=resource.id)
-        for incident_type in IncidentType.objects.all():
-            incident_type_stats_registry.add_incident_type_stats(incident_type=incident_type.name)
-
+        incident_type_stats_registry = IncidentTypeStatsFilter(resource_id=resource.id)
         incident_by_time_stats_registry = IncidentStatsByTimeFilter(resource_id=resource.id)
 
         resource.stats_by_incident = {

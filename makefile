@@ -20,6 +20,9 @@ build-and-deploy:
 container-ssh:
 	docker-compose exec web sh
 
+container-worker-ssh:
+	docker-compose exec worker-beat sh
+
 docker-compose-up:
 	docker-compose --env-file /dev/null -f docker-compose.yml up
 

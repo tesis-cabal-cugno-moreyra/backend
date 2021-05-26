@@ -298,5 +298,9 @@ class StatisticsByResource(APIView):
     permission_classes = (AllowAny,)
 
     def get(self, request, resource_id):
-        # todo: 404
-        return HttpResponse(json.dumps(ResourceProfile.objects.get(id=resource_id).stats_by_incident))
+        try:
+            resource = ResourceProfile.objects.get(id=resource_id)
+        except User.DoesNotExist:
+            return HttpResponse(json.dumps({'message': f'Resource profile with id {resource_id} was not found.'}),
+                                status=status.HTTP_400_BAD_REQUEST)
+        return HttpResponse(json.dumps(resource.stats_by_incident))
