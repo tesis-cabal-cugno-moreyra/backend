@@ -237,7 +237,7 @@ def calculate_and_save_incidents_from_resource_statistics(self):
                         "borderColor": "green"
                     },
                     {
-                        "label": "Total incidentes por mes",
+                        "label": "Total incidentes por año",
                         "data": incident_by_time_stats_registry.get_incidents_total_quantity_by_year(),
                         "borderColor": "red"
                     }
