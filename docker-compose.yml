@@ -17,7 +17,9 @@ services:
         ipv4_address: 172.3.0.2
   web:
     image: web
-    build: ./
+    build:
+      context: .
+      dockerfile: docker/django/Dockerfile
     command: >
       sh -c "python wait_for_postgres.py &&
                ./manage.py migrate &&
@@ -54,6 +56,34 @@ services:
     networks:
       SicoinNetwork:
         ipv4_address: 172.3.0.5
+  worker-beat:
+    build:
+      context: .
+      dockerfile: docker/worker-beat/Dockerfile.beat
+    command: >
+      sh -c "celery -A sicoin worker --beat -l info --scheduler django"
+    volumes:
+      - ./:/code
+    depends_on:
+      - postgis
+      - redis
+      - web
+    stdin_open: true
+    tty: true
+    networks:
+      SicoinNetwork:
+        ipv4_address: 172.3.0.7
+  flower:
+    image: mher/flower
+    environment:
+      - CELERY_BROKER_URL=redis://:sOmE_sEcUrE_pAsS@redis:6379/2
+      - FLOWER_PORT=8888
+    depends_on:
+      - postgis
+      - redis
+      - worker-beat
+    ports:
+      - 8888:8888
 volumes:
   data-db:
 networks:

@@ -155,7 +155,7 @@ class ResourceFilter(django_filters.FilterSet):
 
     class Meta:
         model = ResourceProfile
-        exclude = ['user', 'type', 'domain']
+        exclude = ['user', 'type', 'domain', 'stats_by_incident']
 
 
 class ResourceProfileCreateRetrieveListViewSet(mixins.CreateModelMixin, viewsets.GenericViewSet):
@@ -297,119 +297,10 @@ class GoogleView(APIView):
 class StatisticsByResource(APIView):
     permission_classes = (AllowAny,)
 
-    def get(self, request):
-        response = {
-            "barChartData": {
-                "labels": [
-                    "Campos",
-                    "Estructurales",
-                    "Vehículos",
-                    "Pastizales",
-                    "Rescates",
-                    "Accidentes",
-                    "Varios"
-                ],
-                "datasets": [
-                    {
-                        "label": "Cantidad de Incidentes",
-                        "backgroundColor": "red",
-                        "barThickness": 25,
-                        "maxBarThickness": 35,
-                        "data": [40, 39, 10, 40, 39, 80, 40]
-                    },
-                    {
-                        "label": "Cantidad de Incidentes Asistidos",
-                        "backgroundColor": "green",
-                        "barThickness": 25,
-                        "maxBarThickness": 35,
-                        "data": [4, 9, 1, 30, 29, 10, 37]
-                    }
-                ]
-            },
-            "pieChartData": {
-                "labels": [
-                    "Campos",
-                    "Estructurales",
-                    "Vehículos",
-                    "Pastizales",
-                    "Rescates",
-                    "Accidentes",
-                    "Varios"
-                ],
-                "datasets": [
-                    {
-                        "data": [40, 39, 10, 40, 39, 80, 40],
-                        "backgroundColor": [
-                            "red",
-                            "blue",
-                            "yellow",
-                            "green",
-                            "white",
-                            "orange",
-                            "purple"
-                        ]
-                    }
-                ]
-            },
-            "lineChartDataWeekly": {
-                "labels": [
-                    "Domingo",
-                    "Lunes",
-                    "Martes",
-                    "Miércoles",
-                    "Jueves",
-                    "Viernes",
-                    "Sábado"
-                ],
-                "datasets": [
-                    {
-                        "label": "Incidentes asistidos",
-                        "data": [1, 2, 0, 1, 0, 0, 1],
-                        "borderColor": "green"
-                    },
-                    {
-                        "label": "Total incidentes por día",
-                        "data": [4, 9, 1, 3, 9, 1, 3],
-                        "borderColor": "red"
-                    }
-                ]
-            },
-            "lineChartDataMonthly": {
-                "labels": [
-                    "Noviembre",
-                    "Diciembre",
-                    "Enero",
-                    "Febrero",
-                    "Marzo",
-                    "Abril"
-                ],
-                "datasets": [
-                    {
-                        "label": "Incidentes asistidos",
-                        "data": [14, 25, 22, 13, 12, 7, 10],
-                        "borderColor": "green"
-                    },
-                    {
-                        "label": "Total incidentes por mes",
-                        "data": [34, 45, 102, 30, 32, 67, 12],
-                        "borderColor": "red"
-                    }
-                ]
-            },
-            "lineChartDataAnnually": {
-                "labels": ["2019", "2020", "2021"],
-                "datasets": [
-                    {
-                        "label": "Incidentes asistidos",
-                        "data": [123, 234, 78],
-                        "borderColor": "green"
-                    },
-                    {
-                        "label": "Total incidentes por mes",
-                        "data": [354, 420, 92],
-                        "borderColor": "red"
-                    }
-                ]
-            }
-        }
-        return HttpResponse(json.dumps(response))
+    def get(self, request, resource_id):
+        try:
+            resource = ResourceProfile.objects.get(id=resource_id)
+        except User.DoesNotExist:
+            return HttpResponse(json.dumps({'message': f'Resource profile with id {resource_id} was not found.'}),
+                                status=status.HTTP_400_BAD_REQUEST)
+        return HttpResponse(json.dumps(resource.stats_by_incident))

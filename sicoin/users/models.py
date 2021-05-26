@@ -1,4 +1,7 @@
 import uuid
+
+from django.contrib.postgres.fields import JSONField
+from django.core.serializers.json import DjangoJSONEncoder
 from django.db import models
 from django.conf import settings
 from django.dispatch import receiver
@@ -49,6 +52,7 @@ class ResourceProfile(models.Model):
     type = models.ForeignKey(ResourceType, on_delete=models.PROTECT)
     domain = models.ForeignKey(DomainConfig, on_delete=models.PROTECT)
     device = models.OneToOneField(FCMDevice, on_delete=models.PROTECT, null=True, blank=True)
+    stats_by_incident = JSONField(default=dict, blank=True, encoder=DjangoJSONEncoder)
 
     @property
     def role(self):

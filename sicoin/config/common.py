@@ -20,6 +20,13 @@ except FileNotFoundError:
 
 
 class Common(Configuration):
+    # Celery Configuration Options
+    CELERY_BROKER_TRANSPORT = 'redis'
+    CELERY_BROKER_URL = env('CELERY_REDIS_URL')
+    CELERY_RESULT_BACKEND = env('CELERY_REDIS_URL')
+    CELERY_TIMEZONE = "America/Argentina/Cordoba"
+    CELERY_TASK_TRACK_STARTED = True
+    CELERY_TASK_TIME_LIMIT = 30 * 60
 
     INSTALLED_APPS = (
         'material.admin',
@@ -42,6 +49,7 @@ class Common(Configuration):
         'encrypted_fields',
         'simple_history',
         "fcm_django",
+        "django_celery_beat",
 
         # Your apps
         'sicoin.users',
