@@ -300,7 +300,7 @@ class StatisticsByResource(APIView):
     def get(self, request, resource_id):
         try:
             resource = ResourceProfile.objects.get(id=resource_id)
-        except User.DoesNotExist:
+        except ResourceProfile.DoesNotExist:
             return HttpResponse(json.dumps({'message': f'Resource profile with id {resource_id} was not found.'}),
                                 status=status.HTTP_400_BAD_REQUEST)
         return HttpResponse(json.dumps(resource.stats_by_incident))

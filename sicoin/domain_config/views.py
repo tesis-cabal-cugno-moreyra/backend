@@ -8,6 +8,7 @@ from rest_framework.permissions import AllowAny
 from rest_framework.views import APIView
 
 from sicoin.domain_config import models
+from sicoin.domain_config.models import IncidentType
 from sicoin.domain_config.serializers import DomainSerializer, CheckDomainCodeSerializer
 from sicoin.domain_config.utils import get_random_alphanumeric_string
 
@@ -83,3 +84,15 @@ class CheckCurrentDomainCodeAPIView(APIView):
         serializer = CheckDomainCodeSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         return HttpResponse(json.dumps({'message': 'Correct code'}))
+
+
+class StatisticsByIncidentType(APIView):
+    permission_classes = (AllowAny,)
+
+    def get(self, request, incident_type_name):
+        try:
+            incident_type = IncidentType.objects.get(name=incident_type_name)
+        except IncidentType.DoesNotExist:
+            return HttpResponse(json.dumps({'message': f'Incident Type with name {incident_type_name} was not found.'}),
+                                status=status.HTTP_400_BAD_REQUEST)
+        return HttpResponse(json.dumps(incident_type.general_stats))
