@@ -13,6 +13,8 @@ def get_mean_std_incidents_by_type_and_status(incident_type, status):
         incidents_total_seconds.append((incident.finalized_at - incident.created_at).total_seconds())
     if not len(incidents_total_seconds):
         return 0, 0
+    if len(incidents_total_seconds) == 1:
+        return incidents_total_seconds[0], 0
     return statistics.mean(incidents_total_seconds), statistics.stdev(incidents_total_seconds)
 
 
