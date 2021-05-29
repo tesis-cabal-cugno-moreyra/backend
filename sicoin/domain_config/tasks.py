@@ -7,25 +7,24 @@ from sicoin.domain_config.models import IncidentType
 from sicoin.incident.models import Incident
 
 
-def get_mean_std_cancelled_incidents_from_type(incident_type):
-    cancelled_incidents_tds = []
-    for incident in Incident.objects.filter(incident_type=incident_type, status=Incident.INCIDENT_STATUS_CANCELED):
-        cancelled_incidents_tds.append((incident.cancelled_at - incident.created_at).total_seconds())
-    return statistics.mean(cancelled_incidents_tds), statistics.stdev(cancelled_incidents_tds)
-
-
-def get_mean_std_finalized_incidents_from_type(incident_type):
-    finalized_incidents_tds = []
-    for incident in Incident.objects.filter(incident_type=incident_type, status=Incident.INCIDENT_STATUS_FINALIZED):
-        finalized_incidents_tds.append((incident.finalized_at - incident.created_at).total_seconds())
-    return statistics.mean(finalized_incidents_tds), statistics.stdev(finalized_incidents_tds)
+def get_mean_std_incidents_by_type_and_status(incident_type, status):
+    incidents_total_seconds = []
+    for incident in Incident.objects.filter(incident_type=incident_type, status=status):
+        incidents_total_seconds.append((incident.finalized_at - incident.created_at).total_seconds())
+    if not len(incidents_total_seconds):
+        return 0, 0
+    return statistics.mean(incidents_total_seconds), statistics.stdev(incidents_total_seconds)
 
 
 @app.task(bind=True)
 def calculate_incident_stats_from_incident_type(self):
     for incident_type in IncidentType.objects.all():
-        average_work_time_cancelled, std_work_time_cancelled = get_mean_std_cancelled_incidents_from_type(incident_type)
-        average_work_time_finalized, std_work_time_finalized = get_mean_std_finalized_incidents_from_type(incident_type)
+        average_work_time_cancelled, std_work_time_cancelled = get_mean_std_incidents_by_type_and_status(
+            incident_type, Incident.INCIDENT_STATUS_CANCELED
+        )
+        average_work_time_finalized, std_work_time_finalized = get_mean_std_incidents_by_type_and_status(
+            incident_type, Incident.INCIDENT_STATUS_FINALIZED
+        )
         incident_type.general_stats = {
             'calculatedAt': datetime.utcnow().replace(tzinfo=timezone.utc).isoformat(),
             'averageWorkTimeCancelled': int(average_work_time_cancelled),
