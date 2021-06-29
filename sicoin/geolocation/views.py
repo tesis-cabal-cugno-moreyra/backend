@@ -9,7 +9,7 @@ from rest_framework.permissions import AllowAny
 from rest_framework.views import APIView
 
 from sicoin.geolocation.models import MapPoint, TrackPoint
-from sicoin.geolocation.serializers import MapPointSerializer, TrackPointSerializer
+from sicoin.geolocation.serializers import MapPointSerializer, TrackPointSerializer, TrackPointListSerializer
 from sicoin.incident.models import Incident
 from django.utils import timezone
 
@@ -168,3 +168,23 @@ class CreateTrackPoint(APIView):
             serializer.save()
             return HttpResponse(json.dumps({'message': 'TrackPoint successfully created'}),
                                 status=status.HTTP_200_OK)
+
+
+class CreateTrackPoints(APIView):
+    permission_classes = (AllowAny,)
+
+    @swagger_auto_schema(operation_description="Create TrackPoints, Only Resource user",
+                         request_body=TrackPointListSerializer,
+                         responses={200: '{ "message": "TrackPoint successfully created" }',
+                                    400: "{'incident_id': 'Incident with id: ID does not exist'},\n"
+                                         "{'incident_id': 'Incident with id: ID is not at Created state'},\n"
+                                         "{'resource_id': 'Resource with id: ID does not exist'},\n"
+                                         "{'resource_id': 'User related to Resource with id: ID is not active'}"})
+    def post(self, request, incident_id, resource_id):
+        serializer = TrackPointListSerializer(data=request.data,
+                                              context={'incident_id': incident_id, 'resource_id': resource_id})
+        if serializer.is_valid(raise_exception=True):
+            serializer.save()
+            return HttpResponse(json.dumps({'message': 'TrackPoint successfully created'}),
+                                status=status.HTTP_200_OK)
+

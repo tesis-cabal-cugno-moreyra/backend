@@ -147,6 +147,7 @@ class ResourceProfileRetrieveUpdateDestroyViewSet(mixins.UpdateModelMixin, Destr
 
 class ResourceFilter(django_filters.FilterSet):
     user__username = django_filters.CharFilter(lookup_expr='iexact')
+    user__username__icontains = django_filters.CharFilter(lookup_expr='icontains', field_name='user__username')
     user__first_name = django_filters.CharFilter(lookup_expr='iexact')
     user__last_name = django_filters.CharFilter(lookup_expr='iexact')
     user__is_active = django_filters.CharFilter(lookup_expr='iexact')
