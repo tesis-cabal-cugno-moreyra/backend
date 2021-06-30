@@ -4,6 +4,8 @@ services:
   - docker
 python:
   - "3.8"
+before_install:
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
 before_script:
   - docker-compose build
 script:
