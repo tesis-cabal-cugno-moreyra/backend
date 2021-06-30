@@ -155,7 +155,7 @@ class ResourceFilter(django_filters.FilterSet):
 
     class Meta:
         model = ResourceProfile
-        exclude = ['user', 'type', 'domain']
+        exclude = ['user', 'type', 'domain', 'stats_by_incident']
 
 
 class ResourceProfileCreateRetrieveListViewSet(mixins.CreateModelMixin, viewsets.GenericViewSet):
@@ -292,3 +292,15 @@ class GoogleView(APIView):
         response = {'username': user.username, 'access_token': str(token.access_token),
                     'refresh_token': str(token)}
         return HttpResponse(json.dumps(response))
+
+
+class StatisticsByResource(APIView):
+    permission_classes = (AllowAny,)
+
+    def get(self, request, resource_id):
+        try:
+            resource = ResourceProfile.objects.get(id=resource_id)
+        except ResourceProfile.DoesNotExist:
+            return HttpResponse(json.dumps({'message': f'Resource profile with id {resource_id} was not found.'}),
+                                status=status.HTTP_400_BAD_REQUEST)
+        return HttpResponse(json.dumps(resource.stats_by_incident))

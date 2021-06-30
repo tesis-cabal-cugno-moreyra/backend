@@ -73,6 +73,7 @@ class IncidentType(BaseModel):
     name = models.CharField(max_length=255)
     abstraction = models.ForeignKey('IncidentAbstraction', on_delete=models.PROTECT)
     details_schema = JSONField(default=dict, blank=True, encoder=DjangoJSONEncoder)
+    general_stats = JSONField(default=dict, blank=True, encoder=DjangoJSONEncoder)
 
     @property
     def domain_config(self):

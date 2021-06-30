@@ -13,13 +13,14 @@ from .incident.views import AddIncidentResourceToIncidentAPIView, IncidentCreate
     IncidentAssistanceWithoutExternalSupportAPIView, IncidentStatusFinalizeAPIView, \
     IncidentStatusCancelAPIView, IncidentResourceViewSet, IncidentResourceFromResourceListView
 from .users import views
-from .domain_config.views import DomainConfigAPIView, GenerateNewDomainCodeAPIView,\
-    GetCurrentDomainCodeAPIView, CheckCurrentDomainCodeAPIView
+from .domain_config.views import DomainConfigAPIView, GenerateNewDomainCodeAPIView, \
+    GetCurrentDomainCodeAPIView, CheckCurrentDomainCodeAPIView, StatisticsByIncidentType
 from rest_framework import permissions
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
 
-from .users.views import ActivateUserView, DeactivateUserView, CreateOrUpdateResourceProfileDeviceData
+from .users.views import ActivateUserView, DeactivateUserView, CreateOrUpdateResourceProfileDeviceData, \
+    StatisticsByResource
 
 router = DefaultRouter()
 router.register(r'users', views.UserCreateListViewSet)
@@ -68,11 +69,16 @@ urlpatterns = [
     path('api/v1/incidents/<int:incident_id>/resources/<int:resource_id>/track-point/', CreateTrackPoint.as_view()),
     path('api/v1/incidents/<int:incident_id>/track-points/', GetTrackPointsFromIncident.as_view()),
 
+    path('api/v1/incident-types/<str:incident_type_name>/statistics/', StatisticsByIncidentType.as_view()),  # REVISAR
+
     path('api/v1/resources/<int:resource_id>/create-or-update-device/',
          CreateOrUpdateResourceProfileDeviceData.as_view()),
     path('api/v1/resources/<int:resource_id>/incidents/', IncidentResourceFromResourceListView.as_view()),
+    path('api/v1/resources/<int:resource_id>/statistics/', StatisticsByResource.as_view()),
+
     path('api/v1/users/<uuid:user_id>/activate/', ActivateUserView.as_view()),
     path('api/v1/users/<uuid:user_id>/deactivate/', DeactivateUserView.as_view()),
+
     re_path(r'^rest-auth/', include('dj_rest_auth.urls')),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     path('hello/', views.HelloView.as_view()),
