@@ -187,4 +187,3 @@ class CreateTrackPoints(APIView):
             serializer.save()
             return HttpResponse(json.dumps({'message': 'TrackPoint successfully created'}),
                                 status=status.HTTP_200_OK)
-
