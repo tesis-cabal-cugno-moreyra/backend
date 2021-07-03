@@ -22,13 +22,13 @@ container-worker-ssh:
 	docker-compose exec worker-beat sh
 
 docker-compose-up:
-	docker-compose --env-file /dev/null -f docker-compose.yml up
+	docker-compose -f docker-compose.yml up
 
 docker-compose-up-d:
-	docker-compose --env-file /dev/null -f docker-compose.yml up -d
+	docker-compose -f docker-compose.yml up -d
 
 docker-compose-build:
-	docker-compose --env-file /dev/null -f docker-compose.yml build
+	docker-compose -f docker-compose.yml build
 
 docker-compose-get-web-output:
 	docker-compose logs -f web

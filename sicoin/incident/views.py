@@ -25,7 +25,13 @@ class IncidentCreateListViewSet(mixins.CreateModelMixin,
     serializer_class = serializers.CreateIncidentSerializer
     permission_classes = (AllowAny,)
     filter_backends = (filters.DjangoFilterBackend,)
-    filterset_fields = ('incident_type__name', 'external_assistance', 'status', 'data_status')
+    filterset_fields = {
+        'incident_type__name': ['exact'],
+        'external_assistance': ['exact'],
+        'status': ['exact'],
+        'data_status': ['exact'],
+        'reference': ['icontains'],
+    }
 
     def list(self, request, *args, **kwargs):
         queryset = self.filter_queryset(self.get_queryset())
