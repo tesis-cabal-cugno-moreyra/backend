@@ -16,6 +16,7 @@ from sicoin.incident import models, serializers
 from sicoin.incident.models import Incident, IncidentResource
 from sicoin.incident.serializers import IncidentResourceSerializer
 from sicoin.users.models import ResourceProfile
+from sicoin.users.notify_user_manager import IncidentCreationNotificationManager
 
 
 class IncidentCreateListViewSet(mixins.CreateModelMixin,
@@ -143,6 +144,8 @@ class IncidentStatusFinalizeAPIView(ChangeIncidentStatusAPIView):
     def make_changes_to_incident_according_to_status_change(self, incident: Incident) -> Incident:
         incident.finalized_at = datetime.now()
         incident.incidentresource_set.all().update(exited_from_incident_at=datetime.now())
+        incident_creation_notification_manager = IncidentCreationNotificationManager(incident)
+        incident_creation_notification_manager.notify_incident_finalization()
         return incident
 
 
@@ -160,6 +163,8 @@ class IncidentStatusCancelAPIView(ChangeIncidentStatusAPIView):
     def make_changes_to_incident_according_to_status_change(self, incident: Incident) -> Incident:
         incident.cancelled_at = datetime.now()
         incident.incidentresource_set.all().update(exited_from_incident_at=datetime.now())
+        incident_creation_notification_manager = IncidentCreationNotificationManager(incident)
+        incident_creation_notification_manager.notify_incident_cancellation()
         return incident
 
 
