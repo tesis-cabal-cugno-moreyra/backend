@@ -32,7 +32,7 @@ class IncidentCreationNotificationManager:
         for incident_resource in incident_resources_from_incident:
             title = 'Incidente Finalizado!'
             body = 'Revisa la lista de incidentes para más información'
-            incident_resource.device.send_message(title=title, body=body)
+            incident_resource.resource.device.send_message(title=title, body=body)
 
 
 class UserStatusChangeNotificationManager:

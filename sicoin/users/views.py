@@ -268,9 +268,13 @@ class CreateOrUpdateResourceProfileDeviceData(APIView):
             expected_errors = {'registration_id': [ErrorDetail(string='This field must be unique.', code='invalid')]}
             if fcm_device_serializer.errors == expected_errors:
                 device = FCMDevice.objects.get(registration_id=request.data['registration_id'])
-                old_resource = device.resourceprofile
-                old_resource.device = None
-                old_resource.save()
+                try:
+                    old_resource = device.resourceprofile
+                    old_resource.device = None
+                    old_resource.save()
+                except FCMDevice.RelatedObjectDoesNotExist:
+                    # Device can have an empty resource
+                    pass
                 resource.device = device
                 resource.save()
             else:
