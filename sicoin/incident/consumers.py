@@ -14,6 +14,7 @@ from sicoin.utils import MetaEnum
 class AvailableIncidentTypes(str, Enum, metaclass=MetaEnum):
     MAP_POINT = 'map_point'
     TRACK_POINT = 'track_point'
+    INCIDENT_ENDED = 'incident_ended'
 
 
 class IncidentConsumer(AsyncWebsocketConsumer):
@@ -154,4 +155,10 @@ class IncidentConsumer(AsyncWebsocketConsumer):
         await self.send(text_data=json.dumps({
             'incident_type': AvailableIncidentTypes.TRACK_POINT,
             'data': track_point_repr
+        }))
+
+    async def incident_ended(self, event):
+        # Send message to WebSocket
+        await self.send(text_data=json.dumps({
+            'event_type': 'incident_ended'
         }))
