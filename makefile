@@ -8,7 +8,7 @@ help:
 	@echo "See the sources"
 
 build-and-deploy:
-	docker-compose --env-file /dev/null -f docker-compose.yml build
+	docker-compose -f docker-compose.yml build
 	docker tag backend_worker-beat registry.heroku.com/$(HEROKU_APP)/worker-beat
 	docker push registry.heroku.com/$(HEROKU_APP)/worker-beat
 	docker tag web registry.heroku.com/$(HEROKU_APP)/web
