@@ -161,11 +161,13 @@ class IncidentConsumer(AsyncWebsocketConsumer):
     async def incident_finalized(self, event):
         # Send message to WebSocket
         await self.send(text_data=json.dumps({
-            'event_type': 'incident_finalized'
+            'event_type': 'incident_finalized',
+            'incident_id': self.incident_id
         }))
 
     async def incident_cancelled(self, event):
         # Send message to WebSocket
         await self.send(text_data=json.dumps({
-            'event_type': 'incident_cancelled'
+            'event_type': 'incident_cancelled',
+            'incident_id': self.incident_id
         }))
