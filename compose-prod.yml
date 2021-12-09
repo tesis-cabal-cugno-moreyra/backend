@@ -123,6 +123,9 @@ services:
       - 8888:8888
 volumes:
   data-db:
+  certs:
+  html:
+  vhostd:
 networks:
   SicoinNetwork:
     driver: bridge
