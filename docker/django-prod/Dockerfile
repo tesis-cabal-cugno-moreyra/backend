@@ -12,6 +12,7 @@ RUN apk add --no-cache --virtual .build-deps \
         proj-dev \
         binutils \
     && pip install -r requirements.txt \
+    && pip install --upgrade pip \
     && find /usr/local \
         \( -type d -a -name test -o -name tests \) \
         -o \( -type f -a -name '*.pyc' -o -name '*.pyo' \) \
