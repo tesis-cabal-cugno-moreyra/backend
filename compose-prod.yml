@@ -73,13 +73,6 @@ services:
     networks:
       SicoinNetwork:
         ipv4_address: 172.3.0.3
-  adminer:
-    image: adminer
-    ports:
-      - 8080:8080
-    networks:
-      SicoinNetwork:
-        ipv4_address: 172.3.0.4
   redis:
     image: redis:6.0.6-alpine
     command: redis-server --requirepass sOmE_sEcUrE_pAsS
@@ -110,17 +103,6 @@ services:
     networks:
       SicoinNetwork:
         ipv4_address: 172.3.0.7
-  flower:
-    image: mher/flower
-    environment:
-      - CELERY_BROKER_URL=redis://:sOmE_sEcUrE_pAsS@redis:6379/2
-      - FLOWER_PORT=8888
-    depends_on:
-      - postgis
-      - redis
-      - worker-beat
-    ports:
-      - 8888:8888
 volumes:
   data-db:
   certs:
