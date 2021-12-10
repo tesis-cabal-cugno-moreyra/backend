@@ -41,6 +41,7 @@ services:
     depends_on:
       - nginx-proxy
       - letsencrypt
+      - web
 
   postgis:
     image: kartoza/postgis:11.5-2.8
