@@ -61,7 +61,7 @@ services:
     image: web
     build:
       context: .
-      dockerfile: docker/django/Dockerfile
+      dockerfile: docker/django-prod/Dockerfile
     volumes:
       - ./:/code
     ports:
