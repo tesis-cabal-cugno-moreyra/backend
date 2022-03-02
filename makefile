@@ -61,6 +61,9 @@ django-test:
 django-run-prod:
 	docker-compose -f compose-prod.yml up
 
+django-run-prod-detached:
+	docker-compose -f compose-prod.yml up -d
+
 django-flush:
 	docker-compose exec -T web python manage.py flush
 
