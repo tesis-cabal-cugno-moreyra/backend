@@ -16,6 +16,10 @@ services:
       - com.github.jrcs.letsencrypt_nginx_proxy_companion.nginx_proxy
     depends_on:
       - web
+    networks:
+      SicoinNetwork:
+        ipv4_address: 172.3.0.10
+
 
   letsencrypt:
     image: jrcs/letsencrypt-nginx-proxy-companion
@@ -27,6 +31,10 @@ services:
       - vhostd:/etc/nginx/vhost.d
       - html:/usr/share/nginx/html
       - /var/run/docker.sock:/var/run/docker.sock:ro
+    networks:
+      SicoinNetwork:
+        ipv4_address: 172.3.0.11
+
 
   www:
     image: nginx
@@ -35,6 +43,7 @@ services:
       - "80"
     volumes:
       - ./docker/nginx/default.conf:/etc/nginx/nginx.conf:ro
+      - ./docker/nginx/.httpasswd:/etc/nginx/.httpaswd:ro
     command: [nginx-debug, '-g', 'daemon off;']
     environment:
       - VIRTUAL_HOST=sicoin-api.moreyra.com.ar
@@ -44,6 +53,11 @@ services:
       - nginx-proxy
       - letsencrypt
       - web
+      - netdata
+    networks:
+      SicoinNetwork:
+        ipv4_address: 172.3.0.9
+
 
   postgis:
     image: kartoza/postgis:11.5-2.8
@@ -108,11 +122,40 @@ services:
     networks:
       SicoinNetwork:
         ipv4_address: 172.3.0.7
+
+  netdata:
+    image: netdata/netdata
+    restart: always
+    ports:
+      - 8080:19999
+    expose:
+      - "19999"
+    volumes:
+      - /etc/passwd:/host/etc/passwd:ro
+      - /etc/group:/host/etc/group:ro
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - netdata-etc:/etc/netdata
+    cap_add:
+      - SYS_PTRACE
+    security_opt:
+      - apparmor=unconfined
+    environment:
+      - VIRTUAL_PORT=19999
+      - DOCKER_HOST=proxy:2375
+      - DOCKER_USR=root
+      - VIRTUALIZATION=kvm
+    networks:
+      SicoinNetwork:
+        ipv4_address: 172.3.0.12
+
 volumes:
   data-db:
   certs:
   html:
   vhostd:
+  netdata-etc:
 networks:
   SicoinNetwork:
     driver: bridge
