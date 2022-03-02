@@ -58,6 +58,9 @@ django-migrate:
 django-test:
 	docker-compose exec -T web python manage.py test
 
+django-run-prod:
+	docker-compose -f compose-prod.yml up
+
 django-flush:
 	docker-compose exec -T web python manage.py flush
 
