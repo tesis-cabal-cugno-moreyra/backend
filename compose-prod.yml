@@ -149,26 +149,19 @@ services:
     networks:
       SicoinNetwork:
         ipv4_address: 172.3.0.12
-  st-agent:
-    image: sematext/agent:latest
+  st-logagent:
+    image: 'sematext/logagent:latest'
     environment:
-      - INFRA_TOKEN=INSERT API TOKEN HERE!!!
-      - SERVER_BASE_URL=https://spm-receiver.sematext.com
-      - LOGS_RECEIVER_URL=https://logsene-receiver.sematext.com
-      - EVENT_RECEIVER_URL=https://event-receiver.sematext.com
-      - COMMAND_SERVER_URL=https://command.sematext.com
+      - LOGS_TOKEN=87edab14-6d76-4592-bc94-47a7f4bb8018
+      - REGION=US
     cap_add:
       - SYS_ADMIN
     restart: always
     volumes:
-      - /:/hostfs:ro
-      - /etc/passwd:/etc/passwd:ro
-      - /etc/group:/etc/group:ro
-      - /var/run/:/var/run
-      - /sys/kernel/debug:/sys/kernel/debug
-      - /sys:/host/sys:ro
-      - /dev:/hostfs/dev:ro
-      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - '/var/run/docker.sock:/var/run/docker.sock'
+    networks:
+      SicoinNetwork:
+        ipv4_address: 172.3.0.13
 
 volumes:
   data-db:
