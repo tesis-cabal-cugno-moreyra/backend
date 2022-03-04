@@ -61,6 +61,7 @@ services:
 
   postgis:
     image: kartoza/postgis:11.5-2.8
+    restart: always
     volumes:
       - data-db:/var/lib/postgresql/data
     environment:
@@ -75,6 +76,7 @@ services:
         ipv4_address: 172.3.0.2
   web:
     image: web
+    restart: always
     build:
       context: .
       dockerfile: docker/django/Dockerfile
@@ -94,6 +96,7 @@ services:
         ipv4_address: 172.3.0.3
   redis:
     image: redis:6.0.6-alpine
+    restart: always
     command: redis-server --requirepass sOmE_sEcUrE_pAsS
     ports:
       - "6379:6379"
@@ -109,6 +112,7 @@ services:
     build:
       context: .
       dockerfile: docker/worker-beat/Dockerfile.beat
+    restart: always
     command: >
       sh -c "celery -A sicoin worker --beat -l info --scheduler django"
     volumes:
