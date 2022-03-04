@@ -149,19 +149,6 @@ services:
     networks:
       SicoinNetwork:
         ipv4_address: 172.3.0.12
-  st-logagent:
-    image: 'sematext/logagent:latest'
-    environment:
-      - LOGS_TOKEN=87edab14-6d76-4592-bc94-47a7f4bb8018
-      - REGION=US
-    cap_add:
-      - SYS_ADMIN
-    restart: always
-    volumes:
-      - '/var/run/docker.sock:/var/run/docker.sock'
-    networks:
-      SicoinNetwork:
-        ipv4_address: 172.3.0.13
 
 volumes:
   data-db:
