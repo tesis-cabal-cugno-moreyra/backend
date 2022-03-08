@@ -1,0 +1,168 @@
+version: '3.7'
+
+services:
+  nginx-proxy:
+    image: jwilder/nginx-proxy
+    restart: always
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+      - certs:/etc/nginx/certs:ro
+      - vhostd:/etc/nginx/vhost.d
+      - html:/usr/share/nginx/html
+    labels:
+      - com.github.jrcs.letsencrypt_nginx_proxy_companion.nginx_proxy
+    depends_on:
+      - web
+    networks:
+      SicoinNetwork:
+        ipv4_address: 172.3.0.10
+
+
+  letsencrypt:
+    image: jrcs/letsencrypt-nginx-proxy-companion
+    restart: always
+    environment:
+      - NGINX_PROXY_CONTAINER=nginx-proxy
+    volumes:
+      - certs:/etc/nginx/certs:rw
+      - vhostd:/etc/nginx/vhost.d
+      - html:/usr/share/nginx/html
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    networks:
+      SicoinNetwork:
+        ipv4_address: 172.3.0.11
+
+
+  www:
+    image: nginx
+    restart: always
+    expose:
+      - "80"
+    volumes:
+      - ./docker/nginx/default.conf:/etc/nginx/nginx.conf:ro
+      - ./docker/nginx/.httpasswd:/etc/nginx/.httpaswd:ro
+    command: [nginx-debug, '-g', 'daemon off;']
+    environment:
+      - VIRTUAL_HOST=sicoin-api.moreyra.com.ar
+      - LETSENCRYPT_HOST=sicoin-api.moreyra.com.ar
+      - LETSENCRYPT_EMAIL=fmoreyra2011@gmail.com
+    depends_on:
+      - nginx-proxy
+      - letsencrypt
+      - web
+      - netdata
+    networks:
+      SicoinNetwork:
+        ipv4_address: 172.3.0.9
+
+
+  postgis:
+    image: kartoza/postgis:11.5-2.8
+    restart: always
+    volumes:
+      - data-db:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: db_dev
+      POSTGRES_HOST_AUTH_METHOD: trust
+    ports:
+      - 15432:5432
+    networks:
+      SicoinNetwork:
+        ipv4_address: 172.3.0.2
+  web:
+    image: web
+    restart: always
+    build:
+      context: .
+      dockerfile: docker/django/Dockerfile
+    volumes:
+      - ./:/code
+    environment:
+      - PORT=8000
+    ports:
+      - "8000:8000"
+    depends_on:
+      - postgis
+      - redis
+    stdin_open: true
+    tty: true
+    networks:
+      SicoinNetwork:
+        ipv4_address: 172.3.0.3
+  redis:
+    image: redis:6.0.6-alpine
+    restart: always
+    command: redis-server --requirepass sOmE_sEcUrE_pAsS
+    ports:
+      - "6379:6379"
+    volumes:
+      - ./redis/redis-data:/var/lib/redis
+      - ./redis/redis.conf:/usr/local/etc/redis/redis.conf
+    environment:
+      - REDIS_REPLICATION_MODE=master
+    networks:
+      SicoinNetwork:
+        ipv4_address: 172.3.0.5
+  worker-beat:
+    build:
+      context: .
+      dockerfile: docker/worker-beat/Dockerfile.beat
+    restart: always
+    command: >
+      sh -c "celery -A sicoin worker --beat -l info --scheduler django"
+    volumes:
+      - ./:/code
+    depends_on:
+      - postgis
+      - redis
+      - web
+    stdin_open: true
+    tty: true
+    networks:
+      SicoinNetwork:
+        ipv4_address: 172.3.0.7
+
+  netdata:
+    image: netdata/netdata
+    restart: always
+    ports:
+      - 8080:19999
+    expose:
+      - "19999"
+    volumes:
+      - /etc/passwd:/host/etc/passwd:ro
+      - /etc/group:/host/etc/group:ro
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - netdata-etc:/etc/netdata
+    cap_add:
+      - SYS_PTRACE
+    security_opt:
+      - apparmor=unconfined
+    environment:
+      - VIRTUAL_PORT=19999
+      - DOCKER_HOST=proxy:2375
+      - DOCKER_USR=root
+      - VIRTUALIZATION=kvm
+    networks:
+      SicoinNetwork:
+        ipv4_address: 172.3.0.12
+
+volumes:
+  data-db:
+  certs:
+  html:
+  vhostd:
+  netdata-etc:
+networks:
+  SicoinNetwork:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.3.0.0/16

@@ -16,6 +16,24 @@ class IncidentCreationNotificationManager:
             body = 'Revisa la lista de incidentes para más información'
             resource.device.send_message(title=title, body=body)
 
+    def notify_incident_cancellation(self):
+        incident_resources_from_incident = self.incident.incidentresource_set.filter(
+            resource__user__is_active=True, resource__device__isnull=False)
+
+        for incident_resource in incident_resources_from_incident:
+            title = 'Incidente cancelado!'
+            body = 'Revisa la lista de incidentes para más información'
+            incident_resource.resource.device.send_message(title=title, body=body)
+
+    def notify_incident_finalization(self):
+        incident_resources_from_incident = self.incident.incidentresource_set.filter(
+            resource__user__is_active=True, resource__device__isnull=False)
+
+        for incident_resource in incident_resources_from_incident:
+            title = 'Incidente Finalizado!'
+            body = 'Revisa la lista de incidentes para más información'
+            incident_resource.resource.device.send_message(title=title, body=body)
+
 
 class UserStatusChangeNotificationManager:
     def __init__(self, user):

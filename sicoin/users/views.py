@@ -9,7 +9,9 @@ from django.http import HttpResponse
 from django_filters import rest_framework as filters
 from drf_yasg.utils import swagger_auto_schema
 from fcm_django.api.rest_framework import FCMDeviceSerializer
+from fcm_django.models import FCMDevice
 from rest_framework import viewsets, mixins, status
+from rest_framework.exceptions import ErrorDetail
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.utils import json
@@ -147,6 +149,7 @@ class ResourceProfileRetrieveUpdateDestroyViewSet(mixins.UpdateModelMixin, Destr
 
 class ResourceFilter(django_filters.FilterSet):
     user__username = django_filters.CharFilter(lookup_expr='iexact')
+    user__username__icontains = django_filters.CharFilter(lookup_expr='icontains', field_name='user__username')
     user__first_name = django_filters.CharFilter(lookup_expr='iexact')
     user__last_name = django_filters.CharFilter(lookup_expr='iexact')
     user__is_active = django_filters.CharFilter(lookup_expr='iexact')
@@ -257,13 +260,28 @@ class CreateOrUpdateResourceProfileDeviceData(APIView):
                                 status=status.HTTP_400_BAD_REQUEST)
 
         fcm_device_serializer = FCMDeviceSerializer(data=request.data, context={'request': request})
-        if fcm_device_serializer.is_valid(raise_exception=True):
+        if fcm_device_serializer.is_valid():
             fcm_device_serializer.save()
             resource.device = fcm_device_serializer.instance
             resource.save()
-            return HttpResponse(json.dumps({'message': f'Device data for resource with id '
-                                                       f'{resource_id} was saved successfully'}),
-                                status=status.HTTP_200_OK)
+        else:
+            expected_errors = {'registration_id': [ErrorDetail(string='This field must be unique.', code='invalid')]}
+            if fcm_device_serializer.errors == expected_errors:
+                device = FCMDevice.objects.get(registration_id=request.data['registration_id'])
+                try:
+                    old_resource = device.resourceprofile
+                    old_resource.device = None
+                    old_resource.save()
+                except FCMDevice.RelatedObjectDoesNotExist:
+                    # Device can have an empty resource
+                    pass
+                resource.device = device
+                resource.save()
+            else:
+                fcm_device_serializer.is_valid(raise_exception=True)
+        return HttpResponse(json.dumps({'message': f'Device data for resource with id '
+                                                   f'{resource_id} was saved successfully'}),
+                            status=status.HTTP_200_OK)
 
 
 class GoogleView(APIView):

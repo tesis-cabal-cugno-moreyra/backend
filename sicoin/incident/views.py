@@ -11,11 +11,15 @@ from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.viewsets import GenericViewSet
+from channels.layers import get_channel_layer
+from asgiref.sync import async_to_sync
 
 from sicoin.incident import models, serializers
+from sicoin.incident.consumers import AvailableIncidentTypes
 from sicoin.incident.models import Incident, IncidentResource
 from sicoin.incident.serializers import IncidentResourceSerializer
 from sicoin.users.models import ResourceProfile
+from sicoin.users.notify_user_manager import IncidentCreationNotificationManager
 
 
 class IncidentCreateListViewSet(mixins.CreateModelMixin,
@@ -25,7 +29,13 @@ class IncidentCreateListViewSet(mixins.CreateModelMixin,
     serializer_class = serializers.CreateIncidentSerializer
     permission_classes = (AllowAny,)
     filter_backends = (filters.DjangoFilterBackend,)
-    filterset_fields = ('incident_type__name', 'external_assistance', 'status', 'data_status')
+    filterset_fields = {
+        'incident_type__name': ['exact'],
+        'external_assistance': ['exact'],
+        'status': ['exact'],
+        'data_status': ['exact'],
+        'reference': ['icontains'],
+    }
 
     def list(self, request, *args, **kwargs):
         queryset = self.filter_queryset(self.get_queryset())
@@ -137,6 +147,10 @@ class IncidentStatusFinalizeAPIView(ChangeIncidentStatusAPIView):
     def make_changes_to_incident_according_to_status_change(self, incident: Incident) -> Incident:
         incident.finalized_at = datetime.now()
         incident.incidentresource_set.all().update(exited_from_incident_at=datetime.now())
+        incident_creation_notification_manager = IncidentCreationNotificationManager(incident)
+        incident_creation_notification_manager.notify_incident_finalization()
+        async_to_sync(get_channel_layer().group_send)(str(incident.id),
+                                                      {"type": AvailableIncidentTypes.INCIDENT_FINALIZED})
         return incident
 
 
@@ -154,6 +168,10 @@ class IncidentStatusCancelAPIView(ChangeIncidentStatusAPIView):
     def make_changes_to_incident_according_to_status_change(self, incident: Incident) -> Incident:
         incident.cancelled_at = datetime.now()
         incident.incidentresource_set.all().update(exited_from_incident_at=datetime.now())
+        incident_creation_notification_manager = IncidentCreationNotificationManager(incident)
+        incident_creation_notification_manager.notify_incident_cancellation()
+        async_to_sync(get_channel_layer().group_send)(str(incident.id),
+                                                      {"type": AvailableIncidentTypes.INCIDENT_CANCELLED})
         return incident
 
 

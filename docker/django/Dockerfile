@@ -5,13 +5,14 @@ ENV PYTHONUNBUFFERED 1
 COPY ./requirements.txt requirements.txt
 RUN apk add --no-cache --virtual .build-deps \
     ca-certificates gcc postgresql-dev linux-headers musl-dev \
-    libffi-dev jpeg-dev zlib-dev rust cargo openssl-dev \
+    libffi-dev jpeg-dev zlib-dev rust cargo openssl-dev g++ \
     && apk add --no-cache --repository http://dl-cdn.alpinelinux.org/alpine/edge/testing \
         gdal-dev \
         geos-dev \
         proj-dev \
         binutils \
     && pip install -r requirements.txt \
+    && pip install --upgrade pip \
     && find /usr/local \
         \( -type d -a -name test -o -name tests \) \
         -o \( -type f -a -name '*.pyc' -o -name '*.pyo' \) \

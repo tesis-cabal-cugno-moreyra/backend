@@ -8,7 +8,7 @@ help:
 	@echo "See the sources"
 
 build-and-deploy:
-	docker-compose --env-file /dev/null -f docker-compose.yml build
+	docker-compose -f docker-compose.yml build
 	docker tag backend_worker-beat registry.heroku.com/$(HEROKU_APP)/worker-beat
 	docker push registry.heroku.com/$(HEROKU_APP)/worker-beat
 	docker tag web registry.heroku.com/$(HEROKU_APP)/web
@@ -22,13 +22,13 @@ container-worker-ssh:
 	docker-compose exec worker-beat sh
 
 docker-compose-up:
-	docker-compose --env-file /dev/null -f docker-compose.yml up
+	docker-compose -f docker-compose.yml up
 
 docker-compose-up-d:
-	docker-compose --env-file /dev/null -f docker-compose.yml up -d
+	docker-compose -f docker-compose.yml up -d
 
 docker-compose-build:
-	docker-compose --env-file /dev/null -f docker-compose.yml build
+	docker-compose -f docker-compose.yml build
 
 docker-compose-get-web-output:
 	docker-compose logs -f web
@@ -57,6 +57,12 @@ django-migrate:
 
 django-test:
 	docker-compose exec -T web python manage.py test
+
+django-run-prod:
+	docker-compose -f compose-prod.yml up
+
+django-run-prod-detached:
+	docker-compose -f compose-prod.yml up -d
 
 django-flush:
 	docker-compose exec -T web python manage.py flush
