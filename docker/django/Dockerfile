@@ -1,31 +1,24 @@
-FROM python:3.8-alpine
+FROM python:3.8-slim
+
+# set environment variables
+ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 
-# Allows docker to cache installed dependencies between builds
+# install system dependencies
+RUN apt-get update && apt-get install -y netcat
+
+# install dependencies
+RUN pip install --upgrade pip
 COPY ./requirements.txt requirements.txt
-RUN apk add --no-cache --virtual .build-deps \
-    ca-certificates gcc postgresql-dev linux-headers musl-dev \
-    libffi-dev jpeg-dev zlib-dev rust cargo openssl-dev g++ \
-    && apk add --no-cache --repository http://dl-cdn.alpinelinux.org/alpine/edge/testing \
-        gdal-dev \
-        geos-dev \
-        proj-dev \
-        binutils \
-    && pip install -r requirements.txt \
-    && pip install --upgrade pip \
-    && find /usr/local \
-        \( -type d -a -name test -o -name tests \) \
-        -o \( -type f -a -name '*.pyc' -o -name '*.pyo' \) \
-        -exec rm -rf '{}' + \
-    && runDeps="$( \
-        scanelf --needed --nobanner --recursive /usr/local \
-                | awk '{ gsub(/,/, "\nso:", $2); print "so:" $2 }' \
-                | sort -u \
-                | xargs -r apk info --installed \
-                | sort -u \
-    )" \
-    && apk add --virtual .rundeps $runDeps \
-    && apk del .build-deps
+RUN pip install -r requirements.txt
+
+RUN apt-get update -qq && apt-get install -y -qq \
+    # geodjango
+    gdal-bin binutils libproj-dev libgdal-dev \
+    # postgresql
+    libpq-dev postgresql-client && \
+    apt-get clean all && rm -rf /var/apt/lists/* && rm -rf /var/cache/apt/*
+
 # Adds our application code to the image
 COPY . code
 WORKDIR code
