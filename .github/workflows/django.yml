@@ -20,8 +20,3 @@ jobs:
         docker-compose run --rm web sh -c "flake8 . &&
         python wait_for_postgres.py &&
         ./manage.py test"
-    - name: slack-send
-      uses: slackapi/slack-github-action@16b6c78ee73689a627b65332b34e5d409c7299da
-      with:
-        # Slack channel ID where message will be posted. Needed if using bot token
-        channel-id: tesis2020caba-ij78408:CBcouKtzlBEQaU8XxUmVgj0T
