@@ -12,6 +12,7 @@ drf-yasg==1.17.1
 dj-rest-auth==1.1.0
 django-cors-headers==3.5.0
 pycryptodome==3.12
+cryptography==36
 django-searchable-encrypted-fields==0.1.9
 django-redis==4.5.0
 django-environ==0.4.5
