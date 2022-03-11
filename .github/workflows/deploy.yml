@@ -21,4 +21,4 @@ jobs:
         key: ${{ secrets.KEY }}
         port: ${{ secrets.PORT }}
         passphrase: ${{ secrets.PASSPHRASE }}
-        script: make -C ${{ secrets.REPO_FOLDER }} deploy
+        script: make -C ${{ secrets.REPO_PATH }} deploy
