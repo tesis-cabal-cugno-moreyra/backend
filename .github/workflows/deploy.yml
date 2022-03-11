@@ -6,7 +6,7 @@ name: Deploy
 on:
   # Triggers the workflow on push or pull request events but only for the master branch
   push:
-    branches: [ master ]
+    branches: [ master, fix-deployment]
 
 jobs:
   build:
@@ -21,4 +21,4 @@ jobs:
         key: ${{ secrets.KEY }}
         port: ${{ secrets.PORT }}
         passphrase: ${{ secrets.PASSPHRASE }}
-        script: whoami
+        script: make -C ${{ secrets.REPO_FOLDER }} deploy

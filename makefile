@@ -4,9 +4,6 @@ git-hooks-setup:
 	chmod +x git-hooks/pre-commit
 	git config core.hooksPath git-hooks/
 
-help:
-	@echo "See the sources"
-
 build-and-deploy:
 	docker-compose -f docker-compose.yml build
 	docker tag backend_worker-beat registry.heroku.com/$(HEROKU_APP)/worker-beat
@@ -58,6 +55,9 @@ django-migrate:
 django-test:
 	docker-compose exec -T web python manage.py test
 
+django-build-prod:
+	docker-compose -f compose-prod.yml build
+
 django-run-prod:
 	docker-compose -f compose-prod.yml up
 
@@ -78,6 +78,9 @@ ci-run-tests:
 	docker-compose exec -T web flake8 .
 	docker-compose exec -T web python wait_for_postgres.py
 	docker-compose exec -T web ./manage.py test
+
+deploy:
+	@echo "See the sources"
 
 ## Shortcuts
 
