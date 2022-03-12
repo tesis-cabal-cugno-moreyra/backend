@@ -37,7 +37,7 @@ router.register(r'incidents', IncidentCreateListViewSet)
 
 schema_view = get_schema_view(
     openapi.Info(
-        title="SiCoIn Rest API Documentation",
+        title="SiCoIn Rest API Documentation!",
         default_version='v1',
         license=openapi.License(name="BSD License"),
     ),
