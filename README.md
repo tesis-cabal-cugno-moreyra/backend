@@ -1,6 +1,6 @@
 # backend
 
-[![Build Status](https://travis-ci.org/tesis-cabal-cugno-moreyra/backend.svg?branch=master)](https://travis-ci.org/tesis-cabal-cugno-moreyra/backend)
+![Tests](https://github.com/tesis-cabal-cugno-moreyra/backend/actions/workflows/django.yml/badge.svg)
 [![Built with](https://img.shields.io/badge/Built_with-Cookiecutter_Django_Rest-F7B633.svg)](https://github.com/agconti/cookiecutter-django-rest)
 
 Backend for sicoin. Check out the project's [documentation](http://tesis-cabal-cugno-moreyra.github.io/backend/).

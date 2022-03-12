@@ -15,10 +15,12 @@ jobs:
     steps:
     - name: executing remote ssh commands using ssh key
       uses: appleboy/ssh-action@master
+      env:
+        REPO_PATH: ${{ secrets.REPO_PATH }}
       with:
         host: ${{ secrets.HOST }}
         username: ${{ secrets.USERNAME }}
         key: ${{ secrets.KEY }}
         port: ${{ secrets.PORT }}
         passphrase: ${{ secrets.PASSPHRASE }}
-        script: whoami
+        script: make -C /home/facundo/workspace/backend deploy
