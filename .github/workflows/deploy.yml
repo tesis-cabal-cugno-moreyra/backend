@@ -23,4 +23,4 @@ jobs:
         key: ${{ secrets.KEY }}
         port: ${{ secrets.PORT }}
         passphrase: ${{ secrets.PASSPHRASE }}
-        script: make -C ${REPO_PATH} deploy
+        script: make -C /home/facundo/workspace/backend deploy
