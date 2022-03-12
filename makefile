@@ -50,7 +50,7 @@ django-makemigrations:
 	make docker-compose-web-change-files-ownership
 
 django-migrate:
-	docker-compose exec web python manage.py migrate
+	docker-compose exec -T web python manage.py migrate
 
 django-test:
 	docker-compose exec -T web python manage.py test
