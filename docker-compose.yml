@@ -59,7 +59,7 @@ services:
   worker-beat:
     build:
       context: .
-      dockerfile: docker/worker-beat/Dockerfile.beat
+      dockerfile: docker/django/Dockerfile
     command: >
       sh -c "celery -A sicoin worker --beat -l info --scheduler django"
     volumes:

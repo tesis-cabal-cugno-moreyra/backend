@@ -80,6 +80,8 @@ services:
     build:
       context: .
       dockerfile: docker/django/Dockerfile
+    command: >
+      sh -c "./manage.py collectstatic --noinput && daphne sicoin.asgi:application --port $PORT --bind 0.0.0.0"
     volumes:
       - ./:/code
     environment:
@@ -111,7 +113,7 @@ services:
   worker-beat:
     build:
       context: .
-      dockerfile: docker/worker-beat/Dockerfile.beat
+      dockerfile: docker/django/Dockerfile
     restart: always
     command: >
       sh -c "celery -A sicoin worker --beat -l info --scheduler django"
