@@ -80,7 +80,13 @@ ci-run-tests:
 	docker-compose exec -T web ./manage.py test
 
 deploy:
-	@echo "See the sources"
+	docker-compose stop
+	git checkout master
+	git pull
+	make django-build-prod
+	make django-run-prod-detached
+	make django-migrate
+	echo "Successfully deployed!!!!!! ✅✅✅"
 
 ## Shortcuts
 
