@@ -42,7 +42,6 @@ schema_view = get_schema_view(
         license=openapi.License(name="BSD License"),
     ),
     public=True,
-    url=os.getenv('DEFAULT_API_URL', None),
     permission_classes=(permissions.AllowAny,),
 )
 
