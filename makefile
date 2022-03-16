@@ -47,6 +47,7 @@ django-seed-db-prod:
 
 django-seed-db-only-user:
 	docker-compose exec web python manage.py loaddata fixtures/only_with_admin_user.json
+	docker-compose exec web python manage.py create_admin_superuser
 
 django-makemigrations:
 	docker-compose exec web python manage.py makemigrations
