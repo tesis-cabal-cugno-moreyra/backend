@@ -18,6 +18,7 @@ from .domain_config.views import DomainConfigAPIView, GenerateNewDomainCodeAPIVi
     GetCurrentDomainCodeAPIView, CheckCurrentDomainCodeAPIView, StatisticsByIncidentType
 from rest_framework import permissions
 from drf_yasg.views import get_schema_view
+from drf_yasg.generators import OpenAPISchemaGenerator
 from drf_yasg import openapi
 
 from .users.views import ActivateUserView, DeactivateUserView, CreateOrUpdateResourceProfileDeviceData, \
@@ -35,6 +36,14 @@ router.register(r'resources', views.ResourceProfileCreateRetrieveListViewSet)
 router.register(r'incidents/(?P<incident_id>\d+)/resources', IncidentResourceViewSet)
 router.register(r'incidents', IncidentCreateListViewSet)
 
+
+class BothHttpAndHttpsSchemaGenerator(OpenAPISchemaGenerator):
+    def get_schema(self, request=None, public=False):
+        schema = super().get_schema(request, public)
+        schema.schemes = ["http", "https"]
+        return schema
+
+
 schema_view = get_schema_view(
     openapi.Info(
         title="SiCoIn Rest API Documentation!",
@@ -42,6 +51,7 @@ schema_view = get_schema_view(
         license=openapi.License(name="BSD License"),
     ),
     public=True,
+    generator_class=BothHttpAndHttpsSchemaGenerator,
     permission_classes=(permissions.AllowAny,),
 )
 
