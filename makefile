@@ -89,10 +89,10 @@ deploy:
 	echo "Successfully deployed!!!!!! ✅✅✅"
 
 create-database:
-	psql -p 5432 -h postgis -d postgres -c 'CREATE DATABASE db_dev;'
+	docker-compose exec -T web psql -p 5432 -h postgis -d postgres -c 'CREATE DATABASE db_dev;'
 
 delete-database:
-	psql -p 5432 -h postgis -d postgres -c 'select pg_terminate_backend(pid) from pg_stat_activity where datname='db_dev';DROP DATABASE db_dev;CREATE DATABASE db_dev;'
+	docker-compose exec -T web psql -p 5432 -h postgis -d postgres -c 'select pg_terminate_backend(pid) from pg_stat_activity where datname='db_dev';DROP DATABASE db_dev;CREATE DATABASE db_dev;'
 ## Shortcuts
 
 dk-up: docker-compose-up
