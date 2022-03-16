@@ -1,5 +1,3 @@
-import os
-
 from django.conf import settings
 from django.urls import path, re_path, include, reverse_lazy
 from django.conf.urls.static import static
