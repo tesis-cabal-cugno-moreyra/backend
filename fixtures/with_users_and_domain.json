@@ -1,0 +1,315 @@
+[
+  {
+    "model": "users.user",
+    "pk": "192e18ab-d476-41e5-b430-37d42d814984",
+    "fields": {
+      "password": "pbkdf2_sha256$180000$0YN0UHoyTpsL$DcE23+yVQpnahys0vnx6hQawbue/FI/GwgiQy0++ruM=",
+      "last_login": null,
+      "is_superuser": false,
+      "username": "supervisor",
+      "first_name": "Supervisor",
+      "last_name": "Default",
+      "is_staff": false,
+      "is_active": false,
+      "date_joined": "2022-03-16T02:41:15.833Z",
+      "email": "supervisor@email.com",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "users.user",
+    "pk": "67625b82-d694-43d3-b8b8-822aa0cf82bc",
+    "fields": {
+      "password": "pbkdf2_sha256$180000$1Kx9pRMyPfSQ$fOxsjebNP6twBM97u3hy5Wvou4ZRI4EPX8567yl3BeM=",
+      "last_login": null,
+      "is_superuser": true,
+      "username": "admin",
+      "first_name": "",
+      "last_name": "",
+      "is_staff": true,
+      "is_active": true,
+      "date_joined": "2022-03-16T02:01:19.815Z",
+      "email": "admin@email.com",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "users.user",
+    "pk": "a7306929-bb70-478e-829b-07a38c32c30b",
+    "fields": {
+      "password": "pbkdf2_sha256$180000$ylc93fOxsUFr$7FWR+ux0UZjbQdzF8xtXh81QOGzKkOP89QnhW6RTphY=",
+      "last_login": null,
+      "is_superuser": false,
+      "username": "resource",
+      "first_name": "recurso",
+      "last_name": "default",
+      "is_staff": false,
+      "is_active": false,
+      "date_joined": "2022-03-16T02:42:12.175Z",
+      "email": "recurso@email.com",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "users.adminprofile",
+    "pk": 1,
+    "fields": {
+      "user": "67625b82-d694-43d3-b8b8-822aa0cf82bc",
+      "domain": null
+    }
+  },
+  {
+    "model": "users.supervisorprofile",
+    "pk": 1,
+    "fields": {
+      "user": "192e18ab-d476-41e5-b430-37d42d814984",
+      "alias": 1,
+      "domain": 1
+    }
+  },
+  {
+    "model": "users.resourceprofile",
+    "pk": 1,
+    "fields": {
+      "user": "a7306929-bb70-478e-829b-07a38c32c30b",
+      "type": 1,
+      "domain": 1,
+      "device": null,
+      "stats_by_incident": {}
+    }
+  },
+  {
+    "model": "domain_config.supervisoralias",
+    "pk": 1,
+    "fields": {
+      "created_at": "2022-03-16T02:38:52.433Z",
+      "updated_at": "2022-03-16T02:38:52.433Z",
+      "alias": "Observador particular",
+      "domain_config": 1
+    }
+  },
+  {
+    "model": "domain_config.supervisoralias",
+    "pk": 2,
+    "fields": {
+      "created_at": "2022-03-16T02:38:52.457Z",
+      "updated_at": "2022-03-16T02:38:52.458Z",
+      "alias": "Supervisor",
+      "domain_config": 1
+    }
+  },
+  {
+    "model": "domain_config.resourcetype",
+    "pk": 1,
+    "fields": {
+      "created_at": "2022-03-16T02:38:52.650Z",
+      "updated_at": "2022-03-16T02:38:53.109Z",
+      "name": "Bombero",
+      "is_able_to_contain_resources": false,
+      "domain_config": 1
+    }
+  },
+  {
+    "model": "domain_config.resourcetype",
+    "pk": 2,
+    "fields": {
+      "created_at": "2022-03-16T02:38:52.706Z",
+      "updated_at": "2022-03-16T02:38:52.706Z",
+      "name": "Ayudante",
+      "is_able_to_contain_resources": false,
+      "domain_config": 1
+    }
+  },
+  {
+    "model": "domain_config.mappointdescription",
+    "pk": 1,
+    "fields": {
+      "created_at": "2022-03-16T02:38:52.552Z",
+      "updated_at": "2022-03-16T02:38:52.552Z",
+      "text": "Animal muerto relevado",
+      "incident_type": 1
+    }
+  },
+  {
+    "model": "domain_config.mappointdescription",
+    "pk": 2,
+    "fields": {
+      "created_at": "2022-03-16T02:38:52.582Z",
+      "updated_at": "2022-03-16T02:38:52.582Z",
+      "text": "Persona muerta encontrada",
+      "incident_type": 1
+    }
+  },
+  {
+    "model": "domain_config.mappointdescription",
+    "pk": 3,
+    "fields": {
+      "created_at": "2022-03-16T02:38:52.614Z",
+      "updated_at": "2022-03-16T02:38:52.614Z",
+      "text": "Persona perdida",
+      "incident_type": 1
+    }
+  },
+  {
+    "model": "domain_config.mappointdescription",
+    "pk": 4,
+    "fields": {
+      "created_at": "2022-03-16T02:38:52.856Z",
+      "updated_at": "2022-03-16T02:38:52.856Z",
+      "text": "Persona encontrada",
+      "incident_type": 2
+    }
+  },
+  {
+    "model": "domain_config.incidenttyperesource",
+    "pk": 1,
+    "fields": {
+      "created_at": "2022-03-16T02:38:52.680Z",
+      "updated_at": "2022-03-16T02:38:52.680Z",
+      "incident_type": 1,
+      "resource_type": 1
+    }
+  },
+  {
+    "model": "domain_config.incidenttyperesource",
+    "pk": 2,
+    "fields": {
+      "created_at": "2022-03-16T02:38:52.730Z",
+      "updated_at": "2022-03-16T02:38:52.730Z",
+      "incident_type": 1,
+      "resource_type": 2
+    }
+  },
+  {
+    "model": "domain_config.incidenttyperesource",
+    "pk": 3,
+    "fields": {
+      "created_at": "2022-03-16T02:38:53.141Z",
+      "updated_at": "2022-03-16T02:38:53.141Z",
+      "incident_type": 2,
+      "resource_type": 1
+    }
+  },
+  {
+    "model": "domain_config.incidenttype",
+    "pk": 1,
+    "fields": {
+      "created_at": "2022-03-16T02:38:52.518Z",
+      "updated_at": "2022-03-16T02:38:52.518Z",
+      "name": "Incendio de campo",
+      "abstraction": 1,
+      "details_schema": "{\n  \"$id\": \"https://example.com/person.schema.json\",\n  \"$schema\": \"https://json-schema.org/draft/2020-12/schema\",\n  \"title\": \"Person\",\n  \"type\": \"object\",\n  \"properties\": {\n    \"firstName\": {\n      \"type\": \"string\",\n      \"description\": \"The person's first name.\"\n    },\n    \"lastName\": {\n      \"type\": \"string\",\n      \"description\": \"The person's last name.\"\n    }\n  }\n}",
+      "general_stats": {}
+    }
+  },
+  {
+    "model": "domain_config.incidenttype",
+    "pk": 2,
+    "fields": {
+      "created_at": "2022-03-16T02:38:52.813Z",
+      "updated_at": "2022-03-16T02:38:52.813Z",
+      "name": "B\u00fasqueda",
+      "abstraction": 2,
+      "details_schema": "{\n  \"$id\": \"https://example.com/person.schema.json\",\n  \"$schema\": \"https://json-schema.org/draft/2020-12/schema\",\n  \"title\": \"Person\",\n  \"type\": \"object\",\n  \"properties\": {\n    \"firstName\": {\n      \"type\": \"string\",\n      \"description\": \"The person's first name.\"\n    },\n    \"lastName\": {\n      \"type\": \"string\",\n      \"description\": \"The person's last name.\"\n    },\n    \"age\": {\n      \"description\": \"Age in years which must be equal to or greater than zero.\",\n      \"type\": \"integer\",\n      \"minimum\": 0\n    }\n  }\n}",
+      "general_stats": {}
+    }
+  },
+  {
+    "model": "domain_config.incidentabstraction",
+    "pk": 1,
+    "fields": {
+      "created_at": "2022-03-16T02:38:52.491Z",
+      "updated_at": "2022-03-16T02:38:52.491Z",
+      "alias": "Incendio",
+      "domain_config": 1
+    }
+  },
+  {
+    "model": "domain_config.incidentabstraction",
+    "pk": 2,
+    "fields": {
+      "created_at": "2022-03-16T02:38:52.752Z",
+      "updated_at": "2022-03-16T02:38:52.752Z",
+      "alias": "B\u00fasqueda",
+      "domain_config": 1
+    }
+  },
+  {
+    "model": "domain_config.domainconfig",
+    "pk": 1,
+    "fields": {
+      "created_at": "2022-03-16T02:38:52.391Z",
+      "updated_at": "2022-03-16T02:38:52.391Z",
+      "domain_name": "Bomberos Voluntarios",
+      "admin_alias": "Observador General",
+      "domain_code": "535Z0UBK5Y",
+      "parsed_json": {
+        "name": "Bomberos Voluntarios",
+        "adminAlias": "Observador General",
+        "supervisorAliases": [
+          {
+            "name": "Supervisor"
+          },
+          {
+            "name": "Observador particular"
+          }
+        ],
+        "incidentAbstractions": [
+          {
+            "name": "B\u00fasqueda",
+            "types": [
+              {
+                "name": "B\u00fasqueda",
+                "descriptions": [
+                  {
+                    "text": "Persona encontrada"
+                  }
+                ],
+                "detailsSchema": "{\n  \"$id\": \"https://example.com/person.schema.json\",\n  \"$schema\": \"https://json-schema.org/draft/2020-12/schema\",\n  \"title\": \"Person\",\n  \"type\": \"object\",\n  \"properties\": {\n    \"firstName\": {\n      \"type\": \"string\",\n      \"description\": \"The person's first name.\"\n    },\n    \"lastName\": {\n      \"type\": \"string\",\n      \"description\": \"The person's last name.\"\n    },\n    \"age\": {\n      \"description\": \"Age in years which must be equal to or greater than zero.\",\n      \"type\": \"integer\",\n      \"minimum\": 0\n    }\n  }\n}",
+                "resourceTypes": [
+                  {
+                    "name": "Bombero",
+                    "isAbleToContainResources": false
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "name": "Incendio",
+            "types": [
+              {
+                "name": "Incendio de campo",
+                "descriptions": [
+                  {
+                    "text": "Animal muerto relevado"
+                  },
+                  {
+                    "text": "Persona muerta encontrada"
+                  },
+                  {
+                    "text": "Persona perdida"
+                  }
+                ],
+                "detailsSchema": "{\n  \"$id\": \"https://example.com/person.schema.json\",\n  \"$schema\": \"https://json-schema.org/draft/2020-12/schema\",\n  \"title\": \"Person\",\n  \"type\": \"object\",\n  \"properties\": {\n    \"firstName\": {\n      \"type\": \"string\",\n      \"description\": \"The person's first name.\"\n    },\n    \"lastName\": {\n      \"type\": \"string\",\n      \"description\": \"The person's last name.\"\n    }\n  }\n}",
+                "resourceTypes": [
+                  {
+                    "name": "Bombero",
+                    "isAbleToContainResources": false
+                  },
+                  {
+                    "name": "Ayudante",
+                    "isAbleToContainResources": false
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }
+]

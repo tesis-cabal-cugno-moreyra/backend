@@ -49,6 +49,10 @@ django-seed-db-only-user:
 	docker-compose exec web python manage.py loaddata fixtures/only_with_admin_user.json
 	docker-compose exec web python manage.py create_admin_superuser
 
+django-seed-db-users-and-domain:
+	docker-compose exec web python manage.py loaddata fixtures/with_users_and_domain.json
+	docker-compose exec web python manage.py create_admin_superuser
+
 django-makemigrations:
 	docker-compose exec web python manage.py makemigrations
 	make docker-compose-web-change-files-ownership
