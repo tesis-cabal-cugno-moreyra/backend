@@ -245,6 +245,12 @@ class Common(Configuration):
                 'handlers': ['console'],
                 'level': 'INFO'
             },
+            'daphne': {
+                'handlers': [
+                    'console',
+                ],
+                'level': 'DEBUG'
+            },
         }
     }
 
