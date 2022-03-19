@@ -249,6 +249,7 @@ class Common(Configuration):
                 'handlers': [
                     'console',
                 ],
+                'propagate': True,
                 'level': 'DEBUG'
             },
         }
