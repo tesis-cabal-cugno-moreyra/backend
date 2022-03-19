@@ -1,3 +1,5 @@
+import json
+
 from rest_framework import serializers, status
 from rest_framework_gis.fields import GeometryField
 
@@ -5,7 +7,7 @@ from sicoin.domain_config.models import DomainConfig, IncidentType
 from sicoin.domain_config.serializers import DomainFromDatabaseSerializer
 from sicoin.incident.models import Incident, IncidentResource, IncidentResourceContainerMustBeAbleToContainResources, \
     IncidentResourceForContainersCannotHaveAContainerRelatedException
-from jsonschema import validate, ValidationError
+from jsonschema import validate, ValidationError, SchemaError
 
 from sicoin.users.models import ResourceProfile
 from sicoin.users.notify_user_manager import IncidentCreationNotificationManager
@@ -96,10 +98,16 @@ class ValidateIncidentDetailsSerializer(serializers.Serializer):
                 {'incident_id': f"Incident with id: {self.context.get('incident_id')} does not exist"})
 
         details_schema = incident.incident_type.details_schema
+        if type(details_schema) == str:
+            details_schema = json.loads(details_schema)
+
         details_data = data.get('details')
         try:
             validate(instance=details_data, schema=details_schema)
         except ValidationError as error:
+            raise serializers.ValidationError(
+                {'details': f"Details validation failed. Error: {error}"})
+        except SchemaError as error:
             raise serializers.ValidationError(
                 {'details': f"Details validation failed. Error: {error}"})
         return data
