@@ -8,6 +8,7 @@ from django.dispatch import receiver
 from django.contrib.auth.models import AbstractUser
 from django.db.models.signals import post_save
 from fcm_django.models import FCMDevice
+from firebase_admin.messaging import Message, Notification
 from rest_framework.authtoken.models import Token
 from sicoin.domain_config.models import DomainConfig, SupervisorAlias, ResourceType
 from sicoin.users.enums import ValidRoles
@@ -66,13 +67,15 @@ class ResourceProfile(models.Model):
         title = 'Usuario activado!'
         body = f'Tu usuario, para el dominio {self.domain.domain_name} ha sido activado.'
         if self.device:
-            self.device.send_message(title=title, body=body)
+            self.device.send_message(
+                message=Message(notification=Notification(title=title, body=body)))
 
     def notify_resource_user_deactivation(self):
         title = 'Usuario desactivado!'
         body = f'Tu usuario, para el dominio {self.domain.domain_name} ha sido desactivado.'
         if self.device:
-            self.device.send_message(title=title, body=body)
+            self.device.send_message(
+                message=Message(notification=Notification(title=title, body=body)))
 
 
 @receiver(post_save, sender=settings.AUTH_USER_MODEL)

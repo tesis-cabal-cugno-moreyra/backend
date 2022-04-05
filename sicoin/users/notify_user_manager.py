@@ -1,6 +1,7 @@
 import logging
 
 from sicoin.incident.models import Incident
+from firebase_admin.messaging import Message, Notification
 from sicoin.users.models import User
 
 
@@ -14,7 +15,7 @@ class IncidentCreationNotificationManager:
         for resource in active_resources:
             title = 'Incidente creado!'
             body = 'Revisa la lista de incidentes para más información'
-            resource.device.send_message(title=title, body=body)
+            resource.device.send_message(message=Message(notification=Notification(title=title, body=body)))
 
     def notify_incident_cancellation(self):
         incident_resources_from_incident = self.incident.incidentresource_set.filter(
@@ -23,7 +24,8 @@ class IncidentCreationNotificationManager:
         for incident_resource in incident_resources_from_incident:
             title = 'Incidente cancelado!'
             body = 'Revisa la lista de incidentes para más información'
-            incident_resource.resource.device.send_message(title=title, body=body)
+            incident_resource.resource.device.send_message(
+                message=Message(notification=Notification(title=title, body=body)))
 
     def notify_incident_finalization(self):
         incident_resources_from_incident = self.incident.incidentresource_set.filter(
@@ -32,7 +34,8 @@ class IncidentCreationNotificationManager:
         for incident_resource in incident_resources_from_incident:
             title = 'Incidente Finalizado!'
             body = 'Revisa la lista de incidentes para más información'
-            incident_resource.resource.device.send_message(title=title, body=body)
+            incident_resource.resource.device.send_message(
+                message=Message(notification=Notification(title=title, body=body)))
 
 
 class UserStatusChangeNotificationManager:
