@@ -156,10 +156,6 @@ class ResourceFilter(django_filters.FilterSet):
     type__name = django_filters.CharFilter(lookup_expr='iexact')
     type__is_able_to_contain_resources = django_filters.BooleanFilter(lookup_expr='isnull')
 
-    # def is_free_to_take_incident(self, queryset, name, value):
-    #      queryset.filter(incident_resource__exited_from_incident_at__isnull=False)
-    #      # Todos los incidentResource con exited_from_incident_at lleno
-
     class Meta:
         model = ResourceProfile
         exclude = ['user', 'type', 'domain', 'stats_by_incident']
