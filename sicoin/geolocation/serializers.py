@@ -85,7 +85,17 @@ class TrackPointSerializer(BasePointSerializer):
         self._validate_incident_resource_already_created()
         return data
 
+    def _check_if_track_point_already_created(self, incident_id, resource_id, time_created):
+        track_points = TrackPoint.objects.filter(time_created=time_created, incident_id=incident_id,
+                                                 incident_resource_id=resource_id)
+        if track_points.count():
+            return True
+        return False
+
     def create(self, validated_data):
+        if self._check_if_track_point_already_created(self.context.get('incident_id'), self.context.get('resource_id'),
+                                                      self.context.get('time_created')):
+            raise Exception("Trackpoint already created!")
         track_point = TrackPoint()
         track_point.incident_id = self.context.get('incident_id')
         track_point.incident_resource = IncidentResource.objects.get(
@@ -103,6 +113,7 @@ class TrackPointSerializer(BasePointSerializer):
             'internal_type': 'TrackPoint',  # We use this field for future usage on WS
             'resource': ListRetrieveResourceProfileSerializer().to_representation(instance.incident_resource.resource),
         }
+
 
 class TrackPointCreateIncidentResourceSerializer(TrackPointSerializer):
 

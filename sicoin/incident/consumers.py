@@ -102,24 +102,24 @@ class IncidentConsumer(AsyncWebsocketConsumer):
         )
         await self.accept()
 
-        if not settings.INCIDENT_WS_DATA_GENERATION:
-            return
-
-        for i in range(1, 10000):
-            # FIXME: How are we going to dump dates?
-            if (i % 2) == 0:
-                await self.send(
-                    json.dumps({
-                        'type': AvailableIncidentTypes.TRACK_POINT,
-                        'data': self._generate_tp_data(i)
-                    }))
-            else:
-                await self.send(
-                    json.dumps({
-                        'type': AvailableIncidentTypes.MAP_POINT,
-                        'data': self._generate_mp_data(i)
-                    }))
-            await asyncio.sleep(5)
+        # if not settings.INCIDENT_WS_DATA_GENERATION:
+        #     return
+        #
+        # for i in range(1, 10000):
+        #     # FIXME: How are we going to dump dates?
+        #     if (i % 2) == 0:
+        #         await self.send(
+        #             json.dumps({
+        #                 'type': AvailableIncidentTypes.TRACK_POINT,
+        #                 'data': self._generate_tp_data(i)
+        #             }))
+        #     else:
+        #         await self.send(
+        #             json.dumps({
+        #                 'type': AvailableIncidentTypes.MAP_POINT,
+        #                 'data': self._generate_mp_data(i)
+        #             }))
+        #     await asyncio.sleep(5)
 
     async def receive(self, text_data=None, bytes_data=None):
         text_data_json = json.loads(text_data)
