@@ -1,11 +1,9 @@
-import asyncio
 import json
 import logging
 from enum import Enum
 
 from channels.db import database_sync_to_async
 from channels.generic.websocket import AsyncWebsocketConsumer
-from django.conf import settings
 
 from sicoin.geolocation.serializers import MapPointSerializer, TrackPointSerializer
 from sicoin.incident.models import Incident
