@@ -1,0 +1,174 @@
+{
+  "barChartData": {
+    "labels": [
+      "Búsqueda",
+      "Capacitación",
+      "Incendio de Campo"
+    ],
+    "datasets": [
+      {
+        "data": [
+          13,
+          18,
+          23
+        ],
+        "label": "Cantidad de Incidentes",
+        "barThickness": 25,
+        "backgroundColor": "red",
+        "maxBarThickness": 35
+      },
+      {
+        "data": [
+          5,
+          3,
+          1
+        ],
+        "label": "Cantidad de Incidentes Asistidos",
+        "barThickness": 25,
+        "backgroundColor": "green",
+        "maxBarThickness": 35
+      }
+    ]
+  },
+  "calculatedAt": "2021-07-31T23:49:54.587116+00:00",
+  "pieChartData": {
+    "labels": [
+      "Búsqueda",
+      "Capacitación",
+      "Incendio de Campo"
+    ],
+    "datasets": [
+      {
+        "data": [
+          0,
+          0,
+          0
+        ],
+        "backgroundColor": [
+          "red",
+          "blue",
+          "yellow",
+          "green",
+          "white",
+          "orange",
+          "purple",
+          "aquamarine",
+          "chocolate",
+          "gold",
+          "black",
+          "gray",
+          "ivory",
+          "indigo",
+          "navy",
+          "pink",
+          "violet",
+          "tomato",
+          "teal",
+          "turquoise"
+        ]
+      }
+    ]
+  },
+  "lineChartDataWeekly": {
+    "labels": [
+      "Sábado",
+      "Domingo",
+      "Lunes",
+      "Martes",
+      "Miércoles",
+      "Jueves",
+      "Viernes"
+    ],
+    "datasets": [
+      {
+        "data": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "label": "Incidentes asistidos",
+        "borderColor": "green"
+      },
+      {
+        "data": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "label": "Total incidentes por día",
+        "borderColor": "red"
+      }
+    ]
+  },
+  "lineChartDataMonthly": {
+    "labels": [
+      "Noviembre",
+      "Diciembre",
+      "Enero",
+      "Febrero",
+      "Marzo",
+      "Abril"
+    ],
+    "datasets": [
+      {
+        "data": [
+          3,
+          1,
+          8,
+          5,
+          6,
+          1
+        ],
+        "label": "Incidentes asistidos",
+        "borderColor": "green"
+      },
+      {
+        "data": [
+          13,
+          8,
+          9,
+          12,
+          8,
+          3
+        ],
+        "label": "Total incidentes por mes",
+        "borderColor": "red"
+      }
+    ]
+  },
+  "lineChartDataAnnually": {
+    "labels": [
+      2020,
+      2021,
+      2022
+    ],
+    "datasets": [
+      {
+        "data": [
+          10,
+          5,
+          2
+        ],
+        "label": "Incidentes asistidos",
+        "borderColor": "green"
+      },
+      {
+        "data": [
+          32,
+          45,
+          12
+        ],
+        "label": "Total incidentes por año",
+        "borderColor": "red"
+      }
+    ]
+  }
+}
