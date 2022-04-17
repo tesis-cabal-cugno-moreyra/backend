@@ -1,5 +1,6 @@
 import asyncio
 import json
+import logging
 from enum import Enum
 
 from channels.db import database_sync_to_async
@@ -123,6 +124,9 @@ class IncidentConsumer(AsyncWebsocketConsumer):
 
     async def receive(self, text_data=None, bytes_data=None):
         text_data_json = json.loads(text_data)
+        if not text_data_json.get('type'):
+            logging.log(logging.INFO, f"Mensaje recibido no tiene una key 'type': {text_data_json}")
+            return
         message_type = text_data_json['type']
 
         if message_type not in AvailableIncidentTypes:

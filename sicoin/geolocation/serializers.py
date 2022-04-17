@@ -93,9 +93,9 @@ class TrackPointSerializer(BasePointSerializer):
         return False
 
     def create(self, validated_data):
-        if self._check_if_track_point_already_created(self.context.get('incident_id'), self.context.get('resource_id'),
-                                                      self.context.get('time_created')):
-            raise Exception("Trackpoint already created!")
+        # if self._check_if_track_point_already_created(self.context.get('incident_id'), self.context.get('resource_id'),
+        #                                               self.context.get('time_created')):
+        #     raise Exception("Trackpoint already created!")
         track_point = TrackPoint()
         track_point.incident_id = self.context.get('incident_id')
         track_point.incident_resource = IncidentResource.objects.get(
