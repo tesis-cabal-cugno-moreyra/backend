@@ -10,6 +10,7 @@ class BasePointInTime(models.Model):
 
     class Meta:
         abstract = True
+        ordering = ['time_created']
 
 
 class TrackPoint(BasePointInTime):
