@@ -59,7 +59,6 @@ class Common(Configuration):
         'sicoin.wsdebug',
         'chat',
         'drf_yasg',
-        'leaflet',
 
     )
 

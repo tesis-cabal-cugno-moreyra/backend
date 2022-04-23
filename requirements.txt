@@ -22,7 +22,6 @@ django-celery-beat==2.2.0
 django-celery-results==2.0.1
 fcm-django<1
 jsonschema
-django-leaflet
 
 # For the persistence stores
 psycopg2-binary==2.8.5
