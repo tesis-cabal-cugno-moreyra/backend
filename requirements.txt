@@ -35,7 +35,7 @@ django_unique_upload==0.2.1
 djangorestframework==3.11.0
 djangorestframework-gis==0.16
 djangorestframework-simplejwt==4.4.0
-PyJWT==1.7.1
+PyJWT==2.4.0
 Markdown==3.2.2
 django-filter==2.3.0
 
